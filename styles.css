@@ -1,0 +1,48 @@
+#Polideportivo:hover {
+    color: blue;
+}
+
+.tooltip-places {
+    display: none;
+    border-radius: 18px;
+    background: wheat;
+    width: fit-content;
+    position: absolute;
+    top: var(--top);
+    left: var(--left);
+    overflow: hidden;
+}
+
+.tooltip-content {
+    width: fit-content;
+}
+
+.tooltip-information {
+    padding: 10px;
+    max-width: 230px;
+}
+
+.tooltip-image img {
+    width: 250px;
+    height: 150px;
+}
+
+.tooltip-description {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.tooltip-capacity {
+    color: var(--color);
+}
+
+.place-point {
+    position: absolute;
+    top: var(--top);
+    left: var(--left);
+    width: 15px;
+    height: 15px;
+    background-color: var(--color);
+    border-radius: 50%;
+}
