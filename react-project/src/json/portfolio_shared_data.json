@@ -1,0 +1,112 @@
+{
+  "basic_info": {
+    "name": "Jorge Renato Leon",
+    "titles": [
+      "Fullstack Developer",
+      "Frontend Developer",
+      "Informatics Engineer"
+    ],
+    "social": [
+      {
+        "name": "github",
+        "url": "https://github.com/JorgeRenatoLeon",
+        "class": "fab fa-github"
+      },
+      {
+        "name": "linkedin",
+        "url": "https://www.linkedin.com/in/jorgerenatoleon",
+        "class": "fab fa-linkedin"
+      },
+      {
+        "name": "Mail",
+        "url": "mailto:jrleon@pucp.edu.pe",
+        "class": "fas fa-envelope"
+      }
+    ],
+    "image": "https://avatars.githubusercontent.com/u/48967680?v=4"
+  },
+  "skills": {
+    "icons": [
+      {
+        "name": "HTML 5",
+        "class": "devicon-html5-plain",
+        "level": "95"
+      },
+      {
+        "name": "CSS 3",
+        "class": "devicon-css3-plain",
+        "level": "95"
+      },
+      {
+        "name": "JavaScript",
+        "class": "devicon-javascript-plain",
+        "level": "70"
+      },
+      {
+        "name": "JQuery",
+        "class": "devicon-jquery-plain",
+        "level": "65"
+      },
+      {
+        "name": "Sass",
+        "class": "devicon-sass-original",
+        "level": "75"
+      },
+      {
+        "name": "Bootstrap",
+        "class": "devicon-bootstrap-plain",
+        "level": "85"
+      },
+      {
+        "name": "Java",
+        "class": "devicon-java-plain",
+        "level": "65"
+      },
+      {
+        "name": "C",
+        "class": "devicon-c-plain",
+        "level": "65"
+      },
+      {
+        "name": "Python",
+        "class": "devicon-python-plain",
+        "level": "65"
+      },
+      {
+        "name": "PHP",
+        "class": "devicon-php-plain",
+        "level": "65"
+      },
+      {
+        "name": "MySql",
+        "class": "devicon-mysql-plain",
+        "level": "60"
+      },
+      {
+        "name": "PostgreSQL",
+        "class": "devicon-postgresql-plain",
+        "level": "60"
+      },
+      {
+        "name": "Git",
+        "class": "devicon-git-plain",
+        "level": "65"
+      },
+      {
+        "name": "AWS",
+        "class": "devicon-amazonwebservices-plain",
+        "level": "65"
+      },
+      {
+        "name": "Webflow",
+        "class": "devicon-webflow-original",
+        "level": "65"
+      },
+      {
+        "name": "Trello",
+        "class": "devicon-trello-plain",
+        "level": "65"
+      }
+    ]
+  }
+}

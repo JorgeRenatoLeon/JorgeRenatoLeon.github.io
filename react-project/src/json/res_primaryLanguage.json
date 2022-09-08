@@ -1,0 +1,186 @@
+{
+  "basic_info": {
+    "description_header": "Hola",
+    "description": "I'm Jorge Leon. I'm a Fullstack Developer graduated from PUCP as an Informatics Engineer. I currently work in projects using frameworks like React and Vue for the frontend and Spring for the Backend. I like the challenges and learn new things everyday, also I love to share what I know so feel free to reach me.",
+    "section_name": {
+      "about": "About me",
+      "projects": "Projects",
+      "skills": "Skills",
+      "experience": "Experience"
+    }
+  },
+  "projects": [
+    {
+      "title": "PUCP-IN",
+      "startDate": "2022",
+      "description": "PUCP-IN is a progressive web application that helps educational institutions to manage the access to every space in their infrastructure. Developed web app frontend using React, RESTful APIs using Spring and data storage in MySQL following best practices and an agile methodology. This web application helped PUCP to track over 3200 students, teachers and administratives that were part of the Science and Engineering faculty in the second semester of 2022.",
+      "images": [
+        "./img/projects/pucpin/PUCP-IN.png",
+        "./img/projects/pucpin/Home.png",
+        "./img/projects/pucpin/Capacity.png",
+        "./img/projects/pucpin/QR.png"
+      ],
+      "url": "https://pucp.in/",
+      "technologies": [
+        {
+          "class": "devicon-react-plain",
+          "name": "React"
+        },
+        {
+          "class": "devicon-javascript-plain",
+          "name": "JavaScript"
+        },
+        {
+          "class": "devicon-spring-plain",
+          "name": "Spring"
+        },
+        {
+          "class": "devicon-java-plain",
+          "name": "java"
+        },
+        {
+          "class": "devicon-mysql-plain",
+          "name": "MySQL"
+        },
+        {
+          "class": "devicon-amazonwebservices-plain",
+          "name": "AWS"
+        }
+      ]
+    },
+    {
+      "title": "Digital Voting System",
+      "startDate": "2021",
+      "description": "Developed a thesis project for digital voting through a web app using React.js for the frontend, Spring Boot for the backend and MySQL for data storage. The web app features are secure voting with a two steps authentication, candidates management and a process administrator. The solution was developed based in the CIP from Peru, the user research was done with the help from some administratives and members of the institution.",
+      "images": [
+        "./img/projects/digitalvoting/SignIn.png",
+        "./img/projects/digitalvoting/Search.png",
+        "./img/projects/digitalvoting/Profile.png",
+        "./img/projects/digitalvoting/Vote.png",
+        "./img/projects/digitalvoting/Results.png"
+      ],
+      "url": "https://gitlab.com/DigitalVoting",
+      "technologies": [
+        {
+          "class": "devicon-react-plain",
+          "name": "React"
+        },
+        {
+          "class": "devicon-javascript-plain",
+          "name": "JavaScript"
+        },
+        {
+          "class": "devicon-spring-plain",
+          "name": "Spring"
+        },
+        {
+          "class": "devicon-java-plain",
+          "name": "java"
+        },
+        {
+          "class": "devicon-mysql-plain",
+          "name": "MySQL"
+        },
+        {
+          "class": "devicon-amazonwebservices-plain",
+          "name": "AWS"
+        }
+      ]
+    },
+    {
+      "title": "Assistance",
+      "startDate": "2020",
+      "description": "Assistance is a web application that helps educational institutions to manage the tutoring process by giving a simple platform to schedule appointments and track the student’s goals. Developed web app frontend using Vue.js, RESTful APIs using Laravel and data storage in PostgreSQL following best practices and an agile methodology. This web application helped PUCP to track over 100 students that were part of their tutoring process during the start of the pandemic.",
+      "images": [
+        "./img/projects/assistance/HomePage.jpg",
+        "./img/projects/assistance/Login.jpg",
+        "./img/projects/assistance/Admin.jpg",
+        "./img/projects/assistance/Calendar.jpg",
+        "./img/projects/assistance/Cita.jpg"
+      ],
+      "url": "https://tutoriafront.inf.pucp.edu.pe/",
+      "technologies": [
+        {
+          "class": "devicon-vuejs-plain",
+          "name": "Vue"
+        },
+        {
+          "class": "devicon-javascript-plain",
+          "name": "JavaScript"
+        },
+        {
+          "class": "devicon-laravel-plain",
+          "name": "Laravel"
+        },
+        {
+          "class": "devicon-php-plain",
+          "name": "PHP"
+        },
+        {
+          "class": "devicon-postgresql-plain",
+          "name": "PostgreSQL"
+        },
+        {
+          "class": "devicon-amazonwebservices-plain",
+          "name": "AWS"
+        }
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "company": "Software FX",
+      "title": "Frontend Developer",
+      "years": "July 2021 - present",
+      "mainTech": ["Vue.js"],
+      "technologies": [
+        "Vue.js",
+        "JavaScript",
+        "HTML5",
+        "CSS",
+        "Bootstrap",
+        "JQuery",
+        "REST API",
+        "Webflow"
+      ],
+      "icon": "fas fa-briefcase"
+    },
+    {
+      "company": "PUCP",
+      "title": "Teaching Assistant",
+      "years": "Dec 2020 - present",
+      "mainTech": ["C", "Software Development"],
+      "technologies": [
+        "C",
+        "Programming Fundamentals",
+        "Software Development",
+        "Design Sprint"
+      ],
+      "icon": "fas fa-school"
+    },
+    {
+      "company": "IBM",
+      "title": "Developer Advocate Student",
+      "years": "Dec 2020 - Dec 2021",
+      "mainTech": ["IBM Cloud"],
+      "technologies": ["IBM Cloud", "React", "Spring", "JavaScript", "Spring"],
+      "icon": "fas fa-clouds"
+    },
+    {
+      "company": "Neotech Mexico",
+      "title": "Google Cloud Intern",
+      "years": "Jul 2020 - Oct 2020",
+      "mainTech": ["Google Cloud"],
+      "technologies": ["Google Cloud", "PHP", "HTML5", "CSS", "Bootstrap"],
+      "icon": "fas fa-code"
+    },
+    {
+      "company": "DTI - PUCP",
+      "title": "Information Security Intern",
+      "years": "Jul 2019 - Dec 2019",
+      "mainTech": ["Oracle ERP"],
+      "technologies": ["Oracle ERP", "Excel", "SQL"],
+      "icon": "fas fa-user-tie"
+    }
+  ]
+}
