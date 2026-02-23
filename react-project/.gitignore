@@ -1,23 +1,19 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Next.js
+.next/
+out/
+node_modules/
+*.tsbuildinfo
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Environment
+.env*.local
 
-# testing
-/coverage
-
-# production
-/build
-
-# misc
+# OS
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+Thumbs.db
 
+# IDE
+.vscode/
+.idea/
+
+# Debug
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*

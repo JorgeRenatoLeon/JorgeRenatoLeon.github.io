@@ -1,0 +1,13 @@
+# Local reference materials and operational docs
+references/
+CLAUDE.md
+PROJECT-SUMMARY.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node.js (react-project has its own .gitignore)
+react-project/node_modules/
+react-project/.next/
+react-project/out/
