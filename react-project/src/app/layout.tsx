@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -14,13 +14,19 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Jorge Renato Leon | Fullstack Developer",
+  title: "Jorge Renato Leon | Software Engineer",
   description:
-    "Personal portfolio of Jorge Renato Leon Chumpitaz — Fullstack Developer and Informatics Engineer. Building modern web applications with TypeScript, React, and Next.js.",
+    "Personal portfolio of Jorge Renato Leon Chumpitaz — Software Engineer. Building modern web applications with TypeScript, React, and Next.js.",
   keywords: [
     "Jorge Renato Leon",
-    "Fullstack Developer",
+    "Frontend Developer",
     "Software Engineer",
     "TypeScript",
     "React",
@@ -29,9 +35,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Jorge Renato Leon Chumpitaz" }],
   openGraph: {
-    title: "Jorge Renato Leon | Fullstack Developer",
+    title: "Jorge Renato Leon | Software Engineer",
     description:
-      "Fullstack Developer and Informatics Engineer. Building modern web applications with TypeScript, React, and Next.js.",
+      "Software Engineer and Informatics Engineer. Building modern web applications with TypeScript, React, and Next.js.",
     type: "website",
     locale: "en_US",
   },
@@ -68,7 +74,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans`}
+        className={`${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable} font-sans`}
       >
         {children}
       </body>
