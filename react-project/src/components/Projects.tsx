@@ -15,20 +15,6 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Database,
-  Globe,
-  Compass,
-  MapPin,
-  GraduationCap,
-  QrCode,
-  Shield,
-  ShieldCheck,
-  Vote,
-  Lock,
-  Calendar,
-  BookOpen,
-  Clock,
-  type LucideIcon,
 } from "lucide-react";
 import { projects, type Project } from "@/data/portfolio";
 
@@ -70,6 +56,8 @@ interface FaceDescriptor {
   height: number;
   /** Whether this face should show the project screenshot */
   showImage: boolean;
+  /** Crown face index (0-7) for panoramic image slice mapping */
+  faceIndex?: number;
   /** Unique key */
   key: string;
 }
@@ -153,6 +141,7 @@ function generateGemFaces(
       width: girdleChord,
       height: slantH,
       showImage: true,
+      faceIndex: i,
       key: `crown-${i}`,
     });
   }
@@ -196,12 +185,18 @@ function generateGemFaces(
 }
 
 /* ================================================================== */
-/*  ORBIT CONFIG — per-project orbiting 3D objects                    */
+/*  ORBIT CONFIG — per-project orbiting 3D illustrations              */
 /* ================================================================== */
 
+type IllustrationShape =
+  | "laptop" | "document" | "globe"
+  | "suitcase" | "airplane" | "compass"
+  | "gradcap" | "phone" | "badge"
+  | "ballotbox" | "shield" | "chainlink"
+  | "clock" | "calendar" | "clipboard";
+
 interface OrbitItem {
-  shape: "cube" | "tetrahedron" | "octahedron";
-  Icon: LucideIcon;
+  shape: IllustrationShape;
   orbitRadius: number;
   orbitDuration: number;
   orbitTilt: number;
@@ -212,236 +207,718 @@ interface OrbitItem {
 const projectOrbits: OrbitItem[][] = [
   /* DPP Interoperability */
   [
-    { shape: "cube", Icon: Database, orbitRadius: 200, orbitDuration: 14, orbitTilt: 15, startAngle: 0, size: 34 },
-    { shape: "tetrahedron", Icon: Globe, orbitRadius: 240, orbitDuration: 18, orbitTilt: -20, startAngle: 120, size: 28 },
-    { shape: "octahedron", Icon: Shield, orbitRadius: 180, orbitDuration: 22, orbitTilt: 10, startAngle: 240, size: 26 },
+    { shape: "laptop", orbitRadius: 200, orbitDuration: 14, orbitTilt: 15, startAngle: 0, size: 40 },
+    { shape: "document", orbitRadius: 240, orbitDuration: 18, orbitTilt: -20, startAngle: 120, size: 34 },
+    { shape: "globe", orbitRadius: 180, orbitDuration: 22, orbitTilt: 10, startAngle: 240, size: 36 },
   ],
   /* TravelApp */
   [
-    { shape: "octahedron", Icon: Compass, orbitRadius: 210, orbitDuration: 15, orbitTilt: -15, startAngle: 30, size: 32 },
-    { shape: "cube", Icon: MapPin, orbitRadius: 250, orbitDuration: 20, orbitTilt: 20, startAngle: 150, size: 28 },
-    { shape: "tetrahedron", Icon: Globe, orbitRadius: 185, orbitDuration: 17, orbitTilt: -10, startAngle: 270, size: 26 },
+    { shape: "suitcase", orbitRadius: 210, orbitDuration: 15, orbitTilt: -15, startAngle: 30, size: 38 },
+    { shape: "airplane", orbitRadius: 250, orbitDuration: 20, orbitTilt: 20, startAngle: 150, size: 36 },
+    { shape: "compass", orbitRadius: 185, orbitDuration: 17, orbitTilt: -10, startAngle: 270, size: 34 },
   ],
   /* PUCP-IN */
   [
-    { shape: "cube", Icon: GraduationCap, orbitRadius: 195, orbitDuration: 16, orbitTilt: 12, startAngle: 60, size: 32 },
-    { shape: "octahedron", Icon: QrCode, orbitRadius: 235, orbitDuration: 19, orbitTilt: -18, startAngle: 180, size: 28 },
-    { shape: "tetrahedron", Icon: Shield, orbitRadius: 175, orbitDuration: 23, orbitTilt: 8, startAngle: 300, size: 26 },
+    { shape: "gradcap", orbitRadius: 195, orbitDuration: 16, orbitTilt: 12, startAngle: 60, size: 38 },
+    { shape: "phone", orbitRadius: 235, orbitDuration: 19, orbitTilt: -18, startAngle: 180, size: 34 },
+    { shape: "badge", orbitRadius: 175, orbitDuration: 23, orbitTilt: 8, startAngle: 300, size: 34 },
   ],
   /* Digital Voting */
   [
-    { shape: "octahedron", Icon: ShieldCheck, orbitRadius: 205, orbitDuration: 14, orbitTilt: -14, startAngle: 45, size: 34 },
-    { shape: "cube", Icon: Vote, orbitRadius: 245, orbitDuration: 18, orbitTilt: 22, startAngle: 165, size: 28 },
-    { shape: "tetrahedron", Icon: Lock, orbitRadius: 190, orbitDuration: 21, orbitTilt: -8, startAngle: 285, size: 26 },
+    { shape: "ballotbox", orbitRadius: 205, orbitDuration: 14, orbitTilt: -14, startAngle: 45, size: 38 },
+    { shape: "shield", orbitRadius: 245, orbitDuration: 18, orbitTilt: 22, startAngle: 165, size: 36 },
+    { shape: "chainlink", orbitRadius: 190, orbitDuration: 21, orbitTilt: -8, startAngle: 285, size: 34 },
   ],
   /* Assistance */
   [
-    { shape: "cube", Icon: Calendar, orbitRadius: 200, orbitDuration: 15, orbitTilt: 16, startAngle: 20, size: 32 },
-    { shape: "octahedron", Icon: BookOpen, orbitRadius: 240, orbitDuration: 19, orbitTilt: -20, startAngle: 140, size: 28 },
-    { shape: "tetrahedron", Icon: Clock, orbitRadius: 180, orbitDuration: 22, orbitTilt: 10, startAngle: 260, size: 26 },
+    { shape: "clock", orbitRadius: 200, orbitDuration: 15, orbitTilt: 16, startAngle: 20, size: 38 },
+    { shape: "calendar", orbitRadius: 240, orbitDuration: 19, orbitTilt: -20, startAngle: 140, size: 36 },
+    { shape: "clipboard", orbitRadius: 180, orbitDuration: 22, orbitTilt: 10, startAngle: 260, size: 34 },
   ],
 ];
 
 /* ================================================================== */
-/*  SMALL 3D SHAPE COMPONENTS                                        */
+/*  THEMED 3D ILLUSTRATION COMPONENTS                                 */
 /* ================================================================== */
 
-/** 3D Cube — 6 faces */
-function Cube3D({
-  size,
-  Icon,
-  accent,
-}: Readonly<{ size: number; Icon: LucideIcon; accent: typeof gemAccents[0] }>) {
-  const half = size / 2;
-  const faceStyle = (transform: string): React.CSSProperties => ({
+/** Common face style builder */
+function faceStyle(
+  size: number,
+  transform: string,
+  bg: string,
+  border: string,
+  extra?: React.CSSProperties
+): React.CSSProperties {
+  return {
     position: "absolute",
     width: size,
     height: size,
     transform,
     backfaceVisibility: "hidden",
-    background: accent.fillSolid,
-    border: `1px solid ${accent.edge}66`,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  });
-  const iconSize = size * 0.5;
+    background: bg,
+    border: `1px solid ${border}`,
+    ...extra,
+  };
+}
 
+/** 3D Laptop — base slab + angled screen */
+function Laptop3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  const w = size;
+  const baseH = size * 0.12;
+  const screenH = size * 0.65;
   return (
-    <div
-      style={{
-        width: size,
-        height: size,
-        position: "relative",
-        transformStyle: "preserve-3d",
-      }}
-    >
-      {/* Front */}
-      <div style={faceStyle(`translateZ(${half}px)`)}>
-        <Icon size={iconSize} color={accent.edge} strokeWidth={1.5} />
+    <div style={{ width: w, height: size, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Base */}
+      <div style={{
+        position: "absolute", bottom: 0, left: 0,
+        width: w, height: baseH, borderRadius: 2,
+        background: accent.fillSolid, border: `1px solid ${accent.edge}66`,
+        transform: "rotateX(70deg)", transformOrigin: "bottom center",
+      }} />
+      {/* Screen */}
+      <div style={{
+        position: "absolute", bottom: baseH, left: w * 0.05,
+        width: w * 0.9, height: screenH, borderRadius: 2,
+        background: `linear-gradient(135deg, ${accent.fillSolid}, ${accent.fill})`,
+        border: `1px solid ${accent.edge}88`,
+        transform: "rotateX(-15deg)", transformOrigin: "bottom center",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        {/* Code lines on screen */}
+        <div style={{ width: "60%", display: "flex", flexDirection: "column", gap: 2 }}>
+          <div style={{ width: "80%", height: 2, background: accent.edge, opacity: 0.6, borderRadius: 1 }} />
+          <div style={{ width: "55%", height: 2, background: accent.edge, opacity: 0.4, borderRadius: 1 }} />
+          <div style={{ width: "70%", height: 2, background: accent.edge, opacity: 0.5, borderRadius: 1 }} />
+        </div>
       </div>
-      {/* Back */}
-      <div style={faceStyle(`rotateY(180deg) translateZ(${half}px)`)} />
-      {/* Right */}
-      <div style={faceStyle(`rotateY(90deg) translateZ(${half}px)`)} />
-      {/* Left */}
-      <div style={faceStyle(`rotateY(-90deg) translateZ(${half}px)`)} />
-      {/* Top */}
-      <div style={faceStyle(`rotateX(90deg) translateZ(${half}px)`)} />
-      {/* Bottom */}
-      <div style={faceStyle(`rotateX(-90deg) translateZ(${half}px)`)} />
     </div>
   );
 }
 
-/** 3D Tetrahedron — 4 triangular faces */
-function Tetrahedron3D({
-  size,
-  Icon,
-  accent,
-}: Readonly<{ size: number; Icon: LucideIcon; accent: typeof gemAccents[0] }>) {
-  const h = size * 0.816; // height of regular tetrahedron relative to edge
-  const iconSize = size * 0.35;
-
-  const triangleFace = (
-    rotY: number,
-    rotX: number,
-    tz: number,
-    showIcon: boolean
-  ): React.ReactNode => (
-    <div
-      key={`${rotY}-${rotX}`}
-      style={{
-        position: "absolute",
-        width: size,
-        height: h,
-        transform: `rotateY(${rotY}deg) rotateX(${rotX}deg) translateZ(${tz}px)`,
-        clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
-        background: accent.fillSolid,
-        border: `1px solid ${accent.edge}66`,
-        backfaceVisibility: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        paddingTop: h * 0.3,
-      }}
-    >
-      {showIcon && (
-        <Icon size={iconSize} color={accent.edge} strokeWidth={1.5} />
-      )}
-    </div>
-  );
-
-  const inR = size / (2 * Math.sqrt(3));
-
+/** 3D Document / Passport — card with line details and stamp */
+function Document3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  const w = size * 0.75;
+  const h = size;
   return (
-    <div
-      style={{
-        width: size,
-        height: h,
-        position: "relative",
-        transformStyle: "preserve-3d",
-      }}
-    >
-      {triangleFace(0, -19.47, inR, true)}
-      {triangleFace(120, -19.47, inR, false)}
-      {triangleFace(240, -19.47, inR, false)}
-      {/* Bottom face */}
-      <div
-        style={{
-          position: "absolute",
-          width: size,
-          height: size,
-          transform: `rotateX(90deg) translateZ(${h * 0.75}px)`,
-          clipPath: "polygon(50% 0%, 0% 87%, 100% 87%)",
-          background: accent.fill,
-          backfaceVisibility: "hidden",
-        }}
-      />
-    </div>
-  );
-}
-
-/** 3D Octahedron — 8 triangular faces (top 4 + bottom 4) */
-function Octahedron3D({
-  size,
-  Icon,
-  accent,
-}: Readonly<{ size: number; Icon: LucideIcon; accent: typeof gemAccents[0] }>) {
-  const half = size / 2;
-  const iconSize = size * 0.35;
-  const faceH = size * 0.707; // ~half * sqrt(2)
-
-  const face = (
-    rotY: number,
-    rotX: number,
-    showIcon: boolean
-  ): React.ReactNode => (
-    <div
-      key={`${rotY}-${rotX}-oct`}
-      style={{
-        position: "absolute",
-        width: size,
-        height: faceH,
-        transform: `rotateY(${rotY}deg) rotateX(${rotX}deg) translateZ(${half * 0.5}px)`,
-        clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
-        background: accent.fillSolid,
+    <div style={{ width: w, height: h, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Main card */}
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: 3,
+        background: `linear-gradient(180deg, ${accent.fillSolid}, ${accent.fill})`,
         border: `1px solid ${accent.edge}66`,
-        backfaceVisibility: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        paddingTop: faceH * 0.25,
-      }}
-    >
-      {showIcon && (
-        <Icon size={iconSize} color={accent.edge} strokeWidth={1.5} />
-      )}
-    </div>
-  );
-
-  return (
-    <div
-      style={{
-        width: size,
-        height: size,
-        position: "relative",
-        transformStyle: "preserve-3d",
-      }}
-    >
-      {/* Top 4 upper triangles */}
-      {face(0, -35.26, true)}
-      {face(90, -35.26, false)}
-      {face(180, -35.26, false)}
-      {face(270, -35.26, false)}
-      {/* Bottom 4 inverted triangles */}
-      {face(45, 35.26 + 180, false)}
-      {face(135, 35.26 + 180, false)}
-      {face(225, 35.26 + 180, false)}
-      {face(315, 35.26 + 180, false)}
+        display: "flex", flexDirection: "column", padding: size * 0.12, gap: size * 0.06,
+      }}>
+        {/* Photo placeholder */}
+        <div style={{
+          width: size * 0.2, height: size * 0.24, borderRadius: 2,
+          background: accent.edge, opacity: 0.3,
+        }} />
+        {/* Text lines */}
+        <div style={{ width: "90%", height: 2, background: accent.edge, opacity: 0.4, borderRadius: 1 }} />
+        <div style={{ width: "65%", height: 2, background: accent.edge, opacity: 0.3, borderRadius: 1 }} />
+        <div style={{ width: "75%", height: 2, background: accent.edge, opacity: 0.3, borderRadius: 1 }} />
+        {/* Stamp circle */}
+        <div style={{
+          position: "absolute", bottom: size * 0.1, right: size * 0.08,
+          width: size * 0.2, height: size * 0.2, borderRadius: "50%",
+          border: `1.5px solid ${accent.edge}55`,
+        }} />
+      </div>
+      {/* Depth layer behind */}
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: 3,
+        background: accent.fill, border: `1px solid ${accent.edge}33`,
+        transform: "translateZ(-3px)",
+      }} />
     </div>
   );
 }
 
-/** Render a 3D shape by type */
+/** 3D Globe — circle with latitude/longitude arcs */
+function Globe3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  return (
+    <div style={{ width: size, height: size, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Sphere base */}
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: "50%",
+        background: `radial-gradient(circle at 35% 35%, ${accent.fillSolid}, ${accent.fill})`,
+        border: `1.5px solid ${accent.edge}66`,
+        overflow: "hidden",
+      }}>
+        {/* Vertical meridian */}
+        <div style={{
+          position: "absolute", left: "50%", top: 0, width: 0, height: "100%",
+          borderLeft: `1px solid ${accent.edge}44`, transform: "translateX(-0.5px)",
+        }} />
+        {/* Elliptical meridian */}
+        <div style={{
+          position: "absolute", left: "25%", top: "5%", width: "50%", height: "90%",
+          borderRadius: "50%", border: `1px solid ${accent.edge}33`,
+        }} />
+        {/* Horizontal equator */}
+        <div style={{
+          position: "absolute", top: "50%", left: 0, width: "100%", height: 0,
+          borderTop: `1px solid ${accent.edge}44`, transform: "translateY(-0.5px)",
+        }} />
+        {/* Latitude lines */}
+        <div style={{
+          position: "absolute", top: "30%", left: "8%", width: "84%", height: 0,
+          borderTop: `1px solid ${accent.edge}22`,
+        }} />
+        <div style={{
+          position: "absolute", top: "70%", left: "8%", width: "84%", height: 0,
+          borderTop: `1px solid ${accent.edge}22`,
+        }} />
+      </div>
+      {/* Highlight glare */}
+      <div style={{
+        position: "absolute", top: "12%", left: "18%", width: "25%", height: "12%",
+        borderRadius: "50%", background: "rgba(255,255,255,0.15)",
+        transform: "rotate(-30deg)", filter: "blur(2px)",
+      }} />
+    </div>
+  );
+}
+
+/** 3D Suitcase — box with handle and stickers */
+function Suitcase3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  const w = size;
+  const h = size * 0.85;
+  const handleH = size * 0.15;
+  return (
+    <div style={{ width: w, height: size, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Handle */}
+      <div style={{
+        position: "absolute", top: 0, left: "30%", width: "40%", height: handleH,
+        borderRadius: `${size * 0.06}px ${size * 0.06}px 0 0`,
+        border: `2px solid ${accent.edge}66`, borderBottom: "none",
+        background: "transparent",
+      }} />
+      {/* Main body */}
+      <div style={{
+        position: "absolute", top: handleH, left: 0,
+        width: w, height: h - handleH, borderRadius: 4,
+        background: `linear-gradient(135deg, ${accent.fillSolid}, ${accent.fill})`,
+        border: `1.5px solid ${accent.edge}55`,
+      }}>
+        {/* Center divider line */}
+        <div style={{
+          position: "absolute", top: 0, left: "50%", width: 0, height: "100%",
+          borderLeft: `1px solid ${accent.edge}33`,
+        }} />
+        {/* Sticker dots */}
+        <div style={{
+          position: "absolute", top: "20%", right: "15%",
+          width: size * 0.14, height: size * 0.14, borderRadius: "50%",
+          background: accent.edge, opacity: 0.3,
+        }} />
+        <div style={{
+          position: "absolute", bottom: "25%", left: "12%",
+          width: size * 0.1, height: size * 0.1, borderRadius: 2,
+          background: accent.edge, opacity: 0.2,
+        }} />
+      </div>
+      {/* Depth side */}
+      <div style={{
+        position: "absolute", top: handleH + 2, left: 2,
+        width: w - 4, height: h - handleH - 4, borderRadius: 4,
+        background: accent.fill, transform: "translateZ(-4px)",
+      }} />
+    </div>
+  );
+}
+
+/** 3D Airplane — body + wings silhouette */
+function Airplane3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  return (
+    <div style={{ width: size, height: size, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Fuselage */}
+      <div style={{
+        position: "absolute", top: "35%", left: "10%",
+        width: "80%", height: "22%",
+        borderRadius: `${size * 0.3}px ${size * 0.06}px ${size * 0.06}px ${size * 0.3}px`,
+        background: `linear-gradient(90deg, ${accent.fillSolid}, ${accent.fill})`,
+        border: `1px solid ${accent.edge}55`,
+      }}>
+        {/* Cockpit window */}
+        <div style={{
+          position: "absolute", left: "8%", top: "25%",
+          width: "10%", height: "50%", borderRadius: "50%",
+          background: accent.edge, opacity: 0.5,
+        }} />
+      </div>
+      {/* Main wing */}
+      <div style={{
+        position: "absolute", top: "20%", left: "30%",
+        width: "45%", height: "55%",
+        clipPath: "polygon(0% 45%, 100% 0%, 80% 100%, 0% 55%)",
+        background: accent.fillSolid, border: `1px solid ${accent.edge}44`,
+      }} />
+      {/* Tail fin */}
+      <div style={{
+        position: "absolute", top: "15%", right: "8%",
+        width: "18%", height: "35%",
+        clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)",
+        background: accent.fillSolid, border: `1px solid ${accent.edge}44`,
+      }} />
+      {/* Engine glow */}
+      <div style={{
+        position: "absolute", top: "40%", left: "40%",
+        width: size * 0.08, height: size * 0.08, borderRadius: "50%",
+        background: accent.edge, opacity: 0.4, filter: "blur(2px)",
+      }} />
+    </div>
+  );
+}
+
+/** 3D Compass — circle face with needle */
+function Compass3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  return (
+    <div style={{ width: size, height: size, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Outer ring */}
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: "50%",
+        background: accent.fill, border: `2px solid ${accent.edge}55`,
+      }}>
+        {/* Inner ring */}
+        <div style={{
+          position: "absolute", inset: "12%", borderRadius: "50%",
+          border: `1px solid ${accent.edge}33`,
+        }} />
+        {/* Cardinal marks */}
+        <div style={{ position: "absolute", top: "8%", left: "50%", width: 1, height: size * 0.08, background: accent.edge, opacity: 0.6, transform: "translateX(-0.5px)" }} />
+        <div style={{ position: "absolute", bottom: "8%", left: "50%", width: 1, height: size * 0.08, background: accent.edge, opacity: 0.4, transform: "translateX(-0.5px)" }} />
+        <div style={{ position: "absolute", top: "50%", left: "8%", width: size * 0.08, height: 1, background: accent.edge, opacity: 0.4, transform: "translateY(-0.5px)" }} />
+        <div style={{ position: "absolute", top: "50%", right: "8%", width: size * 0.08, height: 1, background: accent.edge, opacity: 0.4, transform: "translateY(-0.5px)" }} />
+        {/* Needle — north (red tip) */}
+        <div style={{
+          position: "absolute", top: "18%", left: "50%",
+          width: 0, height: 0,
+          borderLeft: `${size * 0.04}px solid transparent`,
+          borderRight: `${size * 0.04}px solid transparent`,
+          borderBottom: `${size * 0.3}px solid ${accent.edge}`,
+          transform: "translateX(-50%)", opacity: 0.8,
+        }} />
+        {/* Needle — south */}
+        <div style={{
+          position: "absolute", bottom: "18%", left: "50%",
+          width: 0, height: 0,
+          borderLeft: `${size * 0.03}px solid transparent`,
+          borderRight: `${size * 0.03}px solid transparent`,
+          borderTop: `${size * 0.3}px solid ${accent.edge}44`,
+          transform: "translateX(-50%)",
+        }} />
+        {/* Center dot */}
+        <div style={{
+          position: "absolute", top: "50%", left: "50%",
+          width: size * 0.08, height: size * 0.08, borderRadius: "50%",
+          background: accent.edge, transform: "translate(-50%, -50%)", opacity: 0.6,
+        }} />
+      </div>
+    </div>
+  );
+}
+
+/** 3D Graduation Cap — square top + tassel */
+function GradCap3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  return (
+    <div style={{ width: size, height: size, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Board (mortarboard) — diamond shape viewed from slight angle */}
+      <div style={{
+        position: "absolute", top: "20%", left: "5%",
+        width: "90%", height: "50%",
+        clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
+        background: `linear-gradient(180deg, ${accent.fillSolid}, ${accent.fill})`,
+        border: `1px solid ${accent.edge}55`,
+        transform: "rotateX(20deg)",
+      }} />
+      {/* Cap base (skull portion) */}
+      <div style={{
+        position: "absolute", bottom: "10%", left: "25%",
+        width: "50%", height: "35%",
+        borderRadius: `0 0 ${size * 0.06}px ${size * 0.06}px`,
+        background: accent.fill, border: `1px solid ${accent.edge}33`,
+        borderTop: "none",
+      }} />
+      {/* Button on top */}
+      <div style={{
+        position: "absolute", top: "18%", left: "50%",
+        width: size * 0.08, height: size * 0.08, borderRadius: "50%",
+        background: accent.edge, opacity: 0.6, transform: "translateX(-50%)",
+      }} />
+      {/* Tassel string */}
+      <div style={{
+        position: "absolute", top: "22%", left: "50%",
+        width: 1, height: "45%", background: accent.edge, opacity: 0.4,
+      }} />
+      {/* Tassel end */}
+      <div style={{
+        position: "absolute", bottom: "28%", left: "50%",
+        width: size * 0.06, height: size * 0.12,
+        borderRadius: `0 0 ${size * 0.03}px ${size * 0.03}px`,
+        background: accent.edge, opacity: 0.5, transform: "translateX(-50%)",
+      }} />
+    </div>
+  );
+}
+
+/** 3D Phone — slim rectangle + screen content */
+function Phone3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  const w = size * 0.55;
+  const h = size;
+  return (
+    <div style={{ width: w, height: h, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Phone body */}
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: size * 0.08,
+        background: accent.fill, border: `1.5px solid ${accent.edge}55`,
+      }}>
+        {/* Screen area */}
+        <div style={{
+          position: "absolute", top: "8%", left: "8%", right: "8%", bottom: "12%",
+          borderRadius: size * 0.04, background: accent.fillSolid,
+          display: "flex", flexDirection: "column", padding: "15%", gap: size * 0.05,
+        }}>
+          {/* App bars */}
+          <div style={{ width: "70%", height: 2, background: accent.edge, opacity: 0.5, borderRadius: 1 }} />
+          <div style={{ width: "50%", height: 2, background: accent.edge, opacity: 0.3, borderRadius: 1 }} />
+          <div style={{ width: "80%", height: 2, background: accent.edge, opacity: 0.4, borderRadius: 1 }} />
+          <div style={{ width: "40%", height: 2, background: accent.edge, opacity: 0.3, borderRadius: 1 }} />
+        </div>
+        {/* Home button / bar */}
+        <div style={{
+          position: "absolute", bottom: "4%", left: "30%", width: "40%", height: 2,
+          borderRadius: 1, background: accent.edge, opacity: 0.3,
+        }} />
+      </div>
+      {/* Depth */}
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: size * 0.08,
+        background: accent.fill, transform: "translateZ(-2px)",
+        border: `1px solid ${accent.edge}22`,
+      }} />
+    </div>
+  );
+}
+
+/** 3D Badge / ID Card — card with avatar circle */
+function Badge3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  const w = size * 0.8;
+  const h = size;
+  return (
+    <div style={{ width: w, height: h, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Card body */}
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: 4,
+        background: `linear-gradient(180deg, ${accent.fillSolid}, ${accent.fill})`,
+        border: `1.5px solid ${accent.edge}55`,
+        display: "flex", flexDirection: "column", alignItems: "center", paddingTop: "15%",
+      }}>
+        {/* Lanyard clip */}
+        <div style={{
+          position: "absolute", top: -size * 0.06, left: "50%",
+          width: size * 0.12, height: size * 0.06, borderRadius: "50%",
+          border: `1.5px solid ${accent.edge}44`, background: "transparent",
+          transform: "translateX(-50%)",
+        }} />
+        {/* Avatar circle */}
+        <div style={{
+          width: size * 0.3, height: size * 0.3, borderRadius: "50%",
+          background: accent.edge, opacity: 0.25, marginBottom: size * 0.08,
+        }} />
+        {/* Name lines */}
+        <div style={{ width: "60%", height: 2, background: accent.edge, opacity: 0.5, borderRadius: 1, marginBottom: size * 0.04 }} />
+        <div style={{ width: "40%", height: 2, background: accent.edge, opacity: 0.3, borderRadius: 1, marginBottom: size * 0.06 }} />
+        {/* Barcode area */}
+        <div style={{
+          width: "65%", height: size * 0.1, marginTop: "auto", marginBottom: "12%",
+          display: "flex", gap: 1, alignItems: "stretch",
+        }}>
+          {[3, 1, 2, 1, 3, 2, 1, 2, 3, 1].map((w2, j) => (
+            <div key={j} style={{ flex: w2, background: accent.edge, opacity: 0.2 + (j % 3) * 0.1 }} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** 3D BallotBox — box with slot and check mark */
+function BallotBox3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  const w = size;
+  const h = size * 0.9;
+  return (
+    <div style={{ width: w, height: size, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Main box body */}
+      <div style={{
+        position: "absolute", bottom: 0, left: 0,
+        width: w, height: h, borderRadius: 4,
+        background: `linear-gradient(180deg, ${accent.fillSolid}, ${accent.fill})`,
+        border: `1.5px solid ${accent.edge}55`,
+      }}>
+        {/* Slot at top */}
+        <div style={{
+          position: "absolute", top: size * 0.04, left: "20%",
+          width: "60%", height: 3, borderRadius: 2,
+          background: accent.edge, opacity: 0.4,
+        }} />
+        {/* Paper/ballot sticking out */}
+        <div style={{
+          position: "absolute", top: -size * 0.15, left: "30%",
+          width: "40%", height: size * 0.2, borderRadius: 2,
+          background: `linear-gradient(180deg, rgba(255,255,255,0.15), ${accent.fill})`,
+          border: `1px solid ${accent.edge}33`,
+        }}>
+          {/* Checkmark on ballot */}
+          <div style={{
+            position: "absolute", top: "20%", left: "25%",
+            width: "50%", height: "50%",
+            borderBottom: `2px solid ${accent.edge}88`,
+            borderRight: `2px solid ${accent.edge}88`,
+            transform: "rotate(40deg) scale(0.6)",
+          }} />
+        </div>
+        {/* Side accent */}
+        <div style={{
+          position: "absolute", left: 0, top: "20%",
+          width: 2, height: "60%", background: accent.edge, opacity: 0.2,
+        }} />
+      </div>
+    </div>
+  );
+}
+
+/** 3D Shield — shield clip-path + checkmark */
+function Shield3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  return (
+    <div style={{ width: size, height: size, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Shield shape */}
+      <div style={{
+        position: "absolute", inset: "5%",
+        clipPath: "polygon(50% 0%, 100% 15%, 95% 60%, 50% 100%, 5% 60%, 0% 15%)",
+        background: `linear-gradient(180deg, ${accent.fillSolid}, ${accent.fill})`,
+        border: `1px solid ${accent.edge}55`,
+      }}>
+        {/* Inner shield ring */}
+        <div style={{
+          position: "absolute", inset: "12%",
+          clipPath: "polygon(50% 5%, 95% 18%, 90% 58%, 50% 95%, 10% 58%, 5% 18%)",
+          border: `1px solid ${accent.edge}33`, background: "transparent",
+        }} />
+        {/* Check mark */}
+        <div style={{
+          position: "absolute", top: "30%", left: "30%",
+          width: "40%", height: "30%",
+          borderBottom: `2.5px solid ${accent.edge}`,
+          borderRight: `2.5px solid ${accent.edge}`,
+          transform: "rotate(40deg)", opacity: 0.7,
+        }} />
+      </div>
+      {/* Depth */}
+      <div style={{
+        position: "absolute", inset: "5%",
+        clipPath: "polygon(50% 0%, 100% 15%, 95% 60%, 50% 100%, 5% 60%, 0% 15%)",
+        background: accent.fill, transform: "translateZ(-3px)",
+      }} />
+    </div>
+  );
+}
+
+/** 3D ChainLink — two interlocking oval links */
+function ChainLink3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  const linkW = size * 0.4;
+  const linkH = size * 0.65;
+  return (
+    <div style={{ width: size, height: size, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Left link */}
+      <div style={{
+        position: "absolute", top: "50%", left: "12%",
+        width: linkW, height: linkH, borderRadius: linkW / 2,
+        border: `2.5px solid ${accent.edge}77`, background: "transparent",
+        transform: "translateY(-50%)",
+      }} />
+      {/* Right link (overlapping) */}
+      <div style={{
+        position: "absolute", top: "50%", right: "12%",
+        width: linkW, height: linkH, borderRadius: linkW / 2,
+        border: `2.5px solid ${accent.edge}55`, background: "transparent",
+        transform: "translateY(-50%) rotate(15deg)",
+      }} />
+      {/* Intersection highlight */}
+      <div style={{
+        position: "absolute", top: "50%", left: "50%",
+        width: size * 0.08, height: size * 0.08, borderRadius: "50%",
+        background: accent.edge, opacity: 0.3,
+        transform: "translate(-50%, -50%)",
+      }} />
+    </div>
+  );
+}
+
+/** 3D Clock — circle face with hour/minute hands */
+function Clock3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  return (
+    <div style={{ width: size, height: size, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Clock face */}
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: "50%",
+        background: accent.fill, border: `2px solid ${accent.edge}55`,
+      }}>
+        {/* Hour markers */}
+        {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
+          <div key={deg} style={{
+            position: "absolute", top: "50%", left: "50%", width: 1.5, height: size * 0.08,
+            background: accent.edge, opacity: deg % 90 === 0 ? 0.7 : 0.3,
+            transformOrigin: `0.75px ${size * 0.42}px`,
+            transform: `rotate(${deg}deg) translateY(-${size * 0.42}px)`,
+          }} />
+        ))}
+        {/* Hour hand */}
+        <div style={{
+          position: "absolute", bottom: "50%", left: "50%",
+          width: 2, height: size * 0.22, borderRadius: 1,
+          background: accent.edge, opacity: 0.7,
+          transformOrigin: "1px 100%",
+          transform: "rotate(-30deg) translateX(-1px)",
+        }} />
+        {/* Minute hand */}
+        <div style={{
+          position: "absolute", bottom: "50%", left: "50%",
+          width: 1.5, height: size * 0.32, borderRadius: 1,
+          background: accent.edge, opacity: 0.5,
+          transformOrigin: "0.75px 100%",
+          transform: "rotate(60deg) translateX(-0.75px)",
+        }} />
+        {/* Center dot */}
+        <div style={{
+          position: "absolute", top: "50%", left: "50%",
+          width: size * 0.07, height: size * 0.07, borderRadius: "50%",
+          background: accent.edge, opacity: 0.6, transform: "translate(-50%, -50%)",
+        }} />
+      </div>
+    </div>
+  );
+}
+
+/** 3D Calendar — panel with top bar + date grid */
+function Calendar3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  const w = size * 0.9;
+  const h = size;
+  return (
+    <div style={{ width: w, height: h, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Calendar body */}
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: 4,
+        background: accent.fill, border: `1.5px solid ${accent.edge}55`,
+        overflow: "hidden",
+      }}>
+        {/* Header bar with month */}
+        <div style={{
+          width: "100%", height: "22%",
+          background: accent.fillSolid, borderBottom: `1px solid ${accent.edge}33`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+        }}>
+          <div style={{ width: "50%", height: 2, background: accent.edge, opacity: 0.5, borderRadius: 1 }} />
+        </div>
+        {/* Date grid (3x3 dots) */}
+        <div style={{
+          display: "grid", gridTemplateColumns: "repeat(4, 1fr)",
+          gap: size * 0.04, padding: `${size * 0.06}px ${size * 0.08}px`,
+        }}>
+          {Array.from({ length: 12 }).map((_, j) => (
+            <div key={j} style={{
+              width: size * 0.07, height: size * 0.07, borderRadius: j === 4 ? "50%" : 1,
+              background: accent.edge, opacity: j === 4 ? 0.6 : 0.2,
+              margin: "auto",
+            }} />
+          ))}
+        </div>
+      </div>
+      {/* Ring holes */}
+      <div style={{
+        position: "absolute", top: -size * 0.03, left: "25%",
+        width: size * 0.06, height: size * 0.06, borderRadius: "50%",
+        border: `1.5px solid ${accent.edge}44`,
+      }} />
+      <div style={{
+        position: "absolute", top: -size * 0.03, right: "25%",
+        width: size * 0.06, height: size * 0.06, borderRadius: "50%",
+        border: `1.5px solid ${accent.edge}44`,
+      }} />
+    </div>
+  );
+}
+
+/** 3D Clipboard — board with clip and text lines */
+function Clipboard3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
+  const w = size * 0.8;
+  const h = size;
+  return (
+    <div style={{ width: w, height: h, position: "relative", transformStyle: "preserve-3d" }}>
+      {/* Board */}
+      <div style={{
+        position: "absolute", top: "8%", left: 0,
+        width: w, height: h * 0.92, borderRadius: 4,
+        background: `linear-gradient(180deg, ${accent.fillSolid}, ${accent.fill})`,
+        border: `1.5px solid ${accent.edge}55`,
+        display: "flex", flexDirection: "column", padding: "15% 12%", gap: size * 0.06,
+      }}>
+        {/* Text lines */}
+        <div style={{ width: "90%", height: 2, background: accent.edge, opacity: 0.4, borderRadius: 1 }} />
+        <div style={{ width: "65%", height: 2, background: accent.edge, opacity: 0.3, borderRadius: 1 }} />
+        <div style={{ width: "80%", height: 2, background: accent.edge, opacity: 0.35, borderRadius: 1 }} />
+        <div style={{ width: "50%", height: 2, background: accent.edge, opacity: 0.25, borderRadius: 1 }} />
+        {/* Checkbox */}
+        <div style={{ display: "flex", alignItems: "center", gap: size * 0.04, marginTop: size * 0.02 }}>
+          <div style={{
+            width: size * 0.08, height: size * 0.08, borderRadius: 1,
+            border: `1.5px solid ${accent.edge}55`,
+          }} />
+          <div style={{ width: "40%", height: 2, background: accent.edge, opacity: 0.3, borderRadius: 1 }} />
+        </div>
+      </div>
+      {/* Metal clip */}
+      <div style={{
+        position: "absolute", top: 0, left: "30%",
+        width: "40%", height: size * 0.14, borderRadius: `${size * 0.04}px ${size * 0.04}px 0 0`,
+        background: accent.edge, opacity: 0.4,
+      }}>
+        <div style={{
+          position: "absolute", bottom: 0, left: "15%",
+          width: "70%", height: "50%",
+          background: accent.fill, borderRadius: 1,
+        }} />
+      </div>
+    </div>
+  );
+}
+
+/** Render a themed 3D illustration by shape name */
 function Shape3D({
   shape,
   size,
-  Icon,
   accent,
 }: Readonly<{
-  shape: OrbitItem["shape"];
+  shape: IllustrationShape;
   size: number;
-  Icon: LucideIcon;
   accent: typeof gemAccents[0];
 }>) {
   switch (shape) {
-    case "cube":
-      return <Cube3D size={size} Icon={Icon} accent={accent} />;
-    case "tetrahedron":
-      return <Tetrahedron3D size={size} Icon={Icon} accent={accent} />;
-    case "octahedron":
-      return <Octahedron3D size={size} Icon={Icon} accent={accent} />;
+    case "laptop": return <Laptop3D size={size} accent={accent} />;
+    case "document": return <Document3D size={size} accent={accent} />;
+    case "globe": return <Globe3D size={size} accent={accent} />;
+    case "suitcase": return <Suitcase3D size={size} accent={accent} />;
+    case "airplane": return <Airplane3D size={size} accent={accent} />;
+    case "compass": return <Compass3D size={size} accent={accent} />;
+    case "gradcap": return <GradCap3D size={size} accent={accent} />;
+    case "phone": return <Phone3D size={size} accent={accent} />;
+    case "badge": return <Badge3D size={size} accent={accent} />;
+    case "ballotbox": return <BallotBox3D size={size} accent={accent} />;
+    case "shield": return <Shield3D size={size} accent={accent} />;
+    case "chainlink": return <ChainLink3D size={size} accent={accent} />;
+    case "clock": return <Clock3D size={size} accent={accent} />;
+    case "calendar": return <Calendar3D size={size} accent={accent} />;
+    case "clipboard": return <Clipboard3D size={size} accent={accent} />;
   }
 }
 
@@ -511,7 +988,6 @@ function OrbitSystem({
               <Shape3D
                 shape={item.shape}
                 size={Math.round(item.size * scale)}
-                Icon={item.Icon}
                 accent={accent}
               />
             </motion.div>
@@ -676,13 +1152,29 @@ function DiamondGem({
               {/* Background: image or color */}
               {face.showImage && project.image ? (
                 <>
-                  <img
-                    src={project.image}
-                    alt=""
-                    className="h-full w-full object-cover object-center"
-                    style={{ opacity: 0.92 }}
-                    draggable={false}
-                  />
+                  {face.type === "table" ? (
+                    /* Table face — full image centered on top */
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        backgroundImage: `url(${project.image})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        opacity: 0.92,
+                      }}
+                    />
+                  ) : (
+                    /* Crown face — panoramic strip: each of 8 faces shows 1/8th */
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        backgroundImage: `url(${project.image})`,
+                        backgroundSize: `${face.width * NUM_SIDES}px auto`,
+                        backgroundPosition: `${-(face.faceIndex ?? 0) * face.width}px center`,
+                        opacity: 0.92,
+                      }}
+                    />
+                  )}
                   {/* Light refraction overlay */}
                   <div
                     className="absolute inset-0"
