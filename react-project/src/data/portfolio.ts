@@ -36,16 +36,16 @@ export const personalInfo = {
   name: "Jorge Renato Leon",
   fullName: "Jorge Renato Leon Chumpitaz",
   roles: [
-    "Fullstack Developer",
+    "Frontend Developer",
     "Software Engineer",
     "Informatics Engineer",
   ],
   tagline:
     "Building modern, performant web applications with TypeScript, React, and Next.js. Passionate about clean architecture, testing, and user experience.",
-  bio: "I'm a Fullstack Developer and Informatics Engineer graduated from PUCP (Pontificia Universidad Catolica del Peru). Currently pursuing my Master's degree, focusing on Digital Product Passport interoperability for my thesis research. I thrive on solving complex problems with clean, well-tested code and I'm always eager to learn and share knowledge.",
+  bio: "I'm a Software Engineer and Informatics Engineer graduated from PUCP (Pontificia Universidad Catolica del Peru). Currently pursuing my Master's degree, focusing on Digital Product Passport interoperability for my thesis research. I thrive on solving complex problems with clean, well-tested code and I'm always eager to learn and share knowledge.",
   email: "jrleonchumpitaz@gmail.com",
   avatar: "https://avatars.githubusercontent.com/u/48967680?v=4",
-  location: "Lima, Peru",
+  location: "Amstelveen, Netherlands",
   social: [
     {
       name: "GitHub",
@@ -75,7 +75,7 @@ export const experiences: Experience[] = [
   {
     company: "Software FX",
     title: "Frontend Developer",
-    period: "Jul 2021 - Present",
+    period: "Jul 2021 - Aug 2024",
     description:
       "Develop and maintain enterprise-grade web applications using Vue.js and modern JavaScript frameworks. Build responsive, accessible interfaces following best practices. Collaborate with cross-functional teams to deliver software solutions for data visualization and business intelligence products.",
     technologies: [
@@ -92,7 +92,7 @@ export const experiences: Experience[] = [
   {
     company: "PUCP",
     title: "Teaching Assistant",
-    period: "Dec 2020 - Present",
+    period: "Jul 2020 - Dec 2024",
     description:
       "Lead practice sessions and labs for undergraduate courses in Programming Fundamentals (C) and Software Development. Mentor students on design sprints, agile methodologies, and software engineering principles. Grade assignments and provide technical feedback.",
     technologies: [
@@ -193,7 +193,6 @@ export const projects: Project[] = [
     gallery: [
       "/img/projects/travelapp/Home.png",
     ],
-    url: "https://travel-app-kappa-snowy.vercel.app/",
     featured: true,
   },
   {

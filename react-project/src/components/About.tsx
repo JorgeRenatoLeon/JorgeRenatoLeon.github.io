@@ -33,7 +33,7 @@ export default function About() {
               <p>{personalInfo.bio}</p>
               <p>
                 When I&apos;m not coding, you can find me exploring new technologies,
-                contributing to open-source projects, or sharing knowledge with
+                contributing to projects, or sharing knowledge with
                 the developer community. I believe in writing clean, well-tested
                 code that makes a real impact.
               </p>
