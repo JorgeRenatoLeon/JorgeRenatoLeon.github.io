@@ -137,15 +137,17 @@ function generateGemFaces(
     const topInset = ((girdleChord - tableChord) / (2 * girdleChord)) * 100;
     const clipPath = `polygon(${topInset.toFixed(1)}% 0%, ${(100 - topInset).toFixed(1)}% 0%, 100% 100%, 0% 100%)`;
 
-    // Distance from center to face center
+    // Distance from center axis to face center
     const avgR = (girdleRadius + tableRadius) / 2;
+    const crownTiltDeg = (crownTilt * 180) / Math.PI;
 
     faces.push({
       type: "crown",
       transform: [
+        `translateY(${(-crownHeight / 2).toFixed(1)}px)`,
         `rotateY(${faceRotY.toFixed(2)}deg)`,
         `translateZ(${avgR.toFixed(1)}px)`,
-        `rotateX(${(-(90 - (crownTilt * 180) / Math.PI)).toFixed(2)}deg)`,
+        `rotateX(${crownTiltDeg.toFixed(2)}deg)`,
       ].join(" "),
       clipPath,
       width: girdleChord,
@@ -172,13 +174,15 @@ function generateGemFaces(
     const clipPath = "polygon(0% 0%, 100% 0%, 50% 100%)";
 
     const avgR = girdleRadius / 2;
+    const pavilionTiltDeg = (pavilionTilt * 180) / Math.PI;
 
     faces.push({
       type: "pavilion",
       transform: [
+        `translateY(${(pavilionHeight / 2).toFixed(1)}px)`,
         `rotateY(${faceRotY.toFixed(2)}deg)`,
         `translateZ(${avgR.toFixed(1)}px)`,
-        `rotateX(${((90 - (pavilionTilt * 180) / Math.PI)).toFixed(2)}deg)`,
+        `rotateX(${(-pavilionTiltDeg).toFixed(2)}deg)`,
       ].join(" "),
       clipPath,
       width: girdleChord,
@@ -447,7 +451,8 @@ function Shape3D({
 function OrbitSystem({
   projectIndex,
   isActive,
-}: Readonly<{ projectIndex: number; isActive: boolean }>) {
+  scale = 1,
+}: Readonly<{ projectIndex: number; isActive: boolean; scale?: number }>) {
   const orbits = projectOrbits[projectIndex % projectOrbits.length];
   const accent = gemAccents[projectIndex % gemAccents.length];
 
@@ -486,7 +491,7 @@ function OrbitSystem({
             style={{
               position: "absolute",
               transformStyle: "preserve-3d",
-              transform: `translateX(${item.orbitRadius}px) translateY(-${item.size / 2}px)`,
+              transform: `translateX(${item.orbitRadius * scale}px) translateY(-${(item.size * scale) / 2}px)`,
             }}
           >
             {/* Self-rotation for the small shape */}
@@ -505,7 +510,7 @@ function OrbitSystem({
             >
               <Shape3D
                 shape={item.shape}
-                size={item.size}
+                size={Math.round(item.size * scale)}
                 Icon={item.Icon}
                 accent={accent}
               />
@@ -749,10 +754,9 @@ function DiamondGem({
           className="absolute inset-0 flex items-center justify-center"
           style={{
             transformStyle: "preserve-3d",
-            perspective: 1200,
           }}
         >
-          <OrbitSystem projectIndex={index} isActive={isActive} />
+          <OrbitSystem projectIndex={index} isActive={isActive} scale={scale} />
         </div>
       )}
     </motion.div>
