@@ -174,11 +174,11 @@ function Crystal({
   project,
   index,
   isActive,
-}: {
+}: Readonly<{
   project: Project;
   index: number;
   isActive: boolean;
-}) {
+}>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -323,10 +323,10 @@ function Crystal({
 function ProjectOverlay({
   project,
   onClose,
-}: {
+}: Readonly<{
   project: Project;
   onClose: () => void;
-}) {
+}>) {
   const [galleryIndex, setGalleryIndex] = useState(0);
   const gallery = project.gallery ?? (project.image ? [project.image] : []);
 
@@ -345,8 +345,8 @@ function ProjectOverlay({
       if (e.key === "ArrowRight" && gallery.length > 1)
         setGalleryIndex((p) => (p + 1) % gallery.length);
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    globalThis.addEventListener("keydown", handler);
+    return () => globalThis.removeEventListener("keydown", handler);
   }, [onClose, gallery.length]);
 
   const idx = projects.indexOf(project);
@@ -520,11 +520,11 @@ function ProjectSlide({
   project,
   index,
   direction,
-}: {
+}: Readonly<{
   project: Project;
   index: number;
   direction: number;
-}) {
+}>) {
   return (
     <motion.div
       className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-4 sm:flex-row sm:gap-12 lg:gap-20"
@@ -630,8 +630,8 @@ export default function Projects() {
       if (e.key === "ArrowLeft") navigate(-1);
       if (e.key === "ArrowRight") navigate(1);
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    globalThis.addEventListener("keydown", handler);
+    return () => globalThis.removeEventListener("keydown", handler);
   }, [navigate, selectedProject]);
 
   /* Touch/swipe support */
