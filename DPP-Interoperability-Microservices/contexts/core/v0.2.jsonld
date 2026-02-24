@@ -1,0 +1,191 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://schema.org/",
+    "dpp": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "qudt": "http://qudt.org/schema/qudt/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "passportId": {
+      "@id": "dpp:passportId",
+      "@type": "@id"
+    },
+    "version": {
+      "@id": "dpp:version",
+      "@type": "xsd:string"
+    },
+    "lastUpdated": {
+      "@id": "dpp:lastUpdated",
+      "@type": "xsd:dateTime"
+    },
+    "productType": {
+      "@id": "dpp:productType",
+      "@type": "xsd:string"
+    },
+    "brand": {
+      "@id": "dpp:brand",
+      "@type": "xsd:string"
+    },
+    "productId": {
+      "@id": "dpp:productId",
+      "@type": "xsd:string"
+    },
+    "manufacturingDate": {
+      "@id": "dpp:manufacturingDate",
+      "@type": "xsd:date"
+    },
+    "manufacturingCountry": {
+      "@id": "dpp:manufacturingCountry",
+      "@type": "xsd:string"
+    },
+    "placingOnMarket": {
+      "@id": "dpp:placingOnMarket",
+      "@type": "xsd:date"
+    },
+    "materials": {
+      "@id": "dpp:materials"
+    },
+    "composition": {
+      "@id": "dpp:composition",
+      "@container": "@set"
+    },
+    "carbonFootprint": {
+      "@id": "dpp:carbonFootprint"
+    },
+    "compliance": {
+      "@id": "dpp:compliance"
+    },
+    "dataCarrier": {
+      "@id": "dpp:dataCarrier",
+      "@type": "@id"
+    },
+    "identifiers": {
+      "@id": "dpp:identifiers",
+      "@container": "@set"
+    },
+    "type": {
+      "@id": "dpp:identifierType",
+      "@type": "xsd:string"
+    },
+    "value": {
+      "@id": "dpp:identifierValue",
+      "@type": "xsd:string"
+    },
+    "granularity": {
+      "@id": "dpp:identifierGranularity",
+      "@type": "xsd:string"
+    },
+    "issuedBy": {
+      "@id": "dpp:identifierIssuedBy",
+      "@type": "xsd:string"
+    },
+    "product": {
+      "@id": "dpp:product",
+      "@type": "Product"
+    },
+    "category": {
+      "@id": "dpp:productCategory",
+      "@type": "xsd:string"
+    },
+    "model": {
+      "@id": "dpp:productModel",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "name",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "description",
+      "@type": "xsd:string"
+    },
+    "manufacturedDate": {
+      "@id": "dateProduced",
+      "@type": "xsd:date"
+    },
+    "firstUseDate": {
+      "@id": "dpp:firstUseDate",
+      "@type": "xsd:date"
+    },
+    "expiryDate": {
+      "@id": "dpp:expiryDate",
+      "@type": "xsd:date"
+    },
+    "image": {
+      "@id": "image",
+      "@type": "@id"
+    },
+    "manufacturer": {
+      "@id": "manufacturer",
+      "@type": "Organization"
+    },
+    "legalName": {
+      "@id": "legalName",
+      "@type": "xsd:string"
+    },
+    "taxId": {
+      "@id": "taxID",
+      "@type": "xsd:string"
+    },
+    "address": {
+      "@id": "address",
+      "@type": "PostalAddress"
+    },
+    "streetAddress": {
+      "@id": "streetAddress",
+      "@type": "xsd:string"
+    },
+    "addressLocality": {
+      "@id": "addressLocality",
+      "@type": "xsd:string"
+    },
+    "addressRegion": {
+      "@id": "addressRegion",
+      "@type": "xsd:string"
+    },
+    "postalCode": {
+      "@id": "postalCode",
+      "@type": "xsd:string"
+    },
+    "addressCountry": {
+      "@id": "addressCountry",
+      "@type": "xsd:string"
+    },
+    "contactPoint": {
+      "@id": "contactPoint",
+      "@type": "ContactPoint"
+    },
+    "email": {
+      "@id": "email",
+      "@type": "xsd:string"
+    },
+    "telephone": {
+      "@id": "telephone",
+      "@type": "xsd:string"
+    },
+    "url": {
+      "@id": "url",
+      "@type": "@id"
+    },
+    "provenance": {
+      "@id": "prov:entity"
+    },
+    "source": {
+      "@id": "prov:wasAttributedTo",
+      "@type": "xsd:string"
+    },
+    "timestamp": {
+      "@id": "prov:generatedAtTime",
+      "@type": "xsd:dateTime"
+    },
+    "fields": {
+      "@id": "dpp:provenanceFields",
+      "@container": "@index"
+    },
+    "extensions": {
+      "@id": "dpp:extensions",
+      "@container": "@index"
+    }
+  }
+}

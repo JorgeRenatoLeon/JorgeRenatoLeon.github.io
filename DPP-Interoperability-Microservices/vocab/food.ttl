@@ -1,0 +1,412 @@
+@prefix food:    <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food#> .
+@prefix dpp:     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema:  <https://schema.org/> .
+
+<https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food>
+  a owl:Ontology ;
+  owl:versionIRI   <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food/0.2> ;
+  owl:versionInfo  "0.2" ;
+  owl:imports      <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:label       "DPP Food Product Extension Vocabulary"@en ;
+  dcterms:description
+    "Food product extension vocabulary for the DPP Interoperability Platform. Covers nutrition, allergens, ingredients, storage, dietary labels, and food safety per EU FIC Regulation 1169/2011 and Codex Alimentarius."@en ;
+  dcterms:creator  "Jorge Renato Leon Chumpitaz" ;
+  dcterms:created  "2026-02-19"^^xsd:date ;
+  dcterms:modified "2026-02-23"^^xsd:date ;
+  dcterms:license  <https://creativecommons.org/licenses/by/4.0/> ;
+  dcterms:rights   "CC BY 4.0 — Jorge Renato Leon Chumpitaz" ;
+  dcterms:subject  "Digital Product Passport", "Food Information", "EU FIC",
+                   "Nutrition", "Allergens", "Regulation 1169/2011" ;
+  rdfs:seeAlso     <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32011R1169> .
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+food:FoodExtension
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "Food Extension"@en ;
+  rdfs:comment "Container class for food-specific DPP data. Groups nutrition, allergens, ingredients, storage, and safety information."@en .
+
+food:NutritionInformation
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "Nutrition Information"@en ;
+  rdfs:comment "Nutrition declaration per EU FIC Regulation 1169/2011 Article 30."@en ;
+  rdfs:seeAlso schema:NutritionInformation ,
+               <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32011R1169> .
+
+food:Allergen
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "Allergen"@en ;
+  rdfs:comment "Allergen declaration per EU FIC Regulation Annex II (14 major allergens)."@en ;
+  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32011R1169> .
+
+food:Ingredient
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "Ingredient"@en ;
+  rdfs:comment "A single ingredient in the food product, with optional origin and organic status."@en .
+
+food:StorageConditions
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "Storage Conditions"@en ;
+  rdfs:comment "Required storage conditions: temperature range, humidity, and special instructions."@en .
+
+food:FoodSafetyDeclaration
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "Food Safety Declaration"@en ;
+  rdfs:comment "Food safety management certification (e.g. HACCP, ISO 22000, BRC, IFS)."@en ;
+  rdfs:seeAlso <https://www.iso.org/standard/65464.html> .
+
+# Disjointness
+food:NutritionInformation owl:disjointWith food:Allergen, food:Ingredient,
+                                             food:StorageConditions, food:FoodSafetyDeclaration .
+food:Allergen             owl:disjointWith food:Ingredient, food:StorageConditions .
+food:StorageConditions    owl:disjointWith food:FoodSafetyDeclaration .
+
+# =============================================================================
+# Object Properties
+# =============================================================================
+
+food:nutritionInformation
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label    "nutritionInformation"@en ;
+  rdfs:comment  "Links food extension to its nutrition declaration."@en ;
+  rdfs:domain   food:FoodExtension ;
+  rdfs:range    food:NutritionInformation ;
+  owl:inverseOf food:isNutritionInformationOf .
+
+food:isNutritionInformationOf
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "isNutritionInformationOf"@en ;
+  rdfs:comment "Inverse of food:nutritionInformation."@en ;
+  rdfs:domain  food:NutritionInformation ;
+  rdfs:range   food:FoodExtension .
+
+food:allergens
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "allergens"@en ;
+  rdfs:comment "Links food extension to its allergen declarations."@en ;
+  rdfs:domain  food:FoodExtension ;
+  rdfs:range   food:Allergen .
+
+food:ingredients
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "ingredients"@en ;
+  rdfs:comment "Links food extension to its ingredient list in descending order of weight per EU FIC Article 18."@en ;
+  rdfs:domain  food:FoodExtension ;
+  rdfs:range   food:Ingredient .
+
+food:storageConditions
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "storageConditions"@en ;
+  rdfs:comment "Links food extension to required storage conditions."@en ;
+  rdfs:domain  food:FoodExtension ;
+  rdfs:range   food:StorageConditions .
+
+food:foodSafetyDeclarations
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "foodSafetyDeclarations"@en ;
+  rdfs:comment "Links food extension to food safety certifications."@en ;
+  rdfs:domain  food:FoodExtension ;
+  rdfs:range   food:FoodSafetyDeclaration .
+
+# =============================================================================
+# Datatype Properties — Nutrition
+# =============================================================================
+
+food:servingSize
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "servingSize"@en ;
+  rdfs:comment "Reference serving size (e.g. '100g', '250ml', '1 portion (30g)')."@en ;
+  rdfs:domain  food:NutritionInformation ;
+  rdfs:range   xsd:string .
+
+food:energyKj
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "energyKj"@en ;
+  rdfs:comment "Energy value in kilojoules per serving size."@en ;
+  rdfs:domain  food:NutritionInformation ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso schema:calories .
+
+food:energyKcal
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "energyKcal"@en ;
+  rdfs:comment "Energy value in kilocalories per serving size."@en ;
+  rdfs:domain  food:NutritionInformation ;
+  rdfs:range   xsd:double .
+
+food:fat
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "fat"@en ;
+  rdfs:comment "Total fat content in grams per serving size."@en ;
+  rdfs:domain  food:NutritionInformation ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso schema:fatContent .
+
+food:saturatedFat
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "saturatedFat"@en ;
+  rdfs:comment "Saturated fat in grams per serving size."@en ;
+  rdfs:domain  food:NutritionInformation ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso schema:saturatedFatContent .
+
+food:carbohydrate
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "carbohydrate"@en ;
+  rdfs:comment "Total carbohydrate in grams per serving size."@en ;
+  rdfs:domain  food:NutritionInformation ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso schema:carbohydrateContent .
+
+food:sugars
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "sugars"@en ;
+  rdfs:comment "Total sugars in grams per serving size."@en ;
+  rdfs:domain  food:NutritionInformation ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso schema:sugarContent .
+
+food:fibre
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "fibre"@en ;
+  rdfs:comment "Dietary fibre in grams per serving size."@en ;
+  rdfs:domain  food:NutritionInformation ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso schema:fiberContent .
+
+food:protein
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "protein"en ;
+  rdfs:comment "Protein in grams per serving size."@en ;
+  rdfs:domain  food:NutritionInformation ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso schema:proteinContent .
+
+food:salt
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "salt"@en ;
+  rdfs:comment "Salt in grams per serving size (sodium × 2.5 per EU FIC)."@en ;
+  rdfs:domain  food:NutritionInformation ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso schema:sodiumContent .
+
+food:sodium
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "sodium"@en ;
+  rdfs:comment "Sodium in milligrams per serving size."@en ;
+  rdfs:domain  food:NutritionInformation ;
+  rdfs:range   xsd:double .
+
+# =============================================================================
+# Datatype Properties — Allergens
+# =============================================================================
+
+food:allergenName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "allergenName"@en ;
+  rdfs:comment "Name of the allergen (one of the 14 EU FIC Annex II allergens)."@en ;
+  rdfs:domain  food:Allergen ;
+  rdfs:range   xsd:string .
+
+food:allergenPresence
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "allergenPresence"@en ;
+  rdfs:comment "Presence status: 'contains', 'may_contain', or 'free_from'."@en ;
+  rdfs:domain  food:Allergen ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — Ingredients
+# =============================================================================
+
+food:ingredientName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "ingredientName"@en ;
+  rdfs:comment "Name of the ingredient."@en ;
+  rdfs:domain  food:Ingredient ;
+  rdfs:range   xsd:string .
+
+food:ingredientPercentage
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "ingredientPercentage"@en ;
+  rdfs:comment "Percentage of the ingredient (required by EU FIC when highlighted or pictured)."@en ;
+  rdfs:domain  food:Ingredient ;
+  rdfs:range   xsd:double .
+
+food:ingredientOrigin
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "ingredientOrigin"@en ;
+  rdfs:comment "Country or region of origin (ISO 3166-1 alpha-2 or region name)."@en ;
+  rdfs:domain  food:Ingredient ;
+  rdfs:range   xsd:string .
+
+food:organic
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "organic"@en ;
+  rdfs:comment "Whether the ingredient is certified organic."@en ;
+  rdfs:domain  food:Ingredient ;
+  rdfs:range   xsd:boolean .
+
+# =============================================================================
+# Datatype Properties — Storage Conditions
+# FIX: food:expiryType and food:shelfLifeDays moved from food:FoodExtension
+# to food:StorageConditions where all physical storage data lives.
+# =============================================================================
+
+food:temperatureMin
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "temperatureMin"@en ;
+  rdfs:comment "Minimum storage temperature (°C)."@en ;
+  rdfs:domain  food:StorageConditions ;
+  rdfs:range   xsd:double .
+
+food:temperatureMax
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "temperatureMax"@en ;
+  rdfs:comment "Maximum storage temperature (°C)."@en ;
+  rdfs:domain  food:StorageConditions ;
+  rdfs:range   xsd:double .
+
+food:humidity
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "humidity"@en ;
+  rdfs:comment "Required storage humidity range description."@en ;
+  rdfs:domain  food:StorageConditions ;
+  rdfs:range   xsd:string .
+
+food:specialInstructions
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "specialInstructions"@en ;
+  rdfs:comment "Special storage instructions (e.g. 'Keep refrigerated', 'Protect from light')."@en ;
+  rdfs:domain  food:StorageConditions ;
+  rdfs:range   xsd:string .
+
+# FIX: domain corrected from food:FoodExtension → food:StorageConditions
+food:expiryType
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "expiryType"@en ;
+  rdfs:comment "Date marking type: 'use_by' (food safety) or 'best_before' (quality). Per EU FIC Article 24."@en ;
+  rdfs:domain  food:StorageConditions ;
+  rdfs:range   xsd:string .
+
+# FIX: domain corrected from food:FoodExtension → food:StorageConditions
+food:shelfLifeDays
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "shelfLifeDays"@en ;
+  rdfs:comment "Expected shelf life in days under recommended storage conditions."@en ;
+  rdfs:domain  food:StorageConditions ;
+  rdfs:range   xsd:integer .
+
+# =============================================================================
+# Datatype Properties — Dietary Labels & Certifications
+# =============================================================================
+
+food:dietaryLabels
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "dietaryLabels"@en ;
+  rdfs:comment "Dietary labels: 'vegan', 'vegetarian', 'gluten-free', 'halal', 'kosher', 'lactose-free'."@en ;
+  rdfs:domain  food:FoodExtension ;
+  rdfs:range   xsd:string .
+
+food:organicCertification
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "organicCertification"@en ;
+  rdfs:comment "Organic certification body and standard (e.g. 'EU Organic', 'USDA Organic')."@en ;
+  rdfs:domain  food:FoodExtension ;
+  rdfs:range   xsd:string .
+
+food:nutriScore
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "nutriScore"@en ;
+  rdfs:comment "Front-of-pack Nutri-Score label (A through E)."@en ;
+  rdfs:domain  food:FoodExtension ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — Food Safety
+# =============================================================================
+
+food:safetyCertification
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "safetyCertification"@en ;
+  rdfs:comment "Food safety certification (e.g. 'ISO 22000:2018', 'BRC Food Safety', 'IFS Food', 'HACCP')."@en ;
+  rdfs:domain  food:FoodSafetyDeclaration ;
+  rdfs:range   xsd:string .
+
+food:certificationBody
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "certificationBody"@en ;
+  rdfs:comment "Organization that issued the food safety certification."@en ;
+  rdfs:domain  food:FoodSafetyDeclaration ;
+  rdfs:range   xsd:string .
+
+food:certificationDate
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "certificationDate"@en ;
+  rdfs:comment "Date the certification was issued."@en ;
+  rdfs:domain  food:FoodSafetyDeclaration ;
+  rdfs:range   xsd:date .
+
+food:certificationExpiry
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "certificationExpiry"@en ;
+  rdfs:comment "Date the certification expires."@en ;
+  rdfs:domain  food:FoodSafetyDeclaration ;
+  rdfs:range   xsd:date .
+
+food:certificationLink
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food> ;
+  rdfs:label   "certificationLink"@en ;
+  rdfs:comment "URL to the certification document."@en ;
+  rdfs:domain  food:FoodSafetyDeclaration ;
+  rdfs:range   xsd:anyURI .

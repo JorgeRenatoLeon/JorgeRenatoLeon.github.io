@@ -1,0 +1,152 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dpp": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#",
+    "food": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "nutritionInformation": {
+      "@id": "food:nutritionInformation"
+    },
+    "servingSize": {
+      "@id": "food:servingSize",
+      "@type": "xsd:string"
+    },
+    "energyKj": {
+      "@id": "food:energyKj",
+      "@type": "xsd:double"
+    },
+    "energyKcal": {
+      "@id": "food:energyKcal",
+      "@type": "xsd:double"
+    },
+    "fat": {
+      "@id": "food:fat",
+      "@type": "xsd:double"
+    },
+    "saturatedFat": {
+      "@id": "food:saturatedFat",
+      "@type": "xsd:double"
+    },
+    "carbohydrate": {
+      "@id": "food:carbohydrate",
+      "@type": "xsd:double"
+    },
+    "sugars": {
+      "@id": "food:sugars",
+      "@type": "xsd:double"
+    },
+    "fibre": {
+      "@id": "food:fibre",
+      "@type": "xsd:double"
+    },
+    "protein": {
+      "@id": "food:protein",
+      "@type": "xsd:double"
+    },
+    "salt": {
+      "@id": "food:salt",
+      "@type": "xsd:double"
+    },
+    "sodium": {
+      "@id": "food:sodium",
+      "@type": "xsd:double"
+    },
+    "allergens": {
+      "@id": "food:allergens",
+      "@container": "@set"
+    },
+    "allergenName": {
+      "@id": "food:allergenName",
+      "@type": "xsd:string"
+    },
+    "allergenPresence": {
+      "@id": "food:allergenPresence",
+      "@type": "xsd:string"
+    },
+    "ingredients": {
+      "@id": "food:ingredients",
+      "@container": "@list"
+    },
+    "ingredientName": {
+      "@id": "food:ingredientName",
+      "@type": "xsd:string"
+    },
+    "ingredientPercentage": {
+      "@id": "food:ingredientPercentage",
+      "@type": "xsd:double"
+    },
+    "ingredientOrigin": {
+      "@id": "food:ingredientOrigin",
+      "@type": "xsd:string"
+    },
+    "organic": {
+      "@id": "food:organic",
+      "@type": "xsd:boolean"
+    },
+    "expiryType": {
+      "@id": "food:expiryType",
+      "@type": "xsd:string"
+    },
+    "storageConditions": {
+      "@id": "food:storageConditions"
+    },
+    "temperatureMin": {
+      "@id": "food:temperatureMin",
+      "@type": "xsd:double"
+    },
+    "temperatureMax": {
+      "@id": "food:temperatureMax",
+      "@type": "xsd:double"
+    },
+    "humidity": {
+      "@id": "food:humidity",
+      "@type": "xsd:string"
+    },
+    "specialInstructions": {
+      "@id": "food:specialInstructions",
+      "@type": "xsd:string"
+    },
+    "shelfLifeDays": {
+      "@id": "food:shelfLifeDays",
+      "@type": "xsd:integer"
+    },
+    "dietaryLabels": {
+      "@id": "food:dietaryLabels",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "organicCertification": {
+      "@id": "food:organicCertification",
+      "@type": "xsd:string"
+    },
+    "nutriScore": {
+      "@id": "food:nutriScore",
+      "@type": "xsd:string"
+    },
+    "foodSafetyDeclarations": {
+      "@id": "food:foodSafetyDeclarations",
+      "@container": "@set"
+    },
+    "safetyCertification": {
+      "@id": "food:safetyCertification",
+      "@type": "xsd:string"
+    },
+    "certificationBody": {
+      "@id": "food:certificationBody",
+      "@type": "xsd:string"
+    },
+    "certificationDate": {
+      "@id": "food:certificationDate",
+      "@type": "xsd:date"
+    },
+    "certificationExpiry": {
+      "@id": "food:certificationExpiry",
+      "@type": "xsd:date"
+    },
+    "certificationLink": {
+      "@id": "food:certificationLink",
+      "@type": "@id"
+    }
+  }
+}

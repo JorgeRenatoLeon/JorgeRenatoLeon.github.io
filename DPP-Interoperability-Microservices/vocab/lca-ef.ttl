@@ -1,0 +1,713 @@
+@prefix lcaef:   <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef#> .
+@prefix dpp:     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix qudt:    <http://qudt.org/schema/qudt/> .
+
+<https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef>
+  a owl:Ontology ;
+  owl:versionIRI   <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef/0.2> ;
+  owl:versionInfo  "0.2" ;
+  owl:imports      <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:label       "DPP LCA/Environmental Footprint Extension Vocabulary"@en ;
+  dcterms:description
+    "Lifecycle Assessment and Environmental Footprint extension vocabulary for the DPP Interoperability Platform. Covers carbon footprint, GHG scopes, lifecycle stages, impact categories, circularity metrics, and water footprint per GHG Protocol, ISO 14040, PEF, and CIRPASS frameworks."@en ;
+  dcterms:creator  "Jorge Renato Leon Chumpitaz" ;
+  dcterms:created  "2026-02-06"^^xsd:date ;
+  dcterms:modified "2026-02-23"^^xsd:date ;
+  dcterms:license  <https://creativecommons.org/licenses/by/4.0/> ;
+  dcterms:rights   "CC BY 4.0 — Jorge Renato Leon Chumpitaz" ;
+  dcterms:subject  "Digital Product Passport", "LCA", "Environmental Footprint",
+                   "GHG Protocol", "ISO 14040", "PEF" ;
+  rdfs:seeAlso     <https://ghgprotocol.org/> ,
+                   <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32013H0179> .
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+lcaef:LcaEfExtension
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "LCA-EF Extension"@en ;
+  rdfs:comment "Container class for lifecycle assessment and environmental footprint data within a DPP."@en .
+
+lcaef:CarbonFootprint
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "Carbon Footprint"@en ;
+  rdfs:comment "Carbon footprint including total value, GHG scope breakdown, and lifecycle stage breakdown."@en ;
+  rdfs:seeAlso <https://ghgprotocol.org/> .
+
+lcaef:GhgScopes
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "GHG Scopes"@en ;
+  rdfs:comment "GHG emissions broken down by GHG Protocol scope (1, 2, 3)."@en ;
+  rdfs:seeAlso <https://ghgprotocol.org/corporate-standard> .
+
+lcaef:LifecycleStage
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "Lifecycle Stage"@en ;
+  rdfs:comment "Environmental impact for a specific lifecycle stage (raw material extraction, manufacturing, distribution, use phase, end-of-life)."@en ;
+  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32013H0179> .
+
+lcaef:ImpactCategory
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "Impact Category"@en ;
+  rdfs:comment "LCA impact category result (e.g. Climate Change/GWP, Acidification, Eutrophication)."@en .
+
+lcaef:Methodology
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "LCA Methodology"@en ;
+  rdfs:comment "Methodology information for the LCA: standard, system boundary, and cut-off criteria."@en ;
+  rdfs:seeAlso <https://www.iso.org/standard/37456.html> .
+
+lcaef:DataQuality
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "Data Quality"@en ;
+  rdfs:comment "Data quality metadata: temporal, geographical, and technology coverage, plus primary data percentage."@en .
+
+lcaef:Performer
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "LCA Performer"@en ;
+  rdfs:comment "Organization or person that performed the lifecycle assessment."@en .
+
+lcaef:Reviewer
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "LCA Reviewer"@en ;
+  rdfs:comment "Organization or person that reviewed the lifecycle assessment."@en .
+
+lcaef:CircularityMetrics
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "Circularity Metrics"@en ;
+  rdfs:comment "Product circularity metrics: recyclability, recycled content, repairability, and MCI."@en .
+
+lcaef:WaterFootprint
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "Water Footprint"@en ;
+  rdfs:comment "Water footprint broken down by type: blue (surface/ground), green (rain), grey (dilution)."@en .
+
+lcaef:ComplianceDeclaration
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "Compliance Declaration"@en ;
+  rdfs:comment "Environmental compliance or regulation declaration."@en .
+
+# NEW CLASS: required as range for lcaef:scope3Categories
+lcaef:Scope3Category
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "Scope 3 Category"@en ;
+  rdfs:comment "A GHG Protocol Scope 3 category (one of the 15 categories in the Corporate Value Chain Standard)."@en ;
+  rdfs:seeAlso <https://ghgprotocol.org/scope-3-calculation-guidance-2> .
+
+# Disjointness between top-level sub-classes
+lcaef:CarbonFootprint  owl:disjointWith lcaef:CircularityMetrics, lcaef:WaterFootprint,
+                                         lcaef:Methodology, lcaef:DataQuality .
+lcaef:GhgScopes        owl:disjointWith lcaef:LifecycleStage, lcaef:ImpactCategory .
+lcaef:Performer        owl:disjointWith lcaef:Reviewer .
+
+# =============================================================================
+# Object Properties
+# =============================================================================
+
+lcaef:carbonFootprint
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label    "carbonFootprint"@en ;
+  rdfs:comment  "Links LCA-EF extension to its carbon footprint data."@en ;
+  rdfs:domain   lcaef:LcaEfExtension ;
+  rdfs:range    lcaef:CarbonFootprint ;
+  owl:inverseOf lcaef:isCarbonFootprintOf .
+
+lcaef:isCarbonFootprintOf
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "isCarbonFootprintOf"@en ;
+  rdfs:comment "Inverse of lcaef:carbonFootprint."@en ;
+  rdfs:domain  lcaef:CarbonFootprint ;
+  rdfs:range   lcaef:LcaEfExtension .
+
+lcaef:byScope
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "byScope"@en ;
+  rdfs:comment "Links carbon footprint to GHG scope breakdown."@en ;
+  rdfs:domain  lcaef:CarbonFootprint ;
+  rdfs:range   lcaef:GhgScopes .
+
+lcaef:byLifecycleStage
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "byLifecycleStage"@en ;
+  rdfs:comment "Links carbon footprint to lifecycle stage breakdown."@en ;
+  rdfs:domain  lcaef:CarbonFootprint ;
+  rdfs:range   lcaef:LifecycleStage .
+
+# FIX: missing rdfs:range added
+lcaef:lifecycleStages
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "lifecycleStages"@en ;
+  rdfs:comment "Container for lifecycle stage breakdown data."@en ;
+  rdfs:domain  lcaef:CarbonFootprint ;
+  rdfs:range   lcaef:LifecycleStage .
+
+lcaef:impactCategories
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "impactCategories"@en ;
+  rdfs:comment "Links LCA-EF extension to computed impact category results."@en ;
+  rdfs:domain  lcaef:LcaEfExtension ;
+  rdfs:range   lcaef:ImpactCategory .
+
+lcaef:methodology
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "methodology"@en ;
+  rdfs:comment "Links LCA-EF extension to the LCA methodology used."@en ;
+  rdfs:domain  lcaef:LcaEfExtension ;
+  rdfs:range   lcaef:Methodology .
+
+lcaef:dataQuality
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "dataQuality"@en ;
+  rdfs:comment "Links LCA-EF extension to data quality metadata."@en ;
+  rdfs:domain  lcaef:LcaEfExtension ;
+  rdfs:range   lcaef:DataQuality .
+
+lcaef:performedBy
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "performedBy"@en ;
+  rdfs:comment "Links LCA-EF extension to the performer of the assessment."@en ;
+  rdfs:domain  lcaef:LcaEfExtension ;
+  rdfs:range   lcaef:Performer .
+
+lcaef:reviewedBy
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "reviewedBy"@en ;
+  rdfs:comment "Links LCA-EF extension to the reviewer of the assessment."@en ;
+  rdfs:domain  lcaef:LcaEfExtension ;
+  rdfs:range   lcaef:Reviewer .
+
+lcaef:circularityMetrics
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "circularityMetrics"@en ;
+  rdfs:comment "Links LCA-EF extension to circularity metrics."@en ;
+  rdfs:domain  lcaef:LcaEfExtension ;
+  rdfs:range   lcaef:CircularityMetrics .
+
+lcaef:waterFootprint
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "waterFootprint"@en ;
+  rdfs:comment "Links LCA-EF extension to water footprint data."@en ;
+  rdfs:domain  lcaef:LcaEfExtension ;
+  rdfs:range   lcaef:WaterFootprint .
+
+# FIX: missing rdfs:range added
+lcaef:waterByType
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "waterByType"@en ;
+  rdfs:comment "Links a WaterFootprint container to its per-type breakdown entries."@en ;
+  rdfs:domain  lcaef:WaterFootprint ;
+  rdfs:range   lcaef:WaterFootprint .
+
+lcaef:complianceDeclarations
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "complianceDeclarations"@en ;
+  rdfs:comment "Links LCA-EF extension to environmental compliance declarations."@en ;
+  rdfs:domain  lcaef:LcaEfExtension ;
+  rdfs:range   lcaef:ComplianceDeclaration .
+
+# FIX: missing rdfs:range added (new class lcaef:Scope3Category)
+lcaef:scope3Categories
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "scope3Categories"@en ;
+  rdfs:comment "Links Scope 3 emissions to specific GHG Protocol categories."@en ;
+  rdfs:domain  lcaef:GhgScopes ;
+  rdfs:range   lcaef:Scope3Category .
+
+# =============================================================================
+# Datatype Properties — Carbon Footprint
+# =============================================================================
+
+lcaef:totalCarbonFootprint
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "totalCarbonFootprint"@en ;
+  rdfs:comment "Total carbon footprint value (CO2 equivalent)."@en ;
+  rdfs:domain  lcaef:CarbonFootprint ;
+  rdfs:range   xsd:double .
+
+# FIX: alias linked via owl:equivalentProperty instead of just rdfs:comment
+lcaef:carbonFootprintTotal
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "carbonFootprintTotal"@en ;
+  rdfs:comment "Alias for totalCarbonFootprint used by the Battery Pass initiative."@en ;
+  rdfs:domain  lcaef:CarbonFootprint ;
+  rdfs:range   xsd:double ;
+  owl:equivalentProperty lcaef:totalCarbonFootprint .
+
+lcaef:functionalUnit
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "functionalUnit"@en ;
+  rdfs:comment "Functional unit for the calculation (e.g. '1 kWh delivered energy')."@en ;
+  rdfs:domain  lcaef:CarbonFootprint ;
+  rdfs:range   xsd:string .
+
+lcaef:calculationMethod
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "calculationMethod"@en ;
+  rdfs:comment "Method used (e.g. PEF, ISO 14067)."@en ;
+  rdfs:domain  lcaef:CarbonFootprint ;
+  rdfs:range   xsd:string .
+
+lcaef:verificationBody
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "verificationBody"@en ;
+  rdfs:comment "Organization that verified the carbon footprint calculation."@en ;
+  rdfs:domain  lcaef:CarbonFootprint ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — GHG Scopes
+# =============================================================================
+
+lcaef:scope1
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "scope1"@en ;
+  rdfs:comment "Direct GHG emissions from owned or controlled sources (GHG Protocol Scope 1)."@en ;
+  rdfs:domain  lcaef:GhgScopes ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso <https://ghgprotocol.org/corporate-standard> .
+
+lcaef:scope2
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "scope2"@en ;
+  rdfs:comment "Indirect GHG from purchased electricity, heat, or steam (GHG Protocol Scope 2)."@en ;
+  rdfs:domain  lcaef:GhgScopes ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso <https://ghgprotocol.org/corporate-standard> .
+
+lcaef:scope3
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "scope3"@en ;
+  rdfs:comment "All other indirect GHG emissions in the value chain (GHG Protocol Scope 3)."@en ;
+  rdfs:domain  lcaef:GhgScopes ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso <https://ghgprotocol.org/scope-3-calculation-guidance-2> .
+
+# FIX: all three aliases linked via owl:equivalentProperty
+lcaef:scope1Emissions
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "scope1Emissions"@en ;
+  rdfs:comment "Alias for scope1 used by the Battery Pass initiative."@en ;
+  rdfs:domain  lcaef:GhgScopes ;
+  rdfs:range   xsd:double ;
+  owl:equivalentProperty lcaef:scope1 .
+
+lcaef:scope2Emissions
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "scope2Emissions"@en ;
+  rdfs:comment "Alias for scope2 used by the Battery Pass initiative."@en ;
+  rdfs:domain  lcaef:GhgScopes ;
+  rdfs:range   xsd:double ;
+  owl:equivalentProperty lcaef:scope2 .
+
+lcaef:scope3Emissions
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "scope3Emissions"@en ;
+  rdfs:comment "Alias for scope3 used by the Battery Pass initiative."@en ;
+  rdfs:domain  lcaef:GhgScopes ;
+  rdfs:range   xsd:double ;
+  owl:equivalentProperty lcaef:scope3 .
+
+lcaef:scope2Approach
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "scope2Approach"@en ;
+  rdfs:comment "Scope 2 reporting approach: market-based or location-based."@en ;
+  rdfs:domain  lcaef:GhgScopes ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — Scope 3 Category
+# =============================================================================
+
+lcaef:scope3CategoryNumber
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "scope3CategoryNumber"@en ;
+  rdfs:comment "GHG Protocol Scope 3 category number (1–15)."@en ;
+  rdfs:domain  lcaef:Scope3Category ;
+  rdfs:range   xsd:integer .
+
+lcaef:scope3CategoryName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "scope3CategoryName"@en ;
+  rdfs:comment "Name of the Scope 3 category (e.g. 'Purchased Goods and Services')."@en ;
+  rdfs:domain  lcaef:Scope3Category ;
+  rdfs:range   xsd:string .
+
+lcaef:scope3CategoryValue
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "scope3CategoryValue"@en ;
+  rdfs:comment "Emissions value for this Scope 3 category (CO2 equivalent)."@en ;
+  rdfs:domain  lcaef:Scope3Category ;
+  rdfs:range   xsd:double .
+
+# =============================================================================
+# Datatype Properties — Lifecycle Stages
+# =============================================================================
+
+lcaef:stageName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "stageName"@en ;
+  rdfs:comment "Stage name: rawMaterialExtraction, manufacturing, distribution, usePhase, endOfLife."@en ;
+  rdfs:domain  lcaef:LifecycleStage ;
+  rdfs:range   xsd:string .
+
+lcaef:rawMaterialExtractionImpact
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "rawMaterialExtractionImpact"@en ;
+  rdfs:comment "Carbon footprint contribution from raw material extraction."@en ;
+  rdfs:domain  lcaef:LifecycleStage ;
+  rdfs:range   xsd:double .
+
+lcaef:manufacturingImpact
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "manufacturingImpact"@en ;
+  rdfs:comment "Carbon footprint contribution from manufacturing."@en ;
+  rdfs:domain  lcaef:LifecycleStage ;
+  rdfs:range   xsd:double .
+
+lcaef:distributionImpact
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "distributionImpact"@en ;
+  rdfs:comment "Carbon footprint contribution from distribution."@en ;
+  rdfs:domain  lcaef:LifecycleStage ;
+  rdfs:range   xsd:double .
+
+lcaef:usePhaseImpact
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "usePhaseImpact"@en ;
+  rdfs:comment "Carbon footprint contribution from the use phase."@en ;
+  rdfs:domain  lcaef:LifecycleStage ;
+  rdfs:range   xsd:double .
+
+lcaef:usePhaseAssumptions
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "usePhaseAssumptions"@en ;
+  rdfs:comment "Assumptions used for use phase impact calculation."@en ;
+  rdfs:domain  lcaef:LifecycleStage ;
+  rdfs:range   xsd:string .
+
+lcaef:endOfLifeImpact
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "endOfLifeImpact"@en ;
+  rdfs:comment "Carbon footprint contribution from end-of-life."@en ;
+  rdfs:domain  lcaef:LifecycleStage ;
+  rdfs:range   xsd:double .
+
+lcaef:endOfLifeScenarios
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "endOfLifeScenarios"@en ;
+  rdfs:comment "End-of-life scenarios considered (recycling, landfill, incineration, etc.)."@en ;
+  rdfs:domain  lcaef:LifecycleStage ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — Impact Categories
+# =============================================================================
+
+lcaef:categoryName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "categoryName"@en ;
+  rdfs:comment "Name of the impact category (e.g. Climate Change, Acidification, Eutrophication)."@en ;
+  rdfs:domain  lcaef:ImpactCategory ;
+  rdfs:range   xsd:string .
+
+lcaef:characterisationModel
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "characterisationModel"@en ;
+  rdfs:comment "Impact assessment characterisation model (e.g. EF 3.1, ReCiPe)."@en ;
+  rdfs:domain  lcaef:ImpactCategory ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — Methodology
+# =============================================================================
+
+lcaef:standard
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "standard"@en ;
+  rdfs:comment "LCA standard followed (e.g. ISO 14040:2006, ISO 14044:2006, EU PEF)."@en ;
+  rdfs:domain  lcaef:Methodology ;
+  rdfs:range   xsd:string ;
+  rdfs:seeAlso <https://www.iso.org/standard/37456.html> .
+
+lcaef:systemBoundary
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "systemBoundary"@en ;
+  rdfs:comment "System boundary: cradle-to-gate, cradle-to-grave, etc."@en ;
+  rdfs:domain  lcaef:Methodology ;
+  rdfs:range   xsd:string .
+
+lcaef:cutOffCriteria
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "cutOffCriteria"@en ;
+  rdfs:comment "Cut-off criteria applied (e.g. 1% mass, 1% energy)."@en ;
+  rdfs:domain  lcaef:Methodology ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — Data Quality
+# =============================================================================
+
+lcaef:temporalCoverage
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "temporalCoverage"@en ;
+  rdfs:comment "Time period covered (e.g. '2024-2025')."@en ;
+  rdfs:domain  lcaef:DataQuality ;
+  rdfs:range   xsd:string .
+
+lcaef:geographicalCoverage
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "geographicalCoverage"@en ;
+  rdfs:comment "Geographical scope (e.g. 'EU-27', 'Global')."@en ;
+  rdfs:domain  lcaef:DataQuality ;
+  rdfs:range   xsd:string .
+
+lcaef:technologyCoverage
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "technologyCoverage"@en ;
+  rdfs:comment "Technology mix represented (e.g. 'Average EU grid mix')."@en ;
+  rdfs:domain  lcaef:DataQuality ;
+  rdfs:range   xsd:string .
+
+lcaef:primaryDataPercentage
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "primaryDataPercentage"@en ;
+  rdfs:comment "Percentage of primary (directly measured) data (0.0 to 100.0)."@en ;
+  rdfs:domain  lcaef:DataQuality ;
+  rdfs:range   xsd:double .
+
+# =============================================================================
+# Datatype Properties — Performer & Reviewer
+# =============================================================================
+
+lcaef:performingOrganization
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "performingOrganization"@en ;
+  rdfs:comment "Name of the organization that performed the LCA."@en ;
+  rdfs:domain  lcaef:Performer ;
+  rdfs:range   xsd:string .
+
+lcaef:contactInfo
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "contactInfo"@en ;
+  rdfs:comment "Contact information for the LCA performer."@en ;
+  rdfs:domain  lcaef:Performer ;
+  rdfs:range   xsd:string .
+
+lcaef:accreditation
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "accreditation"@en ;
+  rdfs:comment "Accreditation body or standard the performer is certified under."@en ;
+  rdfs:domain  lcaef:Performer ;
+  rdfs:range   xsd:string .
+
+lcaef:performedDate
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "performedDate"@en ;
+  rdfs:comment "Date the LCA was performed."@en ;
+  rdfs:domain  lcaef:Performer ;
+  rdfs:range   xsd:date .
+
+lcaef:reviewer
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "reviewer"@en ;
+  rdfs:comment "Name of the reviewer."@en ;
+  rdfs:domain  lcaef:Reviewer ;
+  rdfs:range   xsd:string .
+
+lcaef:reviewDate
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "reviewDate"@en ;
+  rdfs:comment "Date the LCA review was completed."@en ;
+  rdfs:domain  lcaef:Reviewer ;
+  rdfs:range   xsd:date .
+
+lcaef:reviewType
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "reviewType"@en ;
+  rdfs:comment "Type of review: internal, third-party, or critical."@en ;
+  rdfs:domain  lcaef:Reviewer ;
+  rdfs:range   xsd:string .
+
+lcaef:reportLink
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "reportLink"@en ;
+  rdfs:comment "URL to the full LCA report document."@en ;
+  rdfs:domain  lcaef:LcaEfExtension ;
+  rdfs:range   xsd:anyURI .
+
+# =============================================================================
+# Datatype Properties — Circularity Metrics
+# =============================================================================
+
+lcaef:recyclabilityRate
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "recyclabilityRate"@en ;
+  rdfs:comment "Percentage of the product that can be recycled (0.0 to 100.0)."@en ;
+  rdfs:domain  lcaef:CircularityMetrics ;
+  rdfs:range   xsd:double .
+
+lcaef:recycledContentRate
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "recycledContentRate"@en ;
+  rdfs:comment "Percentage of recycled content in the product (0.0 to 100.0)."@en ;
+  rdfs:domain  lcaef:CircularityMetrics ;
+  rdfs:range   xsd:double .
+
+lcaef:repairabilityScore
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "repairabilityScore"@en ;
+  rdfs:comment "Product repairability score (e.g. French Repairability Index, 0–10)."@en ;
+  rdfs:domain  lcaef:CircularityMetrics ;
+  rdfs:range   xsd:double .
+
+lcaef:materialCircularityIndicator
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "materialCircularityIndicator"@en ;
+  rdfs:comment "MCI per Ellen MacArthur Foundation methodology (0.0 to 1.0)."@en ;
+  rdfs:domain  lcaef:CircularityMetrics ;
+  rdfs:range   xsd:double .
+
+lcaef:durabilityIndicator
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "durabilityIndicator"@en ;
+  rdfs:comment "Qualitative or quantitative durability indicator."@en ;
+  rdfs:domain  lcaef:CircularityMetrics ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — Water Footprint
+# =============================================================================
+
+lcaef:blueWater
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "blueWater"@en ;
+  rdfs:comment "Blue water footprint: surface and ground water consumption (m³)."@en ;
+  rdfs:domain  lcaef:WaterFootprint ;
+  rdfs:range   xsd:double .
+
+lcaef:greenWater
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "greenWater"@en ;
+  rdfs:comment "Green water footprint: rainwater consumed (m³)."@en ;
+  rdfs:domain  lcaef:WaterFootprint ;
+  rdfs:range   xsd:double .
+
+lcaef:greyWater
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "greyWater"@en ;
+  rdfs:comment "Grey water footprint: freshwater required to dilute pollutants (m³)."@en ;
+  rdfs:domain  lcaef:WaterFootprint ;
+  rdfs:range   xsd:double .
+
+# =============================================================================
+# Datatype Properties — Compliance
+# NOTE: lcaef:regulationReference duplicates soc:regulationReference.
+# Consider promoting to dpp:regulationReference in a future core revision.
+# =============================================================================
+
+lcaef:regulationReference
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "regulationReference"@en ;
+  rdfs:comment "Name or identifier of the regulation declared against."@en ;
+  rdfs:domain  lcaef:ComplianceDeclaration ;
+  rdfs:range   xsd:string ;
+  rdfs:seeAlso <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc#regulationReference> .
+
+lcaef:compliant
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "compliant"@en ;
+  rdfs:comment "Whether the product is compliant (true/false)."@en ;
+  rdfs:domain  lcaef:ComplianceDeclaration ;
+  rdfs:range   xsd:boolean .
+
+lcaef:declarationLink
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef> ;
+  rdfs:label   "declarationLink"@en ;
+  rdfs:comment "URL to the compliance declaration document."@en ;
+  rdfs:domain  lcaef:ComplianceDeclaration ;
+  rdfs:range   xsd:anyURI .

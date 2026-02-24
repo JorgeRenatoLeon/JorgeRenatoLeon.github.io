@@ -1,0 +1,715 @@
+@prefix battery: <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery#> .
+@prefix dpp:     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix qudt:    <http://qudt.org/schema/qudt/> .
+@prefix schema:  <https://schema.org/> .
+
+<https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery>
+  a owl:Ontology ;
+  owl:versionIRI   <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery/0.2> ;
+  owl:versionInfo  "0.2" ;
+  owl:imports      <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  owl:imports      <http://qudt.org/2.1/schema/qudt> ;
+  rdfs:label       "DPP Battery Extension Vocabulary"@en ;
+  dcterms:description
+    "Battery-specific extension vocabulary for the DPP Interoperability Platform per EU Battery Regulation 2023/1542."@en ;
+  dcterms:creator  "Jorge Renato Leon Chumpitaz" ;
+  dcterms:created  "2026-02-06"^^xsd:date ;
+  dcterms:modified "2026-02-23"^^xsd:date ;
+  dcterms:license  <https://creativecommons.org/licenses/by/4.0/> ;
+  dcterms:rights   "CC BY 4.0 — Jorge Renato Leon Chumpitaz" ;
+  dcterms:subject  "Digital Product Passport", "Battery Regulation", "EU 2023/1542" ;
+  rdfs:seeAlso     <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1542> .
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+battery:BatteryExtension
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Battery Extension"@en ;
+  rdfs:comment "Container class for battery-specific DPP data. Groups chemistry, performance, materials, durability, battery status, circularity, and supply chain."@en ;
+  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1542> .
+
+battery:Chemistry
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Battery Chemistry"@en ;
+  rdfs:comment "Chemical composition: cathode, anode, electrolyte. Per EU Battery Regulation Article 13."@en ;
+  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1542> .
+
+battery:Performance
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Battery Performance"@en ;
+  rdfs:comment "Electrical performance characteristics (capacity, voltage, power, efficiency)."@en .
+
+battery:BatteryMaterials
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Battery Materials"@en ;
+  rdfs:comment "Battery-specific material data: critical raw materials, recycled content."@en .
+
+battery:MaterialCompositionEntry
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Material Composition Entry"@en ;
+  rdfs:comment "A single element in the battery's material composition with mass percentage and recycled content."@en .
+
+battery:RecycledContentEntry
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Recycled Content Entry"@en ;
+  rdfs:comment "Recycled content percentage for a specific element (cobalt, lithium, nickel, lead)."@en .
+
+battery:Durability
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Battery Durability"@en ;
+  rdfs:comment "Expected lifetime and degradation characteristics."@en .
+
+# NEW CLASS: required as range for battery:expectedLifetime
+battery:ExpectedLifetime
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Expected Lifetime"@en ;
+  rdfs:comment "Expected lifetime of the battery expressed in both years and charge/discharge cycles."@en .
+
+battery:BatteryStatus
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Battery Status"@en ;
+  rdfs:comment "Real-time or measured state data (SoH, SoC, remaining capacity, cycle count)."@en .
+
+battery:Circularity
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Battery Circularity"@en ;
+  rdfs:comment "End-of-life circularity: disassembly, recycling, collection."@en .
+
+battery:SupplyChain
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Supply Chain"@en ;
+  rdfs:comment "Supply chain due diligence and compliance documentation."@en .
+
+# NEW CLASS: required as range for battery:dueDiligence
+battery:DueDiligenceReport
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Due Diligence Report"@en ;
+  rdfs:comment "Supply chain due diligence report per EU Battery Regulation Article 48."@en ;
+  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1542> .
+
+battery:CycleLifeTest
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Cycle Life Test"@en ;
+  rdfs:comment "Test protocol and results for battery cycle life verification."@en .
+
+battery:OperatingTemperatureRange
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Operating Temperature Range"@en ;
+  rdfs:comment "Minimum and maximum operating temperatures."@en .
+
+battery:OverchargeEvent
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "Overcharge Event"@en ;
+  rdfs:comment "Record of a deep overcharge or critical event."@en .
+
+# Disjointness between top-level sub-classes of BatteryExtension
+battery:Chemistry      owl:disjointWith battery:Performance, battery:BatteryMaterials,
+                                         battery:Durability, battery:BatteryStatus,
+                                         battery:Circularity, battery:SupplyChain .
+battery:Performance    owl:disjointWith battery:BatteryMaterials, battery:Durability,
+                                         battery:BatteryStatus, battery:Circularity .
+battery:BatteryMaterials owl:disjointWith battery:Durability, battery:BatteryStatus .
+
+# =============================================================================
+# Object Properties
+# =============================================================================
+
+battery:chemistry
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label    "chemistry"@en ;
+  rdfs:comment  "Links a BatteryExtension to its chemistry composition."@en ;
+  rdfs:domain   battery:BatteryExtension ;
+  rdfs:range    battery:Chemistry ;
+  owl:inverseOf battery:isChemistryOf .
+
+battery:isChemistryOf
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "isChemistryOf"@en ;
+  rdfs:comment "Inverse of battery:chemistry."@en ;
+  rdfs:domain  battery:Chemistry ;
+  rdfs:range   battery:BatteryExtension .
+
+battery:performance
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label    "performance"@en ;
+  rdfs:comment  "Links a BatteryExtension to its performance data."@en ;
+  rdfs:domain   battery:BatteryExtension ;
+  rdfs:range    battery:Performance ;
+  owl:inverseOf battery:isPerformanceOf .
+
+battery:isPerformanceOf
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "isPerformanceOf"@en ;
+  rdfs:comment "Inverse of battery:performance."@en ;
+  rdfs:domain  battery:Performance ;
+  rdfs:range   battery:BatteryExtension .
+
+battery:materials
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "materials"@en ;
+  rdfs:comment "Links a BatteryExtension to its materials data."@en ;
+  rdfs:domain  battery:BatteryExtension ;
+  rdfs:range   battery:BatteryMaterials .
+
+battery:durability
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "durability"@en ;
+  rdfs:comment "Links a BatteryExtension to its durability characteristics."@en ;
+  rdfs:domain  battery:BatteryExtension ;
+  rdfs:range   battery:Durability .
+
+battery:batteryStatus
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "batteryStatus"@en ;
+  rdfs:comment "Links a BatteryExtension to real-time state measurements."@en ;
+  rdfs:domain  battery:BatteryExtension ;
+  rdfs:range   battery:BatteryStatus .
+
+battery:circularity
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "circularity"@en ;
+  rdfs:comment "Links a BatteryExtension to its end-of-life circularity data."@en ;
+  rdfs:domain  battery:BatteryExtension ;
+  rdfs:range   battery:Circularity .
+
+battery:supplyChain
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "supplyChain"@en ;
+  rdfs:comment "Links a BatteryExtension to supply chain information."@en ;
+  rdfs:domain  battery:BatteryExtension ;
+  rdfs:range   battery:SupplyChain .
+
+# FIX: missing rdfs:range added
+battery:compliance
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "compliance"@en ;
+  rdfs:comment "Links a BatteryExtension to compliance declarations."@en ;
+  rdfs:domain  battery:BatteryExtension ;
+  rdfs:range   dpp:Compliance .
+
+battery:materialComposition
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "materialComposition"@en ;
+  rdfs:comment "Set of material composition entries."@en ;
+  rdfs:domain  battery:Chemistry ;
+  rdfs:range   battery:MaterialCompositionEntry .
+
+# FIX: missing rdfs:range added
+battery:criticalRawMaterials
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "criticalRawMaterials"@en ;
+  rdfs:comment "Set of critical raw material entries per EU CRM Act."@en ;
+  rdfs:domain  battery:BatteryMaterials ;
+  rdfs:range   battery:MaterialCompositionEntry ;
+  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R0903> .
+
+battery:recycledContent
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "recycledContent"@en ;
+  rdfs:comment "Container for recycled content data."@en ;
+  rdfs:domain  battery:BatteryMaterials ;
+  rdfs:range   battery:RecycledContentEntry .
+
+battery:recycledContentByElement
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "recycledContentByElement"@en ;
+  rdfs:comment "Per-element recycled content entries."@en ;
+  rdfs:domain  battery:BatteryMaterials ;
+  rdfs:range   battery:RecycledContentEntry .
+
+# FIX: missing rdfs:range added (new class battery:ExpectedLifetime)
+battery:expectedLifetime
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "expectedLifetime"@en ;
+  rdfs:comment "Expected lifetime of the battery."@en ;
+  rdfs:domain  battery:Durability ;
+  rdfs:range   battery:ExpectedLifetime .
+
+battery:cycleLifeTest
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "cycleLifeTest"@en ;
+  rdfs:comment "Test protocol and results for cycle life."@en ;
+  rdfs:domain  battery:Durability ;
+  rdfs:range   battery:CycleLifeTest .
+
+battery:operatingTemperatureRange
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "operatingTemperatureRange"@en ;
+  rdfs:comment "Operating temperature range."@en ;
+  rdfs:domain  battery:Durability ;
+  rdfs:range   battery:OperatingTemperatureRange .
+
+battery:deepOverchargeEvents
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "deepOverchargeEvents"@en ;
+  rdfs:comment "Recorded deep overcharge or critical events."@en ;
+  rdfs:domain  battery:BatteryStatus ;
+  rdfs:range   battery:OverchargeEvent .
+
+# FIX: missing rdfs:range added (new class battery:DueDiligenceReport)
+battery:dueDiligence
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "dueDiligence"@en ;
+  rdfs:comment "Supply chain due diligence report."@en ;
+  rdfs:domain  battery:SupplyChain ;
+  rdfs:range   battery:DueDiligenceReport .
+
+# =============================================================================
+# Datatype Properties — Chemistry
+# =============================================================================
+
+battery:chemistryType
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "chemistryType"@en ;
+  rdfs:comment "Short name of the battery chemistry (e.g. NMC811, LFP)."@en ;
+  rdfs:domain  battery:Chemistry ;
+  rdfs:range   xsd:string .
+
+battery:anodeMaterial
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "anodeMaterial"@en ;
+  rdfs:comment "Anode material (e.g. Graphite, Li4Ti5O12)."@en ;
+  rdfs:domain  battery:Chemistry ;
+  rdfs:range   xsd:string .
+
+battery:cathodeMaterial
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "cathodeMaterial"@en ;
+  rdfs:comment "Cathode material (e.g. LiNi0.8Mn0.1Co0.1O2)."@en ;
+  rdfs:domain  battery:Chemistry ;
+  rdfs:range   xsd:string .
+
+battery:electrolyteType
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "electrolyteType"@en ;
+  rdfs:comment "Electrolyte type (e.g. Liquid LiPF6, Solid-state polymer)."@en ;
+  rdfs:domain  battery:Chemistry ;
+  rdfs:range   xsd:string .
+
+battery:element
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "element"@en ;
+  rdfs:comment "Chemical element name in a composition entry."@en ;
+  rdfs:domain  battery:MaterialCompositionEntry ;
+  rdfs:range   xsd:string .
+
+battery:materialRole
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "materialRole"@en ;
+  rdfs:comment "Role of the element (cathode-active, anode-active, electrolyte, binder, etc.)."@en ;
+  rdfs:domain  battery:MaterialCompositionEntry ;
+  rdfs:range   xsd:string .
+
+battery:massPercentage
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "massPercentage"@en ;
+  rdfs:comment "Mass percentage of the element (0.0 to 100.0)."@en ;
+  rdfs:domain  battery:MaterialCompositionEntry ;
+  rdfs:range   xsd:double .
+
+battery:recycledContentPercentage
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "recycledContentPercentage"@en ;
+  rdfs:comment "Percentage of recycled content for this material (0.0 to 100.0)."@en ;
+  rdfs:domain  battery:MaterialCompositionEntry ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1542> .
+
+# =============================================================================
+# Datatype Properties — Performance
+# FIX: ratedCapacity, ratedVoltage, nominalVoltage, ratedEnergy,
+#       selfDischargeRate, internalResistance changed from
+#       owl:DatatypeProperty to owl:ObjectProperty (qudt:QuantityValue is a class)
+# =============================================================================
+
+battery:ratedCapacity
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "ratedCapacity"@en ;
+  rdfs:comment "Rated capacity (Ah or kWh). Per EU Battery Regulation Article 10."@en ;
+  rdfs:domain  battery:Performance ;
+  rdfs:range   qudt:QuantityValue ;
+  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1542> .
+
+battery:ratedVoltage
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "ratedVoltage"@en ;
+  rdfs:comment "Rated or nominal voltage (V)."@en ;
+  rdfs:domain  battery:Performance ;
+  rdfs:range   qudt:QuantityValue .
+
+# FIX: linked as equivalent to ratedVoltage
+battery:nominalVoltage
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "nominalVoltage"@en ;
+  rdfs:comment "Nominal voltage alias used by some initiatives."@en ;
+  rdfs:domain  battery:Performance ;
+  rdfs:range   qudt:QuantityValue ;
+  owl:equivalentProperty battery:ratedVoltage .
+
+battery:ratedEnergy
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "ratedEnergy"@en ;
+  rdfs:comment "Rated energy (kWh or Wh)."@en ;
+  rdfs:domain  battery:Performance ;
+  rdfs:range   qudt:QuantityValue .
+
+battery:selfDischargeRate
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "selfDischargeRate"@en ;
+  rdfs:comment "Self-discharge rate (e.g. %/month)."@en ;
+  rdfs:domain  battery:Performance ;
+  rdfs:range   qudt:QuantityValue .
+
+battery:internalResistance
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "internalResistance"@en ;
+  rdfs:comment "Internal resistance at beginning of life (mOhm)."@en ;
+  rdfs:domain  battery:Performance ;
+  rdfs:range   qudt:QuantityValue .
+
+battery:roundTripEfficiency
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "roundTripEfficiency"@en ;
+  rdfs:comment "Energy round-trip efficiency as a decimal (0.0 to 1.0)."@en ;
+  rdfs:domain  battery:Performance ;
+  rdfs:range   xsd:double .
+
+battery:powerCapability
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "powerCapability"@en ;
+  rdfs:comment "Maximum power capability description."@en ;
+  rdfs:domain  battery:Performance ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — Materials
+# =============================================================================
+
+battery:materialName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "materialName"@en ;
+  rdfs:comment "Name of a critical raw material."@en ;
+  rdfs:domain  battery:BatteryMaterials ;
+  rdfs:range   xsd:string .
+
+battery:sourceCountry
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "sourceCountry"@en ;
+  rdfs:comment "Country of origin for a material (ISO 3166-1 alpha-2)."@en ;
+  rdfs:domain  battery:BatteryMaterials ;
+  rdfs:range   xsd:string .
+
+battery:recycledPercentage
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "recycledPercentage"@en ;
+  rdfs:comment "Aggregated recycled content percentage."@en ;
+  rdfs:domain  battery:RecycledContentEntry ;
+  rdfs:range   xsd:double .
+
+# =============================================================================
+# Datatype Properties — Durability
+# =============================================================================
+
+battery:designedLifecycleCycles
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "designedLifecycleCycles"@en ;
+  rdfs:comment "Number of full charge/discharge cycles the battery is designed for."@en ;
+  rdfs:domain  battery:Durability ;
+  rdfs:range   xsd:integer .
+
+battery:designedLifecycleYears
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "designedLifecycleYears"@en ;
+  rdfs:comment "Designed calendar lifetime in years."@en ;
+  rdfs:domain  battery:Durability ;
+  rdfs:range   xsd:double .
+
+battery:lifetimeYears
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "lifetimeYears"@en ;
+  rdfs:comment "Expected lifetime in years."@en ;
+  rdfs:domain  battery:ExpectedLifetime ;
+  rdfs:range   xsd:double .
+
+battery:lifetimeCycles
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "lifetimeCycles"@en ;
+  rdfs:comment "Expected lifetime in charge/discharge cycles."@en ;
+  rdfs:domain  battery:ExpectedLifetime ;
+  rdfs:range   xsd:integer .
+
+battery:capacityFadePerYear
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "capacityFadePerYear"@en ;
+  rdfs:comment "Annual capacity degradation rate (e.g. 0.02 = 2%/year)."@en ;
+  rdfs:domain  battery:Durability ;
+  rdfs:range   xsd:double .
+
+battery:powerFadePerYear
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "powerFadePerYear"@en ;
+  rdfs:comment "Annual power degradation rate."@en ;
+  rdfs:domain  battery:Durability ;
+  rdfs:range   xsd:double .
+
+battery:impedanceGrowthPerYear
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "impedanceGrowthPerYear"@en ;
+  rdfs:comment "Annual impedance growth rate."@en ;
+  rdfs:domain  battery:Durability ;
+  rdfs:range   xsd:double .
+
+battery:temperatureRange
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "temperatureRange"@en ;
+  rdfs:comment "Acceptable operating temperature range description."@en ;
+  rdfs:domain  battery:Durability ;
+  rdfs:range   xsd:string .
+
+battery:testProtocol
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "testProtocol"@en ;
+  rdfs:comment "Standard used for cycle life testing (e.g. IEC 62660-1)."@en ;
+  rdfs:domain  battery:CycleLifeTest ;
+  rdfs:range   xsd:string .
+
+battery:endOfLifeThreshold
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "endOfLifeThreshold"@en ;
+  rdfs:comment "SoH threshold defining end-of-life (e.g. 0.80 = 80%)."@en ;
+  rdfs:domain  battery:CycleLifeTest ;
+  rdfs:range   xsd:double .
+
+battery:minTemperature
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "minTemperature"@en ;
+  rdfs:comment "Minimum operating temperature (°C)."@en ;
+  rdfs:domain  battery:OperatingTemperatureRange ;
+  rdfs:range   xsd:double .
+
+battery:maxTemperature
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "maxTemperature"@en ;
+  rdfs:comment "Maximum operating temperature (°C)."@en ;
+  rdfs:domain  battery:OperatingTemperatureRange ;
+  rdfs:range   xsd:double .
+
+# =============================================================================
+# Datatype Properties — Battery Status
+# FIX: remainingCapacity and currentInternalResistance changed to ObjectProperty
+# =============================================================================
+
+battery:stateOfHealth
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "stateOfHealth"@en ;
+  rdfs:comment "Current SoH as a decimal (0.0 to 1.0). Per EU Battery Regulation Article 77."@en ;
+  rdfs:domain  battery:BatteryStatus ;
+  rdfs:range   xsd:double ;
+  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1542> .
+
+battery:stateOfCharge
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "stateOfCharge"@en ;
+  rdfs:comment "Current SoC as a decimal (0.0 to 1.0)."@en ;
+  rdfs:domain  battery:BatteryStatus ;
+  rdfs:range   xsd:double .
+
+battery:remainingCapacity
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "remainingCapacity"@en ;
+  rdfs:comment "Current remaining capacity as a qudt:QuantityValue."@en ;
+  rdfs:domain  battery:BatteryStatus ;
+  rdfs:range   qudt:QuantityValue .
+
+battery:fullChargeCycles
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "fullChargeCycles"@en ;
+  rdfs:comment "Total full charge/discharge cycles completed."@en ;
+  rdfs:domain  battery:BatteryStatus ;
+  rdfs:range   xsd:integer .
+
+battery:currentInternalResistance
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "currentInternalResistance"@en ;
+  rdfs:comment "Current measured internal resistance as a qudt:QuantityValue."@en ;
+  rdfs:domain  battery:BatteryStatus ;
+  rdfs:range   qudt:QuantityValue .
+
+battery:eventTimestamp
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "eventTimestamp"@en ;
+  rdfs:comment "Timestamp of an overcharge or critical event."@en ;
+  rdfs:domain  battery:OverchargeEvent ;
+  rdfs:range   xsd:dateTime .
+
+battery:eventSeverity
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "eventSeverity"@en ;
+  rdfs:comment "Severity: low, medium, high, or critical."@en ;
+  rdfs:domain  battery:OverchargeEvent ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — Circularity
+# =============================================================================
+
+battery:dismantlingInstructions
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "dismantlingInstructions"@en ;
+  rdfs:comment "Instructions for safe dismantling."@en ;
+  rdfs:domain  battery:Circularity ;
+  rdfs:range   xsd:string .
+
+battery:disassemblyManualLink
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "disassemblyManualLink"@en ;
+  rdfs:comment "URL to the disassembly manual."@en ;
+  rdfs:domain  battery:Circularity ;
+  rdfs:range   xsd:anyURI .
+
+battery:recyclingInstructions
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "recyclingInstructions"@en ;
+  rdfs:comment "Recycling instructions."@en ;
+  rdfs:domain  battery:Circularity ;
+  rdfs:range   xsd:string .
+
+battery:safetyInstructions
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "safetyInstructions"@en ;
+  rdfs:comment "Safety instructions for handling, transport, and end-of-life."@en ;
+  rdfs:domain  battery:Circularity ;
+  rdfs:range   xsd:string .
+
+battery:endOfLifeCollection
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "endOfLifeCollection"@en ;
+  rdfs:comment "Collection points and take-back program information."@en ;
+  rdfs:domain  battery:Circularity ;
+  rdfs:range   xsd:string .
+
+battery:collectionPointsLink
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "collectionPointsLink"@en ;
+  rdfs:comment "URL to collection points finder."@en ;
+  rdfs:domain  battery:Circularity ;
+  rdfs:range   xsd:anyURI .
+
+battery:preparationForReuseStatus
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "preparationForReuseStatus"@en ;
+  rdfs:comment "Status: 'eligible', 'assessed', or 'not eligible'."@en ;
+  rdfs:domain  battery:Circularity ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — Compliance & Supply Chain
+# =============================================================================
+
+battery:declarationOfConformityLink
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "declarationOfConformityLink"@en ;
+  rdfs:comment "URL to the EU declaration of conformity."@en ;
+  rdfs:domain  battery:BatteryExtension ;
+  rdfs:range   xsd:anyURI .
+
+battery:testReportsLinks
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "testReportsLinks"@en ;
+  rdfs:comment "URLs to relevant test report documents."@en ;
+  rdfs:domain  battery:BatteryExtension ;
+  rdfs:range   xsd:anyURI .
+
+battery:dueDiligenceReportLink
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
+  rdfs:label   "dueDiligenceReportLink"@en ;
+  rdfs:comment "URL to the supply

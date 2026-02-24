@@ -1,0 +1,147 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dpp": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#",
+    "soc": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "substances": {
+      "@id": "soc:hasSubstanceOfConcern",
+      "@container": "@set"
+    },
+    "substance": {
+      "@id": "soc:substances"
+    },
+    "name": {
+      "@id": "soc:substanceName",
+      "@type": "xsd:string"
+    },
+    "casNumber": {
+      "@id": "soc:casNumber",
+      "@type": "xsd:string"
+    },
+    "ecNumber": {
+      "@id": "soc:ecNumber",
+      "@type": "xsd:string"
+    },
+    "iupacName": {
+      "@id": "soc:iupacName",
+      "@type": "xsd:string"
+    },
+    "concentration": {
+      "@id": "soc:concentration"
+    },
+    "value": {
+      "@id": "soc:concentrationValue",
+      "@type": "xsd:double"
+    },
+    "unit": {
+      "@id": "soc:concentrationUnit",
+      "@type": "xsd:string"
+    },
+    "method": {
+      "@id": "soc:measurementMethod",
+      "@type": "xsd:string"
+    },
+    "uncertainty": {
+      "@id": "soc:measurementUncertainty",
+      "@type": "xsd:double"
+    },
+    "threshold": {
+      "@id": "soc:regulatoryThreshold"
+    },
+    "applicable": {
+      "@id": "soc:thresholdExceeded",
+      "@type": "xsd:boolean"
+    },
+    "regulation": {
+      "@id": "soc:regulationReference",
+      "@type": "xsd:string"
+    },
+    "reference": {
+      "@id": "soc:regulationLink",
+      "@type": "@id"
+    },
+    "location": {
+      "@id": "soc:substanceLocation",
+      "@type": "xsd:string"
+    },
+    "lifecycleStage": {
+      "@id": "soc:relevantLifecycleStage",
+      "@type": "xsd:string"
+    },
+    "function": {
+      "@id": "soc:substanceFunction",
+      "@type": "xsd:string"
+    },
+    "alternatives": {
+      "@id": "soc:alternatives",
+      "@container": "@set"
+    },
+    "notes": {
+      "@id": "soc:additionalNotes",
+      "@type": "xsd:string"
+    },
+    "safetyDataSheetLink": {
+      "@id": "soc:safetyDataSheetLink",
+      "@type": "@id"
+    },
+    "svhcCandidateListCheck": {
+      "@id": "soc:svhcCandidateListCheck"
+    },
+    "checkedDate": {
+      "@id": "dcterms:date",
+      "@type": "xsd:date"
+    },
+    "listVersion": {
+      "@id": "soc:candidateListVersion",
+      "@type": "xsd:string"
+    },
+    "containsSVHC": {
+      "@id": "soc:containsSVHC",
+      "@type": "xsd:boolean"
+    },
+    "svhcDeclarationLink": {
+      "@id": "soc:svhcDeclarationLink",
+      "@type": "@id"
+    },
+    "restrictedSubstanceListCompliance": {
+      "@id": "soc:restrictedSubstanceListCompliance"
+    },
+    "batteryRegAnnexVI": {
+      "@id": "soc:batteryRegAnnexVICompliant",
+      "@type": "xsd:boolean"
+    },
+    "otherLists": {
+      "@id": "soc:otherListCompliance",
+      "@container": "@set"
+    },
+    "listName": {
+      "@id": "soc:listName",
+      "@type": "xsd:string"
+    },
+    "compliant": {
+      "@id": "soc:compliant",
+      "@type": "xsd:boolean"
+    },
+    "dueDiligenceStatement": {
+      "@id": "soc:dueDiligenceStatement"
+    },
+    "performedBy": {
+      "@id": "soc:performedBy",
+      "@type": "xsd:string"
+    },
+    "date": {
+      "@id": "dcterms:date",
+      "@type": "xsd:date"
+    },
+    "methodology": {
+      "@id": "soc:methodology",
+      "@type": "xsd:string"
+    },
+    "reportLink": {
+      "@id": "soc:reportLink",
+      "@type": "@id"
+    }
+  }
+}

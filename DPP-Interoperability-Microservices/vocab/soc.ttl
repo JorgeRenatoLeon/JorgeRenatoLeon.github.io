@@ -1,0 +1,501 @@
+@prefix soc:     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc#> .
+@prefix dpp:     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+<https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc>
+  a owl:Ontology ;
+  owl:versionIRI   <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc/0.2> ;
+  owl:versionInfo  "0.2" ;
+  owl:imports      <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:label       "DPP Substances of Concern Extension Vocabulary"@en ;
+  dcterms:description
+    "Substances of Concern extension vocabulary for the DPP Interoperability Platform. Covers hazardous substances, REACH/RoHS compliance, SVHC checks, restricted substance lists, and due diligence."@en ;
+  dcterms:creator  "Jorge Renato Leon Chumpitaz" ;
+  dcterms:created  "2026-02-06"^^xsd:date ;
+  dcterms:modified "2026-02-23"^^xsd:date ;
+  dcterms:license  <https://creativecommons.org/licenses/by/4.0/> ;
+  dcterms:rights   "CC BY 4.0 — Jorge Renato Leon Chumpitaz" ;
+  dcterms:subject  "Digital Product Passport", "REACH", "RoHS",
+                   "Substances of Concern", "SVHC" ;
+  rdfs:seeAlso     <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02006R1907-20230101> ,
+                   <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32011L0065> .
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+soc:SocExtension
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "Substances of Concern Extension"@en ;
+  rdfs:comment "Container class for substances of concern data within a DPP."@en .
+
+soc:Substance
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "Substance"@en ;
+  rdfs:comment "A hazardous substance present in the product, identified by CAS/EC number."@en ;
+  rdfs:seeAlso <https://echa.europa.eu/information-on-chemicals> .
+
+soc:Concentration
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "Concentration"@en ;
+  rdfs:comment "Concentration measurement: value, unit, and measurement uncertainty."@en .
+
+soc:RegulatoryThreshold
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "Regulatory Threshold"@en ;
+  rdfs:comment "Regulatory threshold against which a substance concentration is compared."@en .
+
+soc:SvhcCandidateListCheck
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "SVHC Candidate List Check"@en ;
+  rdfs:comment "Result of checking the product against the ECHA SVHC Candidate List (REACH Article 33)."@en ;
+  rdfs:seeAlso <https://echa.europa.eu/candidate-list-table> .
+
+soc:RestrictedSubstanceListCompliance
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "Restricted Substance List Compliance"@en ;
+  rdfs:comment "Compliance status with restricted substance lists (RoHS, Battery Regulation Annex VI, etc.)."@en .
+
+soc:OtherListCompliance
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "Other List Compliance"@en ;
+  rdfs:comment "Compliance with additional restricted substance lists beyond core regulations."@en .
+
+soc:DueDiligenceStatement
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "Due Diligence Statement"@en ;
+  rdfs:comment "Supply chain due diligence statement for substances of concern."@en .
+
+# NEW CLASS: replaces the plain-string soc:performedBy DatatypeProperty.
+# Aligned with the richer lcaef:Performer pattern for cross-extension consistency.
+soc:DueDiligencePerformer
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "Due Diligence Performer"@en ;
+  rdfs:comment "Organization or person that performed the due diligence assessment. Aligned with lcaef:Performer for cross-extension consistency."@en ;
+  rdfs:seeAlso <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef#Performer> .
+
+# Disjointness
+soc:Substance    owl:disjointWith soc:Concentration, soc:RegulatoryThreshold,
+                                  soc:SvhcCandidateListCheck, soc:DueDiligenceStatement .
+soc:Concentration owl:disjointWith soc:RegulatoryThreshold .
+
+# =============================================================================
+# Object Properties
+# =============================================================================
+
+soc:hasSubstanceOfConcern
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label    "hasSubstanceOfConcern"@en ;
+  rdfs:comment  "Links SoC extension to its declared hazardous substances."@en ;
+  rdfs:domain   soc:SocExtension ;
+  rdfs:range    soc:Substance ;
+  owl:inverseOf soc:isSubstanceOfConcernIn .
+
+soc:isSubstanceOfConcernIn
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "isSubstanceOfConcernIn"@en ;
+  rdfs:comment "Inverse of soc:hasSubstanceOfConcern."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   soc:SocExtension .
+
+# FIX: missing rdfs:range added
+soc:substances
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "substances"@en ;
+  rdfs:comment "Container property for the set of substances of concern."@en ;
+  rdfs:domain  soc:SocExtension ;
+  rdfs:range   soc:Substance .
+
+soc:concentration
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "concentration"@en ;
+  rdfs:comment "Links a substance to its concentration measurement."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   soc:Concentration .
+
+soc:regulatoryThreshold
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "regulatoryThreshold"@en ;
+  rdfs:comment "Links a substance to its applicable regulatory threshold."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   soc:RegulatoryThreshold .
+
+# FIX: missing rdfs:range added (self-referential — safer alternative is also a Substance)
+soc:alternatives
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "alternatives"@en ;
+  rdfs:comment "Links a substance to identified safer alternative substances."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   soc:Substance .
+
+soc:svhcCandidateListCheck
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "svhcCandidateListCheck"@en ;
+  rdfs:comment "Links SoC extension to its SVHC candidate list check result."@en ;
+  rdfs:domain  soc:SocExtension ;
+  rdfs:range   soc:SvhcCandidateListCheck .
+
+soc:restrictedSubstanceListCompliance
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "restrictedSubstanceListCompliance"@en ;
+  rdfs:comment "Links SoC extension to restricted substance compliance data."@en ;
+  rdfs:domain  soc:SocExtension ;
+  rdfs:range   soc:RestrictedSubstanceListCompliance .
+
+soc:otherListCompliance
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "otherListCompliance"@en ;
+  rdfs:comment "Links restricted substance compliance to other list checks."@en ;
+  rdfs:domain  soc:RestrictedSubstanceListCompliance ;
+  rdfs:range   soc:OtherListCompliance .
+
+soc:dueDiligenceStatement
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "dueDiligenceStatement"@en ;
+  rdfs:comment "Links SoC extension to a supply chain due diligence statement."@en ;
+  rdfs:domain  soc:SocExtension ;
+  rdfs:range   soc:DueDiligenceStatement .
+
+# FIX: changed from owl:DatatypeProperty (xsd:string) to owl:ObjectProperty
+# pointing to new soc:DueDiligencePerformer class, matching lcaef:performedBy pattern
+soc:performedBy
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "performedBy"@en ;
+  rdfs:comment "Links a DueDiligenceStatement to the organization that performed it."@en ;
+  rdfs:domain  soc:DueDiligenceStatement ;
+  rdfs:range   soc:DueDiligencePerformer .
+
+# =============================================================================
+# Datatype Properties — Substance
+# =============================================================================
+
+soc:substanceName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "substanceName"@en ;
+  rdfs:comment "Common name of the substance."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+soc:casNumber
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "casNumber"@en ;
+  rdfs:comment "Chemical Abstracts Service registry number."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+soc:ecNumber
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "ecNumber"@en ;
+  rdfs:comment "European Community number (EINECS/ELINCS)."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+soc:iupacName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "iupacName"@en ;
+  rdfs:comment "IUPAC systematic name."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+soc:substanceLocation
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "substanceLocation"@en ;
+  rdfs:comment "Location within the product (e.g. 'anode', 'coating', 'PCB solder')."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+soc:relevantLifecycleStage
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "relevantLifecycleStage"@en ;
+  rdfs:comment "Lifecycle stage where the substance is most relevant: production, use, end-of-life."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+soc:substanceFunction
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "substanceFunction"@en ;
+  rdfs:comment "Function or purpose of the substance in the product."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+soc:hazardClassification
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "hazardClassification"@en ;
+  rdfs:comment "CLP/GHS hazard classification codes (e.g. H302, Carc. 1B)."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+soc:role
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "role"@en ;
+  rdfs:comment "Regulatory role: 'SVHC', 'restricted', or 'notified'."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+soc:additionalNotes
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "additionalNotes"@en ;
+  rdfs:comment "Additional notes about the substance."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+soc:safetyDataSheetLink
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "safetyDataSheetLink"@en ;
+  rdfs:comment "URL to the safety data sheet (SDS)."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:anyURI .
+
+soc:reachStatus
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "reachStatus"@en ;
+  rdfs:comment "REACH registration or authorization status."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string ;
+  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02006R1907-20230101> .
+
+soc:svhcCandidate
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "svhcCandidate"@en ;
+  rdfs:comment "Whether the substance is on the SVHC Candidate List."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:boolean .
+
+soc:exemptions
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "exemptions"@en ;
+  rdfs:comment "Applicable regulatory exemptions for the substance."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+soc:restrictionEntries
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "restrictionEntries"@en ;
+  rdfs:comment "REACH Annex XVII restriction entries applicable to the substance."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+soc:registrationNumber
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "registrationNumber"@en ;
+  rdfs:comment "REACH registration number."@en ;
+  rdfs:domain  soc:Substance ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — Concentration
+# =============================================================================
+
+soc:concentrationValue
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "concentrationValue"@en ;
+  rdfs:comment "Numeric concentration value."@en ;
+  rdfs:domain  soc:Concentration ;
+  rdfs:range   xsd:double .
+
+soc:concentrationUnit
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "concentrationUnit"@en ;
+  rdfs:comment "Unit of measurement (e.g. 'wt%', 'ppm', 'mg/kg')."@en ;
+  rdfs:domain  soc:Concentration ;
+  rdfs:range   xsd:string .
+
+soc:measurementMethod
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "measurementMethod"@en ;
+  rdfs:comment "Analytical method used (e.g. ICP-MS, XRF)."@en ;
+  rdfs:domain  soc:Concentration ;
+  rdfs:range   xsd:string .
+
+soc:measurementUncertainty
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "measurementUncertainty"@en ;
+  rdfs:comment "Measurement uncertainty as a percentage or absolute value."@en ;
+  rdfs:domain  soc:Concentration ;
+  rdfs:range   xsd:double .
+
+# =============================================================================
+# Datatype Properties — Regulatory Threshold
+# NOTE: soc:regulationReference duplicates lcaef:regulationReference.
+# Consider promoting to dpp:regulationReference in a future core revision.
+# =============================================================================
+
+soc:thresholdExceeded
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "thresholdExceeded"@en ;
+  rdfs:comment "Whether the measured concentration exceeds the regulatory threshold."@en ;
+  rdfs:domain  soc:RegulatoryThreshold ;
+  rdfs:range   xsd:boolean .
+
+soc:regulationReference
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "regulationReference"@en ;
+  rdfs:comment "Name or identifier of the regulation defining the threshold."@en ;
+  rdfs:domain  soc:RegulatoryThreshold ;
+  rdfs:range   xsd:string ;
+  rdfs:seeAlso <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef#regulationReference> .
+
+soc:regulationLink
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "regulationLink"@en ;
+  rdfs:comment "URL to the regulation defining the threshold."@en ;
+  rdfs:domain  soc:RegulatoryThreshold ;
+  rdfs:range   xsd:anyURI .
+
+# =============================================================================
+# Datatype Properties — SVHC & Compliance
+# =============================================================================
+
+soc:candidateListVersion
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "candidateListVersion"@en ;
+  rdfs:comment "Version of the ECHA SVHC Candidate List used for the check."@en ;
+  rdfs:domain  soc:SvhcCandidateListCheck ;
+  rdfs:range   xsd:string ;
+  rdfs:seeAlso <https://echa.europa.eu/candidate-list-table> .
+
+soc:containsSVHC
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "containsSVHC"@en ;
+  rdfs:comment "Whether the product contains SVHC above 0.1% w/w."@en ;
+  rdfs:domain  soc:SvhcCandidateListCheck ;
+  rdfs:range   xsd:boolean .
+
+soc:svhcDeclarationLink
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "svhcDeclarationLink"@en ;
+  rdfs:comment "URL to the SVHC declaration document."@en ;
+  rdfs:domain  soc:SvhcCandidateListCheck ;
+  rdfs:range   xsd:anyURI .
+
+soc:batteryRegAnnexVICompliant
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "batteryRegAnnexVICompliant"@en ;
+  rdfs:comment "Whether the product complies with EU Battery Regulation 2023/1542 Annex VI."@en ;
+  rdfs:domain  soc:RestrictedSubstanceListCompliance ;
+  rdfs:range   xsd:boolean ;
+  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1542> .
+
+soc:listName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "listName"@en ;
+  rdfs:comment "Name of the restricted substance list (e.g. 'GADSL', 'SIN List')."@en ;
+  rdfs:domain  soc:OtherListCompliance ;
+  rdfs:range   xsd:string .
+
+soc:compliant
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "compliant"@en ;
+  rdfs:comment "Whether the product is compliant with the restricted substance list."@en ;
+  rdfs:domain  soc:OtherListCompliance ;
+  rdfs:range   xsd:boolean .
+
+soc:rohsCompliant
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "rohsCompliant"@en ;
+  rdfs:comment "Whether the product complies with EU RoHS Directive 2011/65/EU."@en ;
+  rdfs:domain  soc:SocExtension ;
+  rdfs:range   xsd:boolean ;
+  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32011L0065> .
+
+soc:lastAssessmentDate
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "lastAssessmentDate"@en ;
+  rdfs:comment "Date of the most recent substances of concern assessment."@en ;
+  rdfs:domain  soc:SocExtension ;
+  rdfs:range   xsd:date .
+
+# =============================================================================
+# Datatype Properties — Due Diligence Performer
+# =============================================================================
+
+soc:performerName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "performerName"@en ;
+  rdfs:comment "Name of the organization or person that performed the due diligence."@en ;
+  rdfs:domain  soc:DueDiligencePerformer ;
+  rdfs:range   xsd:string .
+
+soc:performerContact
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "performerContact"@en ;
+  rdfs:comment "Contact information for the due diligence performer."@en ;
+  rdfs:domain  soc:DueDiligencePerformer ;
+  rdfs:range   xsd:string .
+
+# =============================================================================
+# Datatype Properties — Due Diligence Statement
+# =============================================================================
+
+soc:methodology
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "methodology"@en ;
+  rdfs:comment "Methodology used for the due diligence assessment."@en ;
+  rdfs:domain  soc:DueDiligenceStatement ;
+  rdfs:range   xsd:string .
+
+soc:reportLink
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "reportLink"@en ;
+  rdfs:comment "URL to the due diligence report document."@en ;
+  rdfs:domain  soc:DueDiligenceStatement ;
+  rdfs:range   xsd:anyURI .

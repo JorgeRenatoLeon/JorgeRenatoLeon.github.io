@@ -1,0 +1,219 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dpp": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#",
+    "battery": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery#",
+    "qudt": "http://qudt.org/schema/qudt/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "unit": "http://qudt.org/vocab/unit/",
+    "chemistry": {
+      "@id": "battery:chemistry"
+    },
+    "chemistryType": {
+      "@id": "battery:chemistryType",
+      "@type": "xsd:string"
+    },
+    "anode": {
+      "@id": "battery:anodeMaterial",
+      "@type": "xsd:string"
+    },
+    "cathode": {
+      "@id": "battery:cathodeMaterial",
+      "@type": "xsd:string"
+    },
+    "electrolyte": {
+      "@id": "battery:electrolyteType",
+      "@type": "xsd:string"
+    },
+    "materialComposition": {
+      "@id": "battery:materialComposition",
+      "@container": "@set"
+    },
+    "element": {
+      "@id": "battery:element",
+      "@type": "xsd:string"
+    },
+    "role": {
+      "@id": "battery:materialRole",
+      "@type": "xsd:string"
+    },
+    "massPercentage": {
+      "@id": "battery:massPercentage",
+      "@type": "xsd:double"
+    },
+    "recycledContentPercentage": {
+      "@id": "battery:recycledContentPercentage",
+      "@type": "xsd:double"
+    },
+    "performance": {
+      "@id": "battery:performance"
+    },
+    "ratedCapacity": {
+      "@id": "battery:ratedCapacity",
+      "@type": "qudt:QuantityValue"
+    },
+    "nominalVoltage": {
+      "@id": "battery:nominalVoltage",
+      "@type": "qudt:QuantityValue"
+    },
+    "roundTripEfficiency": {
+      "@id": "battery:roundTripEfficiency",
+      "@type": "xsd:double"
+    },
+    "powerCapability": {
+      "@id": "battery:powerCapability",
+      "@type": "xsd:string"
+    },
+    "selfDischargeRate": {
+      "@id": "battery:selfDischargeRate",
+      "@type": "qudt:QuantityValue"
+    },
+    "internalResistance": {
+      "@id": "battery:internalResistance",
+      "@type": "qudt:QuantityValue"
+    },
+    "capacityFadePerYear": {
+      "@id": "battery:capacityFadePerYear",
+      "@type": "xsd:double"
+    },
+    "powerFadePerYear": {
+      "@id": "battery:powerFadePerYear",
+      "@type": "xsd:double"
+    },
+    "impedanceGrowthPerYear": {
+      "@id": "battery:impedanceGrowthPerYear",
+      "@type": "xsd:double"
+    },
+    "status": {
+      "@id": "battery:batteryStatus"
+    },
+    "stateOfHealth": {
+      "@id": "battery:stateOfHealth",
+      "@type": "xsd:double"
+    },
+    "stateOfCharge": {
+      "@id": "battery:stateOfCharge",
+      "@type": "xsd:double"
+    },
+    "remainingCapacity": {
+      "@id": "battery:remainingCapacity",
+      "@type": "qudt:QuantityValue"
+    },
+    "fullChargeCycles": {
+      "@id": "battery:fullChargeCycles",
+      "@type": "xsd:integer"
+    },
+    "currentInternalResistance": {
+      "@id": "battery:currentInternalResistance",
+      "@type": "qudt:QuantityValue"
+    },
+    "materials": {
+      "@id": "battery:materials"
+    },
+    "criticalRawMaterials": {
+      "@id": "battery:criticalRawMaterials",
+      "@container": "@set"
+    },
+    "name": {
+      "@id": "battery:materialName",
+      "@type": "xsd:string"
+    },
+    "recycledContent": {
+      "@id": "battery:recycledContent"
+    },
+    "byElement": {
+      "@id": "battery:recycledContentByElement",
+      "@container": "@set"
+    },
+    "recycledPercentage": {
+      "@id": "battery:recycledPercentage",
+      "@type": "xsd:double"
+    },
+    "durability": {
+      "@id": "battery:durability"
+    },
+    "expectedLifetime": {
+      "@id": "battery:expectedLifetime"
+    },
+    "years": {
+      "@id": "battery:lifetimeYears",
+      "@type": "xsd:double"
+    },
+    "cycles": {
+      "@id": "battery:lifetimeCycles",
+      "@type": "xsd:integer"
+    },
+    "cycleLifeTest": {
+      "@id": "battery:cycleLifeTest"
+    },
+    "protocol": {
+      "@id": "battery:testProtocol",
+      "@type": "xsd:string"
+    },
+    "threshold": {
+      "@id": "battery:endOfLifeThreshold",
+      "@type": "xsd:double"
+    },
+    "operatingTemperatureRange": {
+      "@id": "battery:operatingTemperatureRange"
+    },
+    "min": {
+      "@id": "battery:minTemperature",
+      "@type": "xsd:double"
+    },
+    "max": {
+      "@id": "battery:maxTemperature",
+      "@type": "xsd:double"
+    },
+    "deepOverchargeEvents": {
+      "@id": "battery:deepOverchargeEvents",
+      "@container": "@set"
+    },
+    "timestamp": {
+      "@id": "battery:eventTimestamp",
+      "@type": "xsd:dateTime"
+    },
+    "severity": {
+      "@id": "battery:eventSeverity",
+      "@type": "xsd:string"
+    },
+    "circularity": {
+      "@id": "battery:circularity"
+    },
+    "disassemblyManualLink": {
+      "@id": "battery:disassemblyManualLink",
+      "@type": "@id"
+    },
+    "preparationForReuseStatus": {
+      "@id": "battery:preparationForReuseStatus",
+      "@type": "xsd:string"
+    },
+    "collectionPointsLink": {
+      "@id": "battery:collectionPointsLink",
+      "@type": "@id"
+    },
+    "compliance": {
+      "@id": "battery:compliance"
+    },
+    "declarationOfConformityLink": {
+      "@id": "battery:declarationOfConformityLink",
+      "@type": "@id"
+    },
+    "testReportsLinks": {
+      "@id": "battery:testReportsLinks",
+      "@container": "@set",
+      "@type": "@id"
+    },
+    "supplyChain": {
+      "@id": "battery:supplyChain"
+    },
+    "dueDiligence": {
+      "@id": "battery:dueDiligence"
+    },
+    "reportLink": {
+      "@id": "battery:dueDiligenceReportLink",
+      "@type": "@id"
+    },
+    "battery": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery#"
+  }
+}

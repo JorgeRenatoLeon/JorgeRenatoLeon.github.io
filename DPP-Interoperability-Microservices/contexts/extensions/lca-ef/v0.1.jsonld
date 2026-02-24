@@ -1,0 +1,225 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dpp": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#",
+    "lcaef": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "qudt": "http://qudt.org/schema/qudt/",
+    "unit": "http://qudt.org/vocab/unit/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "carbonFootprint": {
+      "@id": "lcaef:carbonFootprint"
+    },
+    "total": {
+      "@id": "lcaef:totalCarbonFootprint"
+    },
+    "value": {
+      "@id": "qudt:numericValue",
+      "@type": "xsd:double"
+    },
+    "functionalUnit": {
+      "@id": "lcaef:functionalUnit",
+      "@type": "xsd:string"
+    },
+    "byScope": {
+      "@id": "lcaef:byScope"
+    },
+    "scope1": {
+      "@id": "lcaef:scope1",
+      "@type": "qudt:QuantityValue"
+    },
+    "scope2": {
+      "@id": "lcaef:scope2",
+      "@type": "qudt:QuantityValue"
+    },
+    "scope3": {
+      "@id": "lcaef:scope3",
+      "@type": "qudt:QuantityValue"
+    },
+    "description": {
+      "@id": "dcterms:description",
+      "@type": "xsd:string"
+    },
+    "approach": {
+      "@id": "lcaef:scope2Approach",
+      "@type": "xsd:string"
+    },
+    "categories": {
+      "@id": "lcaef:scope3Categories",
+      "@container": "@set"
+    },
+    "category": {
+      "@id": "lcaef:categoryName",
+      "@type": "xsd:string"
+    },
+    "byLifecycleStage": {
+      "@id": "lcaef:byLifecycleStage"
+    },
+    "rawMaterialExtraction": {
+      "@id": "lcaef:rawMaterialExtractionImpact",
+      "@type": "qudt:QuantityValue"
+    },
+    "manufacturing": {
+      "@id": "lcaef:manufacturingImpact",
+      "@type": "qudt:QuantityValue"
+    },
+    "distribution": {
+      "@id": "lcaef:distributionImpact",
+      "@type": "qudt:QuantityValue"
+    },
+    "usePhase": {
+      "@id": "lcaef:usePhaseImpact",
+      "@type": "qudt:QuantityValue"
+    },
+    "assumptions": {
+      "@id": "lcaef:usePhaseAssumptions",
+      "@type": "xsd:string"
+    },
+    "endOfLife": {
+      "@id": "lcaef:endOfLifeImpact",
+      "@type": "qudt:QuantityValue"
+    },
+    "scenarios": {
+      "@id": "lcaef:endOfLifeScenarios",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "impactCategories": {
+      "@id": "lcaef:impactCategories",
+      "@container": "@set"
+    },
+    "characterisationModel": {
+      "@id": "lcaef:characterisationModel",
+      "@type": "xsd:string"
+    },
+    "methodology": {
+      "@id": "lcaef:methodology"
+    },
+    "standard": {
+      "@id": "lcaef:standard",
+      "@type": "xsd:string"
+    },
+    "systemBoundary": {
+      "@id": "lcaef:systemBoundary",
+      "@type": "xsd:string"
+    },
+    "cutOffCriteria": {
+      "@id": "lcaef:cutOffCriteria",
+      "@type": "xsd:string"
+    },
+    "dataQuality": {
+      "@id": "lcaef:dataQuality"
+    },
+    "temporalCoverage": {
+      "@id": "lcaef:temporalCoverage",
+      "@type": "xsd:string"
+    },
+    "geographicalCoverage": {
+      "@id": "lcaef:geographicalCoverage",
+      "@type": "xsd:string"
+    },
+    "technologyCoverage": {
+      "@id": "lcaef:technologyCoverage",
+      "@type": "xsd:string"
+    },
+    "primaryDataPercentage": {
+      "@id": "lcaef:primaryDataPercentage",
+      "@type": "xsd:double"
+    },
+    "performedBy": {
+      "@id": "lcaef:performedBy"
+    },
+    "organization": {
+      "@id": "lcaef:performingOrganization",
+      "@type": "xsd:string"
+    },
+    "contact": {
+      "@id": "lcaef:contactInfo",
+      "@type": "xsd:string"
+    },
+    "accreditation": {
+      "@id": "lcaef:accreditation",
+      "@type": "xsd:string"
+    },
+    "performedDate": {
+      "@id": "lcaef:performedDate",
+      "@type": "xsd:date"
+    },
+    "reviewedBy": {
+      "@id": "lcaef:reviewedBy"
+    },
+    "reviewer": {
+      "@id": "lcaef:reviewer",
+      "@type": "xsd:string"
+    },
+    "reviewDate": {
+      "@id": "lcaef:reviewDate",
+      "@type": "xsd:date"
+    },
+    "reviewType": {
+      "@id": "lcaef:reviewType",
+      "@type": "xsd:string"
+    },
+    "reportLink": {
+      "@id": "lcaef:reportLink",
+      "@type": "@id"
+    },
+    "circularityMetrics": {
+      "@id": "lcaef:circularityMetrics"
+    },
+    "recyclabilityRate": {
+      "@id": "lcaef:recyclabilityRate",
+      "@type": "xsd:double"
+    },
+    "recycledContentRate": {
+      "@id": "lcaef:recycledContentRate",
+      "@type": "xsd:double"
+    },
+    "repairabilityScore": {
+      "@id": "lcaef:repairabilityScore",
+      "@type": "xsd:double"
+    },
+    "materialCircularityIndicator": {
+      "@id": "lcaef:materialCircularityIndicator",
+      "@type": "xsd:double"
+    },
+    "durabilityIndicator": {
+      "@id": "lcaef:durabilityIndicator",
+      "@type": "xsd:string"
+    },
+    "waterFootprint": {
+      "@id": "lcaef:waterFootprint"
+    },
+    "byType": {
+      "@id": "lcaef:waterByType"
+    },
+    "blue": {
+      "@id": "lcaef:blueWater",
+      "@type": "xsd:double"
+    },
+    "green": {
+      "@id": "lcaef:greenWater",
+      "@type": "xsd:double"
+    },
+    "grey": {
+      "@id": "lcaef:greyWater",
+      "@type": "xsd:double"
+    },
+    "complianceDeclarations": {
+      "@id": "lcaef:complianceDeclarations",
+      "@container": "@set"
+    },
+    "regulation": {
+      "@id": "lcaef:regulationReference",
+      "@type": "xsd:string"
+    },
+    "compliant": {
+      "@id": "lcaef:compliant",
+      "@type": "xsd:boolean"
+    },
+    "declarationLink": {
+      "@id": "lcaef:declarationLink",
+      "@type": "@id"
+    }
+  }
+}

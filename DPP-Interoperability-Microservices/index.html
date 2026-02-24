@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DPP Interoperability - Vocabulary and Contexts</title>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; color: #333; line-height: 1.6; }
+    h1 { border-bottom: 2px solid #d10065; padding-bottom: 0.5rem; }
+    h2 { color: #d10065; margin-top: 2rem; }
+    a { color: #0066cc; }
+    code { background: #f4f4f4; padding: 0.15em 0.4em; border-radius: 3px; font-size: 0.9em; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; text-align: left; }
+    th { background: #f8f8f8; }
+    .ns { font-family: monospace; font-size: 0.85em; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <h1>DPP Interoperability Vocabulary and JSON-LD Contexts</h1>
+  <p>
+    This site hosts the vocabulary definitions and JSON-LD context files for the
+    <strong>Digital Product Passport (DPP) Interoperability Platform</strong>,
+    developed as part of a Design Science Research thesis at Vrije Universiteit Amsterdam.
+  </p>
+
+  <h2>Vocabularies</h2>
+  <p>RDF vocabulary files defining the classes and properties used by the Shared Core Schema and its extensions.</p>
+  <table>
+    <thead>
+      <tr><th>Vocabulary</th><th>Namespace</th><th>Format</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="vocab/dpp.ttl">DPP Core</a></td>
+        <td class="ns"><code>https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#</code></td>
+        <td>Turtle</td>
+      </tr>
+      <tr>
+        <td><a href="vocab/battery.ttl">Battery Extension</a></td>
+        <td class="ns"><code>https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery#</code></td>
+        <td>Turtle</td>
+      </tr>
+      <tr>
+        <td><a href="vocab/lca-ef.ttl">LCA/Environmental Footprint Extension</a></td>
+        <td class="ns"><code>https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef#</code></td>
+        <td>Turtle</td>
+      </tr>
+      <tr>
+        <td><a href="vocab/soc.ttl">Substances of Concern Extension</a></td>
+        <td class="ns"><code>https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc#</code></td>
+        <td>Turtle</td>
+      </tr>
+      <tr>
+        <td><a href="vocab/food.ttl">Food Extension</a></td>
+        <td class="ns"><code>https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food#</code></td>
+        <td>Turtle</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>JSON-LD Contexts</h2>
+  <p>Context files for JSON-LD processing. Use these URIs in your <code>@context</code> arrays.</p>
+  <table>
+    <thead>
+      <tr><th>Context</th><th>URI</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Shared Core v0.2</td>
+        <td class="ns"><a href="contexts/core/v0.2.jsonld">https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/contexts/core/v0.2.jsonld</a></td>
+      </tr>
+      <tr>
+        <td>Battery Extension v0.1</td>
+        <td class="ns"><a href="contexts/extensions/battery/v0.1.jsonld">https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/contexts/extensions/battery/v0.1.jsonld</a></td>
+      </tr>
+      <tr>
+        <td>LCA-EF Extension v0.1</td>
+        <td class="ns"><a href="contexts/extensions/lca-ef/v0.1.jsonld">https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/contexts/extensions/lca-ef/v0.1.jsonld</a></td>
+      </tr>
+      <tr>
+        <td>SoC Extension v0.1</td>
+        <td class="ns"><a href="contexts/extensions/soc/v0.1.jsonld">https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/contexts/extensions/soc/v0.1.jsonld</a></td>
+      </tr>
+      <tr>
+        <td>Food Extension v0.1</td>
+        <td class="ns"><a href="contexts/extensions/food/v0.1.jsonld">https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/contexts/extensions/food/v0.1.jsonld</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Standards and Regulations</h2>
+  <p>The vocabularies and schema align with the following standards and EU regulations:</p>
+  <table>
+    <thead>
+      <tr><th>Standard / Regulation</th><th>Scope</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>EU ESPR (Ecodesign for Sustainable Products Regulation)</td><td>Core DPP structure</td></tr>
+      <tr><td>EU Battery Regulation 2023/1542</td><td>Battery extension</td></tr>
+      <tr><td>EU FIC Regulation 1169/2011</td><td>Food extension</td></tr>
+      <tr><td>EU REACH (EC) 1907/2006</td><td>SoC extension</td></tr>
+      <tr><td>EU RoHS Directive 2011/65/EU</td><td>SoC extension</td></tr>
+      <tr><td>GHG Protocol</td><td>LCA-EF extension</td></tr>
+      <tr><td>ISO 14040/14044</td><td>LCA-EF extension</td></tr>
+      <tr><td>EU PEF (Product Environmental Footprint)</td><td>LCA-EF extension</td></tr>
+      <tr><td>PROV-O (W3C Provenance Ontology)</td><td>Core provenance</td></tr>
+      <tr><td>Schema.org</td><td>Core product / manufacturer</td></tr>
+      <tr><td>GS1 Digital Link</td><td>Core identifiers</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Related Resources</h2>
+  <ul>
+    <li><a href="https://github.com/JorgeRenatoLeon/DPP-Interoperability-Microservices">Source Repository</a></li>
+    <li><a href="https://api.dpp.triplydb.com/datasets/jorge-chumpitaz/Jorge-Testing">SPARQL Datasets (TriplyDB)</a></li>
+    <li><a href="https://dpp-interoperability-ui.vercel.app">DPP Interoperability Platform UI</a></li>
+  </ul>
+
+  <footer style="margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 0.85em; color: #666;">
+    <p>DPP Interoperability Platform - MSc Thesis, Vrije Universiteit Amsterdam, 2026</p>
+  </footer>
+</body>
+</html>
