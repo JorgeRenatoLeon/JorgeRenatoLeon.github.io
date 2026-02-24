@@ -22,7 +22,7 @@ import { projects, type Project } from "@/data/portfolio";
 /*  CONSTANTS & TYPES                                                 */
 /* ================================================================== */
 
-/** Diamond accent colors — one per project */
+/** Accent colors — one per project */
 const gemAccents = [
   { glow: "rgba(99,102,241,0.35)", edge: "#818cf8", fill: "rgba(99,102,241,0.15)", fillSolid: "rgba(99,102,241,0.25)" },
   { glow: "rgba(6,182,212,0.35)", edge: "#22d3ee", fill: "rgba(6,182,212,0.15)", fillSolid: "rgba(6,182,212,0.25)" },
@@ -41,145 +41,178 @@ const gradients = [
 ];
 
 /* ================================================================== */
-/*  GEM GEOMETRY — Diamond-cut facet generation                       */
+/*  POLYHEDRON GEOMETRY — Irregular asymmetric rock/crystal faces     */
 /* ================================================================== */
 
 interface FaceDescriptor {
-  type: "table" | "crown" | "pavilion";
   /** CSS transform to position/orient this face in 3D space */
   transform: string;
-  /** CSS clip-path to shape this face div (trapezoid, triangle, octagon) */
+  /** CSS clip-path to shape this face div */
   clipPath: string;
   /** Face div width in px */
   width: number;
   /** Face div height in px */
   height: number;
-  /** Whether this face should show the project screenshot */
+  /** Whether this face should show the project screenshot on hover */
   showImage: boolean;
-  /** Crown face index (0-7) for panoramic image slice mapping */
-  faceIndex?: number;
+  /** Face index (0-based) for panoramic image slice mapping */
+  faceIndex: number;
+  /** Gray tone for default (non-hover) state — 0.0 (black) to 1.0 (white) */
+  grayTone: number;
+  /** Face normal Z component — positive = front-facing = shows image on hover */
+  normalZ: number;
   /** Unique key */
   key: string;
 }
 
-const NUM_SIDES = 8;
-const DEG = Math.PI / 180;
+/**
+ * Irregular polyhedron vertex data — hand-crafted asymmetric rock shape.
+ * Each face is defined by 3-4 vertex indices + a gray tone.
+ * Vertices are in object-space coords (x, y, z) centered at origin.
+ */
+
+// 12 vertices forming a chunky, asymmetric rock shape (~280 wide, ~240 tall)
+const ROCK_VERTS: [number, number, number][] = [
+  /* 0  top peak      */ [  10,  -120,   15],
+  /* 1  upper-left    */ [ -95,   -70,   65],
+  /* 2  upper-front   */ [  20,   -65,  115],
+  /* 3  upper-right   */ [ 110,   -60,   50],
+  /* 4  right-front   */ [ 125,    15,   85],
+  /* 5  lower-right   */ [ 100,    80,   40],
+  /* 6  bottom-right  */ [  55,   115,  -10],
+  /* 7  bottom-center */ [ -20,   110,   30],
+  /* 8  lower-left    */ [-110,    65,   55],
+  /* 9  left-back     */ [-120,   -15,  -40],
+  /* 10 back-upper    */ [  -5,   -80,  -85],
+  /* 11 back-lower    */ [  30,    50,  -90],
+];
+
+/** Face definitions: vertex indices + grayTone (hand-tuned for visual variety) */
+const ROCK_FACES: { verts: number[]; gray: number }[] = [
+  { verts: [0, 1, 2],       gray: 0.32 },  // top-front-left triangle
+  { verts: [0, 2, 3],       gray: 0.48 },  // top-front-right triangle
+  { verts: [2, 3, 4],       gray: 0.40 },  // front-right
+  { verts: [2, 4, 5, 7],    gray: 0.28 },  // front-center quad
+  { verts: [1, 2, 7, 8],    gray: 0.52 },  // front-left quad
+  { verts: [5, 6, 7],       gray: 0.22 },  // bottom-front
+  { verts: [0, 3, 10],      gray: 0.18 },  // top-back-right
+  { verts: [3, 4, 5, 11],   gray: 0.35 },  // right side
+  { verts: [5, 6, 11],      gray: 0.15 },  // bottom-right-back
+  { verts: [0, 1, 9, 10],   gray: 0.25 },  // top-back-left
+  { verts: [1, 8, 9],       gray: 0.38 },  // left-back
+  { verts: [6, 7, 8, 9, 11],gray: 0.20 },  // bottom-back
+  { verts: [9, 10, 11],     gray: 0.30 },  // back face
+];
+
+type Vec3 = [number, number, number];
+
+function cross(a: Vec3, b: Vec3): Vec3 {
+  return [
+    a[1] * b[2] - a[2] * b[1],
+    a[2] * b[0] - a[0] * b[2],
+    a[0] * b[1] - a[1] * b[0],
+  ];
+}
+
+function sub(a: Vec3, b: Vec3): Vec3 {
+  return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+}
+
+function normalize(v: Vec3): Vec3 {
+  const len = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+  return len === 0 ? [0, 0, 1] : [v[0] / len, v[1] / len, v[2] / len];
+}
 
 /**
- * Generate the 17-face diamond-cut gem geometry.
- * - 1 octagonal table (top)
- * - 8 trapezoidal crown faces (table → girdle)
- * - 8 triangular pavilion faces (girdle → culet)
+ * Generate face descriptors for the irregular polyhedron.
+ * Each face is projected to 2D, gets a CSS transform that positions it in 3D,
+ * and a clip-path that shapes it.
  */
-function generateGemFaces(
-  girdleRadius: number,
-  tableRadius: number,
-  crownHeight: number,
-  pavilionHeight: number
-): FaceDescriptor[] {
+function generatePolyhedronFaces(): FaceDescriptor[] {
   const faces: FaceDescriptor[] = [];
-  const angleStep = (2 * Math.PI) / NUM_SIDES;
 
-  /* ---- TABLE (octagonal top face) ---- */
-  const tablePoints: string[] = [];
-  for (let i = 0; i < NUM_SIDES; i++) {
-    const a = angleStep * i - Math.PI / 2;
-    const px = 50 + (50 * Math.cos(a));
-    const py = 50 + (50 * Math.sin(a));
-    tablePoints.push(`${px.toFixed(2)}% ${py.toFixed(2)}%`);
-  }
-  faces.push({
-    type: "table",
-    transform: `translate3d(0px, ${-crownHeight}px, 0px) rotateX(90deg)`,
-    clipPath: `polygon(${tablePoints.join(", ")})`,
-    width: tableRadius * 2,
-    height: tableRadius * 2,
-    showImage: true,
-    key: "table",
+  ROCK_FACES.forEach((faceDef, fi) => {
+    const pts = faceDef.verts.map((vi) => ROCK_VERTS[vi]);
+
+    // Compute face center
+    const cx = pts.reduce((s, p) => s + p[0], 0) / pts.length;
+    const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
+    const cz = pts.reduce((s, p) => s + p[2], 0) / pts.length;
+
+    // Compute face normal (using first 3 verts)
+    const e1 = sub(pts[1], pts[0]);
+    const e2 = sub(pts[2], pts[0]);
+    const rawNormal = cross(e1, e2);
+    const n = normalize(rawNormal);
+
+    // Ensure normal points outward (away from origin)
+    const dot = n[0] * cx + n[1] * cy + n[2] * cz;
+    const normal: Vec3 = dot >= 0 ? n : [-n[0], -n[1], -n[2]];
+
+    // Build local coordinate system on the face plane
+    // u = arbitrary vector perpendicular to normal
+    let up: Vec3 = [0, 1, 0];
+    if (Math.abs(normal[1]) > 0.9) up = [1, 0, 0];
+    const u = normalize(cross(normal, up));
+    const v = cross(normal, u);
+
+    // Project each vertex onto the face plane (local 2D coords)
+    const localPts = pts.map((p) => ({
+      u: (p[0] - cx) * u[0] + (p[1] - cy) * u[1] + (p[2] - cz) * u[2],
+      v: (p[0] - cx) * v[0] + (p[1] - cy) * v[1] + (p[2] - cz) * v[2],
+    }));
+
+    // Bounding box in local coords
+    const minU = Math.min(...localPts.map((p) => p.u));
+    const maxU = Math.max(...localPts.map((p) => p.u));
+    const minV = Math.min(...localPts.map((p) => p.v));
+    const maxV = Math.max(...localPts.map((p) => p.v));
+
+    const faceW = maxU - minU || 1;
+    const faceH = maxV - minV || 1;
+
+    // Build clip-path from local coords scaled to [0%, 100%]
+    const clipPoints = localPts
+      .map((p) => {
+        const px = ((p.u - minU) / faceW) * 100;
+        const py = ((p.v - minV) / faceH) * 100;
+        return `${px.toFixed(1)}% ${py.toFixed(1)}%`;
+      })
+      .join(", ");
+
+    // Build CSS transform via matrix3d — encodes full rotation + translation.
+    // Rotation matrix columns: u (local X), v (local Y), normal (local Z).
+    // CRITICAL: The div is centered at (0,0) in parent space (via left:50%, margin offsets).
+    // The bounding box center in local coords (midU, midV) may differ from (0,0),
+    // so the translation must compensate: tx = cx + u*midU + v*midV.
+    const midU = (minU + maxU) / 2;
+    const midV = (minV + maxV) / 2;
+    const tx = cx + u[0] * midU + v[0] * midV;
+    const ty = cy + u[1] * midU + v[1] * midV;
+    const tz = cz + u[2] * midU + v[2] * midV;
+
+    const transform = `matrix3d(${[
+      u[0], u[1], u[2], 0,
+      v[0], v[1], v[2], 0,
+      normal[0], normal[1], normal[2], 0,
+      tx, ty, tz, 1,
+    ].map((n) => n.toFixed(4)).join(",")})`;
+
+    // Front-facing threshold: normalZ > 0.2 means face is pointing toward viewer
+    const isFrontFacing = normal[2] > 0.2;
+
+    faces.push({
+      transform,
+      clipPath: `polygon(${clipPoints})`,
+      width: faceW,
+      height: faceH,
+      showImage: isFrontFacing,
+      faceIndex: fi,
+      grayTone: faceDef.gray,
+      normalZ: normal[2],
+      key: `face-${fi}`,
+    });
   });
-
-  /* ---- CROWN FACES (8 trapezoids from table down to girdle) ---- */
-  for (let i = 0; i < NUM_SIDES; i++) {
-    const angle = angleStep * i;
-    const midAngle = angle + angleStep / 2;
-
-    // Face normal direction
-    const nx = Math.cos(midAngle);
-    const nz = Math.sin(midAngle);
-
-    // Crown face tilts outward — compute tilt angle
-    const crownTilt = Math.atan2(girdleRadius - tableRadius, crownHeight);
-    const faceRotY = (midAngle * 180) / Math.PI;
-
-    // Width of each face at girdle level
-    const girdleChord = 2 * girdleRadius * Math.sin(angleStep / 2);
-    const tableChord = 2 * tableRadius * Math.sin(angleStep / 2);
-
-    // Face height (slant)
-    const slantH = Math.sqrt(
-      crownHeight * crownHeight +
-        (girdleRadius - tableRadius) * (girdleRadius - tableRadius)
-    );
-
-    // Trapezoid: top edge = tableChord, bottom edge = girdleChord
-    const topInset = ((girdleChord - tableChord) / (2 * girdleChord)) * 100;
-    const clipPath = `polygon(${topInset.toFixed(1)}% 0%, ${(100 - topInset).toFixed(1)}% 0%, 100% 100%, 0% 100%)`;
-
-    // Distance from center axis to face center
-    const avgR = (girdleRadius + tableRadius) / 2;
-    const crownTiltDeg = (crownTilt * 180) / Math.PI;
-
-    faces.push({
-      type: "crown",
-      transform: [
-        `translateY(${(-crownHeight / 2).toFixed(1)}px)`,
-        `rotateY(${faceRotY.toFixed(2)}deg)`,
-        `translateZ(${avgR.toFixed(1)}px)`,
-        `rotateX(${crownTiltDeg.toFixed(2)}deg)`,
-      ].join(" "),
-      clipPath,
-      width: girdleChord,
-      height: slantH,
-      showImage: true,
-      faceIndex: i,
-      key: `crown-${i}`,
-    });
-  }
-
-  /* ---- PAVILION FACES (8 triangles from girdle down to culet) ---- */
-  for (let i = 0; i < NUM_SIDES; i++) {
-    const angle = angleStep * i;
-    const midAngle = angle + angleStep / 2;
-
-    const pavilionTilt = Math.atan2(girdleRadius, pavilionHeight);
-    const faceRotY = (midAngle * 180) / Math.PI;
-
-    const girdleChord = 2 * girdleRadius * Math.sin(angleStep / 2);
-    const slantH = Math.sqrt(
-      pavilionHeight * pavilionHeight + girdleRadius * girdleRadius
-    );
-
-    // Triangle: full width at top, converging to point at bottom
-    const clipPath = "polygon(0% 0%, 100% 0%, 50% 100%)";
-
-    const avgR = girdleRadius / 2;
-    const pavilionTiltDeg = (pavilionTilt * 180) / Math.PI;
-
-    faces.push({
-      type: "pavilion",
-      transform: [
-        `translateY(${(pavilionHeight / 2).toFixed(1)}px)`,
-        `rotateY(${faceRotY.toFixed(2)}deg)`,
-        `translateZ(${avgR.toFixed(1)}px)`,
-        `rotateX(${(-pavilionTiltDeg).toFixed(2)}deg)`,
-      ].join(" "),
-      clipPath,
-      width: girdleChord,
-      height: slantH,
-      showImage: false,
-      key: `pav-${i}`,
-    });
-  }
 
   return faces;
 }
@@ -197,69 +230,55 @@ type IllustrationShape =
 
 interface OrbitItem {
   shape: IllustrationShape;
+  /** Primary orbit radius (horizontal) */
   orbitRadius: number;
+  /** Vertical orbit radius — differs from orbitRadius to create elliptical paths */
+  orbitRadiusY: number;
   orbitDuration: number;
+  /** Inclination of the orbital plane (degrees) */
   orbitTilt: number;
   startAngle: number;
+  /** Vertical offset from center (px) — scatters items up/down */
+  verticalOffset: number;
   size: number;
 }
 
 const projectOrbits: OrbitItem[][] = [
   /* DPP Interoperability */
   [
-    { shape: "laptop", orbitRadius: 200, orbitDuration: 14, orbitTilt: 15, startAngle: 0, size: 40 },
-    { shape: "document", orbitRadius: 240, orbitDuration: 18, orbitTilt: -20, startAngle: 120, size: 34 },
-    { shape: "globe", orbitRadius: 180, orbitDuration: 22, orbitTilt: 10, startAngle: 240, size: 36 },
+    { shape: "laptop",   orbitRadius: 180, orbitRadiusY: 140, orbitDuration: 14, orbitTilt:  20, startAngle:   0, verticalOffset: -15, size: 38 },
+    { shape: "document", orbitRadius: 210, orbitRadiusY: 170, orbitDuration: 20, orbitTilt: -30, startAngle: 120, verticalOffset:  10, size: 34 },
+    { shape: "globe",    orbitRadius: 190, orbitRadiusY: 190, orbitDuration: 17, orbitTilt:  40, startAngle: 240, verticalOffset:  -5, size: 36 },
   ],
   /* TravelApp */
   [
-    { shape: "suitcase", orbitRadius: 210, orbitDuration: 15, orbitTilt: -15, startAngle: 30, size: 38 },
-    { shape: "airplane", orbitRadius: 250, orbitDuration: 20, orbitTilt: 20, startAngle: 150, size: 36 },
-    { shape: "compass", orbitRadius: 185, orbitDuration: 17, orbitTilt: -10, startAngle: 270, size: 34 },
+    { shape: "suitcase", orbitRadius: 190, orbitRadiusY: 150, orbitDuration: 15, orbitTilt: -25, startAngle:  30, verticalOffset:  12, size: 38 },
+    { shape: "airplane", orbitRadius: 220, orbitRadiusY: 180, orbitDuration: 22, orbitTilt:  35, startAngle: 150, verticalOffset: -18, size: 36 },
+    { shape: "compass",  orbitRadius: 170, orbitRadiusY: 170, orbitDuration: 13, orbitTilt: -15, startAngle: 270, verticalOffset:   5, size: 34 },
   ],
   /* PUCP-IN */
   [
-    { shape: "gradcap", orbitRadius: 195, orbitDuration: 16, orbitTilt: 12, startAngle: 60, size: 38 },
-    { shape: "phone", orbitRadius: 235, orbitDuration: 19, orbitTilt: -18, startAngle: 180, size: 34 },
-    { shape: "badge", orbitRadius: 175, orbitDuration: 23, orbitTilt: 8, startAngle: 300, size: 34 },
+    { shape: "gradcap",  orbitRadius: 185, orbitRadiusY: 155, orbitDuration: 16, orbitTilt:  30, startAngle:  50, verticalOffset: -10, size: 38 },
+    { shape: "phone",    orbitRadius: 215, orbitRadiusY: 165, orbitDuration: 19, orbitTilt: -35, startAngle: 170, verticalOffset:  15, size: 34 },
+    { shape: "badge",    orbitRadius: 175, orbitRadiusY: 175, orbitDuration: 24, orbitTilt:  12, startAngle: 290, verticalOffset:  -3, size: 34 },
   ],
   /* Digital Voting */
   [
-    { shape: "ballotbox", orbitRadius: 205, orbitDuration: 14, orbitTilt: -14, startAngle: 45, size: 38 },
-    { shape: "shield", orbitRadius: 245, orbitDuration: 18, orbitTilt: 22, startAngle: 165, size: 36 },
-    { shape: "chainlink", orbitRadius: 190, orbitDuration: 21, orbitTilt: -8, startAngle: 285, size: 34 },
+    { shape: "ballotbox", orbitRadius: 195, orbitRadiusY: 145, orbitDuration: 14, orbitTilt: -20, startAngle:  40, verticalOffset:  14, size: 38 },
+    { shape: "shield",    orbitRadius: 220, orbitRadiusY: 175, orbitDuration: 18, orbitTilt:  38, startAngle: 160, verticalOffset: -16, size: 36 },
+    { shape: "chainlink", orbitRadius: 170, orbitRadiusY: 170, orbitDuration: 22, orbitTilt: -10, startAngle: 280, verticalOffset:   8, size: 34 },
   ],
   /* Assistance */
   [
-    { shape: "clock", orbitRadius: 200, orbitDuration: 15, orbitTilt: 16, startAngle: 20, size: 38 },
-    { shape: "calendar", orbitRadius: 240, orbitDuration: 19, orbitTilt: -20, startAngle: 140, size: 36 },
-    { shape: "clipboard", orbitRadius: 180, orbitDuration: 22, orbitTilt: 10, startAngle: 260, size: 34 },
+    { shape: "clock",     orbitRadius: 185, orbitRadiusY: 150, orbitDuration: 15, orbitTilt:  25, startAngle:  20, verticalOffset: -12, size: 38 },
+    { shape: "calendar",  orbitRadius: 210, orbitRadiusY: 165, orbitDuration: 21, orbitTilt: -32, startAngle: 140, verticalOffset:  10, size: 36 },
+    { shape: "clipboard", orbitRadius: 175, orbitRadiusY: 175, orbitDuration: 17, orbitTilt:  15, startAngle: 260, verticalOffset:  -8, size: 34 },
   ],
 ];
 
 /* ================================================================== */
 /*  THEMED 3D ILLUSTRATION COMPONENTS                                 */
 /* ================================================================== */
-
-/** Common face style builder */
-function faceStyle(
-  size: number,
-  transform: string,
-  bg: string,
-  border: string,
-  extra?: React.CSSProperties
-): React.CSSProperties {
-  return {
-    position: "absolute",
-    width: size,
-    height: size,
-    transform,
-    backfaceVisibility: "hidden",
-    background: bg,
-    border: `1px solid ${border}`,
-    ...extra,
-  };
-}
 
 /** 3D Laptop — base slab + angled screen */
 function Laptop3D({ size, accent }: Readonly<{ size: number; accent: typeof gemAccents[0] }>) {
@@ -923,15 +942,20 @@ function Shape3D({
 }
 
 /* ================================================================== */
-/*  ORBIT SYSTEM — orbiting 3D objects around the gem                 */
+/*  ORBIT SYSTEM — scattered 3D illustrations with wide elliptical    */
+/*  orbits around the polyhedron                                      */
 /* ================================================================== */
 function OrbitSystem({
   projectIndex,
   isActive,
+  isHovered = false,
   scale = 1,
-}: Readonly<{ projectIndex: number; isActive: boolean; scale?: number }>) {
+}: Readonly<{ projectIndex: number; isActive: boolean; isHovered?: boolean; scale?: number }>) {
   const orbits = projectOrbits[projectIndex % projectOrbits.length];
   const accent = gemAccents[projectIndex % gemAccents.length];
+
+  // Fixed rest angles when hovered — evenly distributed around the shape
+  const restAngles = [30, 150, 270];
 
   return (
     <div
@@ -944,45 +968,59 @@ function OrbitSystem({
           className="absolute left-1/2 top-1/2"
           style={{
             transformStyle: "preserve-3d",
-            transform: `rotateX(${item.orbitTilt}deg) rotateZ(${item.startAngle}deg)`,
+            transform: `translateY(${item.verticalOffset * scale}px) rotateX(${item.orbitTilt}deg) rotateZ(${item.startAngle}deg)`,
           }}
           animate={
             isActive
-              ? { rotateY: [0, 360] }
-              : { rotateY: 0 }
+              ? isHovered
+                ? { rotateY: restAngles[i], opacity: 1, scale: 1 }
+                : { rotateY: [0, 360], opacity: 1, scale: 1 }
+              : { rotateY: 0, opacity: 0, scale: 0.5 }
           }
           transition={
             isActive
-              ? {
-                  rotateY: {
-                    duration: item.orbitDuration,
-                    repeat: Infinity,
-                    ease: "linear",
-                  },
-                }
+              ? isHovered
+                ? {
+                    rotateY: { duration: 0.8, ease: "easeInOut" },
+                    opacity: { duration: 0.4 },
+                    scale: { duration: 0.4 },
+                  }
+                : {
+                    rotateY: {
+                      duration: item.orbitDuration,
+                      repeat: Infinity,
+                      ease: "linear",
+                    },
+                    opacity: { duration: 0.6 },
+                    scale: { duration: 0.6 },
+                  }
               : { duration: 0.5 }
           }
         >
-          {/* Orbit child — offset + counter-rotate to face viewer */}
+          {/* Orbit child — offset from center */}
           <motion.div
             style={{
               position: "absolute",
               transformStyle: "preserve-3d",
-              transform: `translateX(${item.orbitRadius * scale}px) translateY(-${(item.size * scale) / 2}px)`,
+              transform: `translateX(${item.orbitRadius * scale}px) translateZ(${(item.orbitRadiusY - item.orbitRadius) * scale * 0.5}px) translateY(-${(item.size * scale) / 2}px)`,
             }}
           >
-            {/* Self-rotation for the small shape */}
+            {/* Self-rotation — stops and faces viewer when hovered */}
             <motion.div
               animate={
-                isActive
+                isActive && !isHovered
                   ? { rotateY: [360, 0], rotateX: [0, 180, 360] }
-                  : {}
+                  : { rotateY: 0, rotateX: 0 }
               }
-              transition={{
-                duration: item.orbitDuration * 0.7,
-                repeat: Infinity,
-                ease: "linear",
-              }}
+              transition={
+                isActive && !isHovered
+                  ? {
+                      duration: item.orbitDuration * 0.6,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }
+                  : { duration: 0.6, ease: "easeOut" }
+              }
               style={{ transformStyle: "preserve-3d" }}
             >
               <Shape3D
@@ -999,7 +1037,7 @@ function OrbitSystem({
 }
 
 /* ================================================================== */
-/*  DIAMOND GEM — 3D diamond-cut gemstone with project image          */
+/*  POLYHEDRON — 3D rock-like shape with hover image reveal           */
 /* ================================================================== */
 
 // Responsive sizing hook
@@ -1021,7 +1059,14 @@ function useGemSize() {
   return scale;
 }
 
-function DiamondGem({
+/** Total number of front-facing image faces — for panoramic strip math */
+const IMAGE_FACE_COUNT = ROCK_FACES.filter((_, fi) => {
+  // Pre-compute: matches the logic in generatePolyhedronFaces for normalZ > 0.2
+  // We count them here so the constant is available before rendering
+  return true; // Will be filtered at render time by face.showImage
+}).length;
+
+function Polyhedron({
   project,
   index,
   isActive,
@@ -1031,17 +1076,18 @@ function DiamondGem({
   isActive: boolean;
 }>) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const scale = useGemSize();
 
   const springCfg = { stiffness: 120, damping: 18, mass: 0.6 };
   const mouseTiltX = useSpring(
-    useTransform(mouseY, [-0.5, 0.5], [15, -15]),
+    useTransform(mouseY, [-0.5, 0.5], [12, -12]),
     springCfg
   );
   const mouseTiltY = useSpring(
-    useTransform(mouseX, [-0.5, 0.5], [-18, 18]),
+    useTransform(mouseX, [-0.5, 0.5], [-15, 15]),
     springCfg
   );
 
@@ -1058,20 +1104,28 @@ function DiamondGem({
   const handleMouseLeave = useCallback(() => {
     mouseX.set(0);
     mouseY.set(0);
+    setIsHovered(false);
   }, [mouseX, mouseY]);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+  }, []);
 
   const accent = gemAccents[index % gemAccents.length];
   const gradient = gradients[index % gradients.length];
 
   // Generate faces once
-  const faces = useMemo(
-    () => generateGemFaces(130, 80, 60, 110),
-    []
+  const faces = useMemo(() => generatePolyhedronFaces(), []);
+
+  // Count how many faces show images (for panoramic slicing)
+  const imageFaceCount = useMemo(
+    () => faces.filter((f) => f.showImage).length,
+    [faces]
   );
 
-  // Total gem height = crownHeight + pavilionHeight = 170
-  const totalH = 170;
-  const girdleW = 260; // 2 * girdleRadius
+  // Polyhedron bounding box for container sizing
+  const polyW = 280;
+  const polyH = 260;
 
   return (
     <motion.div
@@ -1079,25 +1133,26 @@ function DiamondGem({
       className="relative cursor-pointer"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onMouseEnter={handleMouseEnter}
       style={{
         perspective: 1200,
-        width: girdleW * scale,
-        height: totalH * scale * 1.3,
+        width: polyW * scale,
+        height: polyH * scale,
       }}
     >
-      {/* Glow behind gem */}
+      {/* Glow behind polyhedron — intensifies on hover */}
       <motion.div
         className="absolute inset-0 blur-3xl"
         style={{
           background: accent.glow,
           borderRadius: "50%",
-          transform: "scale(1.8)",
+          transform: "scale(1.6)",
         }}
-        animate={{ opacity: isActive ? 0.5 : 0 }}
-        transition={{ duration: 0.7 }}
+        animate={{ opacity: isActive ? (isHovered ? 0.65 : 0.3) : 0 }}
+        transition={{ duration: 0.6 }}
       />
 
-      {/* 3D gem wrapper — auto-rotates + mouse tilt */}
+      {/* 3D polyhedron wrapper — mouse tilt on hover, static otherwise */}
       <motion.div
         className="absolute inset-0 flex items-center justify-center"
         style={{
@@ -1113,142 +1168,115 @@ function DiamondGem({
           }}
           animate={
             isActive
-              ? { rotateY: [0, 360] }
-              : { rotateY: 0, scale: 0.85, opacity: 0.3 }
+              ? { scale: 1, opacity: 1 }
+              : { scale: 0.85, opacity: 0.3 }
           }
-          transition={
-            isActive
-              ? {
-                  rotateY: {
-                    duration: 16,
-                    repeat: Infinity,
-                    ease: "linear",
-                  },
-                  scale: { duration: 0.7 },
-                  opacity: { duration: 0.7 },
-                }
-              : { duration: 0.7 }
-          }
+          transition={{ duration: 0.7 }}
         >
-          {/* Render all 17 gem faces */}
-          {faces.map((face) => (
-            <div
-              key={face.key}
-              style={{
-                position: "absolute",
-                width: face.width,
-                height: face.height,
-                transform: face.transform,
-                clipPath: face.clipPath,
-                backfaceVisibility: "hidden",
-                overflow: "hidden",
-                transformOrigin: "center center",
-                left: "50%",
-                top: "50%",
-                marginLeft: -face.width / 2,
-                marginTop: -face.height / 2,
-              }}
-            >
-              {/* Background: image or color */}
-              {face.showImage && project.image ? (
-                <>
-                  {face.type === "table" ? (
-                    /* Table face — full image centered on top */
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        backgroundImage: `url(${project.image})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        opacity: 0.92,
-                      }}
-                    />
-                  ) : (
-                    /* Crown face — panoramic strip: each of 8 faces shows 1/8th */
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        backgroundImage: `url(${project.image})`,
-                        backgroundSize: `${face.width * NUM_SIDES}px auto`,
-                        backgroundPosition: `${-(face.faceIndex ?? 0) * face.width}px center`,
-                        opacity: 0.92,
-                      }}
-                    />
-                  )}
-                  {/* Light refraction overlay */}
+          {/* Render polyhedron faces */}
+          {faces.map((face, fi) => {
+            // Gray tone to RGB for default state
+            const g = Math.round(face.grayTone * 255);
+            const grayColor = `rgb(${g}, ${g}, ${g})`;
+
+            // Image faces get a sequential index for panoramic slicing
+            let imageSliceIndex = 0;
+            if (face.showImage) {
+              imageSliceIndex = faces
+                .slice(0, fi)
+                .filter((f) => f.showImage).length;
+            }
+
+            return (
+              <div
+                key={face.key}
+                style={{
+                  position: "absolute",
+                  width: face.width,
+                  height: face.height,
+                  transform: face.transform,
+                  clipPath: face.clipPath,
+                  backfaceVisibility: "hidden",
+                  overflow: "hidden",
+                  transformOrigin: "center center",
+                  left: "50%",
+                  top: "50%",
+                  marginLeft: -face.width / 2,
+                  marginTop: -face.height / 2,
+                }}
+              >
+                {/* Default state: gray tone fill */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: grayColor,
+                    transition: "opacity 0.5s ease",
+                    opacity: isHovered && face.showImage && project.image ? 0 : 1,
+                  }}
+                />
+
+                {/* Hover state: project image on front-facing faces */}
+                {face.showImage && project.image && (
                   <div
                     className="absolute inset-0"
                     style={{
-                      background:
-                        face.type === "table"
-                          ? "linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 50%, rgba(0,0,0,0.1) 100%)"
-                          : "linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, transparent 40%, rgba(0,0,0,0.15) 100%)",
+                      backgroundImage: `url(${project.image})`,
+                      backgroundSize: `${face.width * imageFaceCount}px auto`,
+                      backgroundPosition: `${-imageSliceIndex * face.width}px center`,
+                      transition: "opacity 0.5s ease",
+                      opacity: isHovered ? 0.9 : 0,
                     }}
                   />
-                </>
-              ) : face.showImage ? (
-                <div
-                  className="flex h-full w-full items-center justify-center"
-                  style={{ background: gradient }}
-                >
-                  {face.type === "table" && (
-                    <span className="font-display text-2xl font-light text-white/20">
-                      {project.title
-                        .split(" ")
-                        .map((w) => w[0])
-                        .join("")}
+                )}
+
+                {/* Fallback: gradient with initials when no image */}
+                {face.showImage && !project.image && (
+                  <div
+                    className="absolute inset-0 flex items-center justify-center"
+                    style={{
+                      background: gradient,
+                      transition: "opacity 0.5s ease",
+                      opacity: isHovered ? 1 : 0,
+                    }}
+                  >
+                    <span className="font-display text-lg font-light text-white/30">
+                      {project.title.split(" ").map((w) => w[0]).join("")}
                     </span>
-                  )}
-                </div>
-              ) : (
-                /* Pavilion face — translucent colored panel */
+                  </div>
+                )}
+
+                {/* Subtle light/shadow gradient overlay */}
                 <div
-                  className="h-full w-full"
+                  className="pointer-events-none absolute inset-0"
                   style={{
-                    background: `linear-gradient(to bottom, ${accent.fillSolid}, ${accent.fill})`,
-                    border: `1px solid ${accent.edge}33`,
+                    background: `linear-gradient(135deg, rgba(255,255,255,${isHovered ? 0.12 : 0.06}) 0%, transparent 50%, rgba(0,0,0,${isHovered ? 0.15 : 0.08}) 100%)`,
+                    transition: "background 0.5s ease",
                   }}
                 />
-              )}
 
-              {/* Facet edge highlight */}
-              <div
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  boxShadow: `inset 0 0 0 0.5px ${accent.edge}22`,
-                }}
-              />
-            </div>
-          ))}
-
-          {/* Girdle ring — subtle edge at midpoint */}
-          <div
-            style={{
-              position: "absolute",
-              width: girdleW,
-              height: girdleW,
-              borderRadius: "50%",
-              border: `1px solid ${accent.edge}33`,
-              transform: "rotateX(90deg)",
-              left: "50%",
-              top: "50%",
-              marginLeft: -girdleW / 2,
-              marginTop: -girdleW / 2,
-              pointerEvents: "none",
-            }}
-          />
+                {/* Facet edge highlight */}
+                <div
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    boxShadow: `inset 0 0 0 1px rgba(255,255,255,0.08)`,
+                  }}
+                />
+              </div>
+            );
+          })}
         </motion.div>
       </motion.div>
 
-      {/* Orbiting 3D objects */}
+      {/* Orbiting 3D illustrations — scattered wide */}
       {isActive && (
         <div
           className="absolute inset-0 flex items-center justify-center"
           style={{
             transformStyle: "preserve-3d",
+            overflow: "visible",
           }}
         >
-          <OrbitSystem projectIndex={index} isActive={isActive} scale={scale} />
+          <OrbitSystem projectIndex={index} isActive={isActive} isHovered={isHovered} scale={scale} />
         </div>
       )}
     </motion.div>
@@ -1588,14 +1616,15 @@ function ProjectSlide({
         </motion.span>
       </div>
 
-      {/* Diamond gem with orbiting objects */}
+      {/* 3D Polyhedron with orbiting illustrations */}
       <motion.div
         className="relative"
+        style={{ overflow: "visible" }}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
       >
-        <DiamondGem project={project} index={index} isActive={true} />
+        <Polyhedron project={project} index={index} isActive={true} />
       </motion.div>
 
       {/* Project info panel */}
