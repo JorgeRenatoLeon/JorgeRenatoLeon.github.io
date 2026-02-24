@@ -87,21 +87,41 @@ const ROCK_VERTS: [number, number, number][] = [
   /* 11 back-lower    */ [  30,    50,  -90],
 ];
 
-/** Face definitions: vertex indices + grayTone (hand-tuned for visual variety) */
+/**
+ * Face definitions — ALL TRIANGULATED for guaranteed planarity.
+ * Non-planar quads/pentagons cause matrix3d alignment errors;
+ * triangulating eliminates this by ensuring every face is exactly planar.
+ */
 const ROCK_FACES: { verts: number[]; gray: number }[] = [
-  { verts: [0, 1, 2],       gray: 0.32 },  // top-front-left triangle
-  { verts: [0, 2, 3],       gray: 0.48 },  // top-front-right triangle
-  { verts: [2, 3, 4],       gray: 0.40 },  // front-right
-  { verts: [2, 4, 5, 7],    gray: 0.28 },  // front-center quad
-  { verts: [1, 2, 7, 8],    gray: 0.52 },  // front-left quad
-  { verts: [5, 6, 7],       gray: 0.22 },  // bottom-front
-  { verts: [0, 3, 10],      gray: 0.18 },  // top-back-right
-  { verts: [3, 4, 5, 11],   gray: 0.35 },  // right side
-  { verts: [5, 6, 11],      gray: 0.15 },  // bottom-right-back
-  { verts: [0, 1, 9, 10],   gray: 0.25 },  // top-back-left
-  { verts: [1, 8, 9],       gray: 0.38 },  // left-back
-  { verts: [6, 7, 8, 9, 11],gray: 0.20 },  // bottom-back
-  { verts: [9, 10, 11],     gray: 0.30 },  // back face
+  // Original triangles — kept as-is
+  { verts: [0, 1, 2],    gray: 0.32 },  // top-front-left
+  { verts: [0, 2, 3],    gray: 0.48 },  // top-front-right
+  { verts: [2, 3, 4],    gray: 0.40 },  // front-right
+  // Quad [2,4,5,7] -> 2 triangles
+  { verts: [2, 4, 5],    gray: 0.28 },  // front-center A
+  { verts: [2, 5, 7],    gray: 0.26 },  // front-center B
+  // Quad [1,2,7,8] -> 2 triangles
+  { verts: [1, 2, 7],    gray: 0.52 },  // front-left A
+  { verts: [1, 7, 8],    gray: 0.50 },  // front-left B
+  // Original triangle
+  { verts: [5, 6, 7],    gray: 0.22 },  // bottom-front
+  { verts: [0, 3, 10],   gray: 0.18 },  // top-back-right
+  // Quad [3,4,5,11] -> 2 triangles
+  { verts: [3, 4, 5],    gray: 0.35 },  // right side A
+  { verts: [3, 5, 11],   gray: 0.33 },  // right side B
+  // Original triangles
+  { verts: [5, 6, 11],   gray: 0.15 },  // bottom-right-back
+  // Quad [0,1,9,10] -> 2 triangles
+  { verts: [0, 1, 9],    gray: 0.25 },  // top-back-left A
+  { verts: [0, 9, 10],   gray: 0.23 },  // top-back-left B
+  // Original triangle
+  { verts: [1, 8, 9],    gray: 0.38 },  // left-back
+  // Pentagon [6,7,8,9,11] -> 3 triangles
+  { verts: [6, 7, 8],    gray: 0.20 },  // bottom-back A
+  { verts: [6, 8, 9],    gray: 0.19 },  // bottom-back B
+  { verts: [6, 9, 11],   gray: 0.21 },  // bottom-back C
+  // Original triangle
+  { verts: [9, 10, 11],  gray: 0.30 },  // back face
 ];
 
 type Vec3 = [number, number, number];
@@ -230,49 +250,47 @@ type IllustrationShape =
 
 interface OrbitItem {
   shape: IllustrationShape;
-  /** Primary orbit radius (horizontal) */
   orbitRadius: number;
-  /** Vertical orbit radius — differs from orbitRadius to create elliptical paths */
-  orbitRadiusY: number;
   orbitDuration: number;
-  /** Inclination of the orbital plane (degrees) */
-  orbitTilt: number;
+  /** Orbital plane inclination around X axis (degrees) */
+  tiltX: number;
+  /** Orbital plane inclination around Z axis (degrees) */
+  tiltZ: number;
+  /** Start angle offset (degrees) — initial position in orbit */
   startAngle: number;
-  /** Vertical offset from center (px) — scatters items up/down */
-  verticalOffset: number;
   size: number;
 }
 
 const projectOrbits: OrbitItem[][] = [
-  /* DPP Interoperability */
+  /* DPP Interoperability — laptop, document, globe */
   [
-    { shape: "laptop",   orbitRadius: 180, orbitRadiusY: 140, orbitDuration: 14, orbitTilt:  20, startAngle:   0, verticalOffset: -15, size: 38 },
-    { shape: "document", orbitRadius: 210, orbitRadiusY: 170, orbitDuration: 20, orbitTilt: -30, startAngle: 120, verticalOffset:  10, size: 34 },
-    { shape: "globe",    orbitRadius: 190, orbitRadiusY: 190, orbitDuration: 17, orbitTilt:  40, startAngle: 240, verticalOffset:  -5, size: 36 },
+    { shape: "laptop",   orbitRadius: 260, orbitDuration: 14, tiltX:  10, tiltZ:   5, startAngle:   0, size: 38 },
+    { shape: "document", orbitRadius: 280, orbitDuration: 20, tiltX:  55, tiltZ:  40, startAngle: 120, size: 34 },
+    { shape: "globe",    orbitRadius: 250, orbitDuration: 17, tiltX: -45, tiltZ: -55, startAngle: 240, size: 36 },
   ],
-  /* TravelApp */
+  /* TravelApp — suitcase, airplane, compass */
   [
-    { shape: "suitcase", orbitRadius: 190, orbitRadiusY: 150, orbitDuration: 15, orbitTilt: -25, startAngle:  30, verticalOffset:  12, size: 38 },
-    { shape: "airplane", orbitRadius: 220, orbitRadiusY: 180, orbitDuration: 22, orbitTilt:  35, startAngle: 150, verticalOffset: -18, size: 36 },
-    { shape: "compass",  orbitRadius: 170, orbitRadiusY: 170, orbitDuration: 13, orbitTilt: -15, startAngle: 270, verticalOffset:   5, size: 34 },
+    { shape: "suitcase", orbitRadius: 270, orbitDuration: 15, tiltX: -15, tiltZ:  10, startAngle:  30, size: 38 },
+    { shape: "airplane", orbitRadius: 290, orbitDuration: 22, tiltX:  50, tiltZ: -45, startAngle: 150, size: 36 },
+    { shape: "compass",  orbitRadius: 250, orbitDuration: 13, tiltX: -50, tiltZ:  50, startAngle: 270, size: 34 },
   ],
-  /* PUCP-IN */
+  /* PUCP-IN — gradcap, phone, badge */
   [
-    { shape: "gradcap",  orbitRadius: 185, orbitRadiusY: 155, orbitDuration: 16, orbitTilt:  30, startAngle:  50, verticalOffset: -10, size: 38 },
-    { shape: "phone",    orbitRadius: 215, orbitRadiusY: 165, orbitDuration: 19, orbitTilt: -35, startAngle: 170, verticalOffset:  15, size: 34 },
-    { shape: "badge",    orbitRadius: 175, orbitRadiusY: 175, orbitDuration: 24, orbitTilt:  12, startAngle: 290, verticalOffset:  -3, size: 34 },
+    { shape: "gradcap",  orbitRadius: 265, orbitDuration: 16, tiltX:  20, tiltZ: -10, startAngle:  50, size: 38 },
+    { shape: "phone",    orbitRadius: 285, orbitDuration: 19, tiltX: -55, tiltZ:  35, startAngle: 170, size: 34 },
+    { shape: "badge",    orbitRadius: 245, orbitDuration: 24, tiltX:  45, tiltZ: -50, startAngle: 290, size: 34 },
   ],
-  /* Digital Voting */
+  /* Digital Voting — ballotbox, shield, chainlink */
   [
-    { shape: "ballotbox", orbitRadius: 195, orbitRadiusY: 145, orbitDuration: 14, orbitTilt: -20, startAngle:  40, verticalOffset:  14, size: 38 },
-    { shape: "shield",    orbitRadius: 220, orbitRadiusY: 175, orbitDuration: 18, orbitTilt:  38, startAngle: 160, verticalOffset: -16, size: 36 },
-    { shape: "chainlink", orbitRadius: 170, orbitRadiusY: 170, orbitDuration: 22, orbitTilt: -10, startAngle: 280, verticalOffset:   8, size: 34 },
+    { shape: "ballotbox", orbitRadius: 275, orbitDuration: 14, tiltX: -10, tiltZ: -15, startAngle:  40, size: 38 },
+    { shape: "shield",    orbitRadius: 290, orbitDuration: 18, tiltX:  50, tiltZ:  45, startAngle: 160, size: 36 },
+    { shape: "chainlink", orbitRadius: 250, orbitDuration: 22, tiltX: -45, tiltZ: -40, startAngle: 280, size: 34 },
   ],
-  /* Assistance */
+  /* Assistance — clock, calendar, clipboard */
   [
-    { shape: "clock",     orbitRadius: 185, orbitRadiusY: 150, orbitDuration: 15, orbitTilt:  25, startAngle:  20, verticalOffset: -12, size: 38 },
-    { shape: "calendar",  orbitRadius: 210, orbitRadiusY: 165, orbitDuration: 21, orbitTilt: -32, startAngle: 140, verticalOffset:  10, size: 36 },
-    { shape: "clipboard", orbitRadius: 175, orbitRadiusY: 175, orbitDuration: 17, orbitTilt:  15, startAngle: 260, verticalOffset:  -8, size: 34 },
+    { shape: "clock",     orbitRadius: 260, orbitDuration: 15, tiltX:  15, tiltZ:  20, startAngle:  20, size: 38 },
+    { shape: "calendar",  orbitRadius: 280, orbitDuration: 21, tiltX: -50, tiltZ: -45, startAngle: 140, size: 36 },
+    { shape: "clipboard", orbitRadius: 250, orbitDuration: 17, tiltX:  50, tiltZ:  55, startAngle: 260, size: 34 },
   ],
 ];
 
@@ -954,8 +972,9 @@ function OrbitSystem({
   const orbits = projectOrbits[projectIndex % projectOrbits.length];
   const accent = gemAccents[projectIndex % gemAccents.length];
 
-  // Fixed rest angles when hovered — evenly distributed around the shape
-  const restAngles = [30, 150, 270];
+  // Rest angles when hovered — all in the front half (positive Z = toward viewer)
+  // 200deg = left-front, 270deg = center-front, 340deg = right-front
+  const restAngles = [200, 270, 340];
 
   return (
     <div
@@ -963,74 +982,91 @@ function OrbitSystem({
       style={{ transformStyle: "preserve-3d" }}
     >
       {orbits.map((item, i) => (
-        <motion.div
+        <div
           key={`orbit-${projectIndex}-${i}`}
           className="absolute left-1/2 top-1/2"
-          style={{
-            transformStyle: "preserve-3d",
-            transform: `translateY(${item.verticalOffset * scale}px) rotateX(${item.orbitTilt}deg) rotateZ(${item.startAngle}deg)`,
-          }}
-          animate={
-            isActive
-              ? isHovered
-                ? { rotateY: restAngles[i], opacity: 1, scale: 1 }
-                : { rotateY: [0, 360], opacity: 1, scale: 1 }
-              : { rotateY: 0, opacity: 0, scale: 0.5 }
-          }
-          transition={
-            isActive
-              ? isHovered
-                ? {
-                    rotateY: { duration: 0.8, ease: "easeInOut" },
-                    opacity: { duration: 0.4 },
-                    scale: { duration: 0.4 },
-                  }
-                : {
-                    rotateY: {
-                      duration: item.orbitDuration,
-                      repeat: Infinity,
-                      ease: "linear",
-                    },
-                    opacity: { duration: 0.6 },
-                    scale: { duration: 0.6 },
-                  }
-              : { duration: 0.5 }
-          }
+          style={{ transformStyle: "preserve-3d" }}
         >
-          {/* Orbit child — offset from center */}
+          {/* Orbital plane tilt — animated to flat (0,0) on hover for visibility */}
           <motion.div
-            style={{
-              position: "absolute",
-              transformStyle: "preserve-3d",
-              transform: `translateX(${item.orbitRadius * scale}px) translateZ(${(item.orbitRadiusY - item.orbitRadius) * scale * 0.5}px) translateY(-${(item.size * scale) / 2}px)`,
+            style={{ transformStyle: "preserve-3d" }}
+            animate={
+              isActive
+                ? isHovered
+                  ? { rotateX: 0, rotateZ: 0, opacity: 1 }
+                  : { rotateX: item.tiltX, rotateZ: item.tiltZ, opacity: 1 }
+                : { rotateX: 0, rotateZ: 0, opacity: 0 }
+            }
+            transition={{
+              rotateX: { duration: 0.8, ease: "easeInOut" },
+              rotateZ: { duration: 0.8, ease: "easeInOut" },
+              opacity: { duration: 0.5 },
             }}
           >
-            {/* Self-rotation — stops and faces viewer when hovered */}
+            {/* Orbit rotation — continuous when active, parks on hover */}
             <motion.div
+              style={{ transformStyle: "preserve-3d" }}
               animate={
-                isActive && !isHovered
-                  ? { rotateY: [360, 0], rotateX: [0, 180, 360] }
-                  : { rotateY: 0, rotateX: 0 }
+                isActive
+                  ? isHovered
+                    ? { rotateY: restAngles[i], scale: 1 }
+                    : { rotateY: [item.startAngle, item.startAngle + 360], scale: 1 }
+                  : { rotateY: item.startAngle, scale: 0.5 }
               }
               transition={
-                isActive && !isHovered
-                  ? {
-                      duration: item.orbitDuration * 0.6,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }
-                  : { duration: 0.6, ease: "easeOut" }
+                isActive
+                  ? isHovered
+                    ? {
+                        rotateY: { duration: 0.8, ease: "easeInOut" },
+                        scale: { duration: 0.4 },
+                      }
+                    : {
+                        rotateY: {
+                          duration: item.orbitDuration,
+                          repeat: Infinity,
+                          ease: "linear",
+                        },
+                        scale: { duration: 0.6 },
+                      }
+                  : { duration: 0.5 }
               }
-              style={{ transformStyle: "preserve-3d" }}
             >
-              <Shape3D
-                shape={item.shape}
-                size={Math.round(item.size * scale)}
-                accent={accent}
-              />
+              {/* Radius offset from center — static */}
+              <div
+                style={{
+                  position: "absolute",
+                  transformStyle: "preserve-3d",
+                  transform: `translateX(${item.orbitRadius * scale}px) translateY(-${(item.size * scale) / 2}px)`,
+                }}
+              >
+                {/* Self-rotation — stops and faces viewer on hover */}
+                <motion.div
+                  animate={
+                    isActive && !isHovered
+                      ? { rotateY: [360, 0], rotateX: [0, 180, 360] }
+                      : { rotateY: 0, rotateX: 0 }
+                  }
+                  transition={
+                    isActive && !isHovered
+                      ? {
+                          duration: item.orbitDuration * 0.6,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }
+                      : { duration: 0.6, ease: "easeOut" }
+                  }
+                  style={{ transformStyle: "preserve-3d" }}
+                >
+                  <Shape3D
+                    shape={item.shape}
+                    size={Math.round(item.size * scale)}
+                    accent={accent}
+                  />
+                </motion.div>
+              </div>
             </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       ))}
     </div>
   );
