@@ -63,6 +63,8 @@ interface FaceDescriptor {
   normalZ: number;
   /** Unique key */
   key: string;
+  /** CSS matrix() for front-projection image placement (only for front faces) */
+  imageMatrix?: string;
 }
 
 /**
@@ -221,6 +223,21 @@ function generatePolyhedronFaces(): FaceDescriptor[] {
     // Front-facing threshold: normalZ > 0.2 means face is pointing toward viewer
     const isFrontFacing = normal[2] > 0.2;
 
+    // Compute 2D affine transform for front-projection image mapping.
+    // Maps image-div pixel coords to face-div pixel coords so the image
+    // appears projected from the viewer onto all front-facing faces coherently.
+    let imageMatrix: string | undefined;
+    if (isFrontFacing) {
+      const nz = normal[2];
+      const A = u[0] - normal[0] * u[2] / nz;
+      const B = u[1] - normal[1] * u[2] / nz;
+      const C = v[0] - normal[0] * v[2] / nz;
+      const D = v[1] - normal[1] * v[2] / nz;
+      const eVal = A * (POLY_MIN_X - cx) + B * (POLY_MIN_Y - cy) - minU;
+      const fVal = C * (POLY_MIN_X - cx) + D * (POLY_MIN_Y - cy) - minV;
+      imageMatrix = `matrix(${A.toFixed(6)}, ${C.toFixed(6)}, ${B.toFixed(6)}, ${D.toFixed(6)}, ${eVal.toFixed(2)}, ${fVal.toFixed(2)})`;
+    }
+
     faces.push({
       transform,
       clipPath: `polygon(${clipPoints})`,
@@ -231,6 +248,7 @@ function generatePolyhedronFaces(): FaceDescriptor[] {
       grayTone: faceDef.gray,
       normalZ: normal[2],
       key: `face-${fi}`,
+      imageMatrix,
     });
   });
 
@@ -1109,7 +1127,11 @@ function useGemSize() {
   return scale;
 }
 
-/* (panoramic strip mapping removed — each face now shows full image with cover) */
+/** Polyhedron bounding box in world XY — used for front-projection image mapping */
+const POLY_MIN_X = Math.min(...ROCK_VERTS.map(v => v[0]));
+const POLY_MIN_Y = Math.min(...ROCK_VERTS.map(v => v[1]));
+const POLY_BBOX_W = Math.max(...ROCK_VERTS.map(v => v[0])) - POLY_MIN_X;
+const POLY_BBOX_H = Math.max(...ROCK_VERTS.map(v => v[1])) - POLY_MIN_Y;
 
 function Polyhedron({
   project,
@@ -1248,14 +1270,20 @@ function Polyhedron({
                   }}
                 />
 
-                {/* Hover state: project image on front-facing faces */}
-                {face.showImage && project.image && (
+                {/* Hover state: front-projected image on front-facing faces */}
+                {face.showImage && face.imageMatrix && project.image && (
                   <div
-                    className="absolute inset-0"
+                    className="absolute"
                     style={{
+                      left: 0,
+                      top: 0,
+                      width: POLY_BBOX_W,
+                      height: POLY_BBOX_H,
                       backgroundImage: `url(${project.image})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
+                      transformOrigin: "0 0",
+                      transform: face.imageMatrix,
                       transition: "opacity 0.5s ease",
                       opacity: isHovered ? 0.9 : 0,
                     }}
