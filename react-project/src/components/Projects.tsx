@@ -264,33 +264,33 @@ interface OrbitItem {
 const projectOrbits: OrbitItem[][] = [
   /* DPP Interoperability — laptop, document, globe */
   [
-    { shape: "laptop",   orbitRadius: 260, orbitDuration: 14, tiltX:  10, tiltZ:   5, startAngle:   0, size: 38 },
-    { shape: "document", orbitRadius: 280, orbitDuration: 20, tiltX:  55, tiltZ:  40, startAngle: 120, size: 34 },
-    { shape: "globe",    orbitRadius: 250, orbitDuration: 17, tiltX: -45, tiltZ: -55, startAngle: 240, size: 36 },
+    { shape: "laptop",   orbitRadius: 195, orbitDuration: 14, tiltX:  10, tiltZ:   5, startAngle:   0, size: 38 },
+    { shape: "document", orbitRadius: 210, orbitDuration: 20, tiltX:  55, tiltZ:  40, startAngle: 120, size: 34 },
+    { shape: "globe",    orbitRadius: 185, orbitDuration: 17, tiltX: -45, tiltZ: -55, startAngle: 240, size: 36 },
   ],
   /* TravelApp — suitcase, airplane, compass */
   [
-    { shape: "suitcase", orbitRadius: 270, orbitDuration: 15, tiltX: -15, tiltZ:  10, startAngle:  30, size: 38 },
-    { shape: "airplane", orbitRadius: 290, orbitDuration: 22, tiltX:  50, tiltZ: -45, startAngle: 150, size: 36 },
-    { shape: "compass",  orbitRadius: 250, orbitDuration: 13, tiltX: -50, tiltZ:  50, startAngle: 270, size: 34 },
+    { shape: "suitcase", orbitRadius: 200, orbitDuration: 15, tiltX: -15, tiltZ:  10, startAngle:  30, size: 38 },
+    { shape: "airplane", orbitRadius: 210, orbitDuration: 22, tiltX:  50, tiltZ: -45, startAngle: 150, size: 36 },
+    { shape: "compass",  orbitRadius: 185, orbitDuration: 13, tiltX: -50, tiltZ:  50, startAngle: 270, size: 34 },
   ],
   /* PUCP-IN — gradcap, phone, badge */
   [
-    { shape: "gradcap",  orbitRadius: 265, orbitDuration: 16, tiltX:  20, tiltZ: -10, startAngle:  50, size: 38 },
-    { shape: "phone",    orbitRadius: 285, orbitDuration: 19, tiltX: -55, tiltZ:  35, startAngle: 170, size: 34 },
-    { shape: "badge",    orbitRadius: 245, orbitDuration: 24, tiltX:  45, tiltZ: -50, startAngle: 290, size: 34 },
+    { shape: "gradcap",  orbitRadius: 195, orbitDuration: 16, tiltX:  20, tiltZ: -10, startAngle:  50, size: 38 },
+    { shape: "phone",    orbitRadius: 210, orbitDuration: 19, tiltX: -55, tiltZ:  35, startAngle: 170, size: 34 },
+    { shape: "badge",    orbitRadius: 185, orbitDuration: 24, tiltX:  45, tiltZ: -50, startAngle: 290, size: 34 },
   ],
   /* Digital Voting — ballotbox, shield, chainlink */
   [
-    { shape: "ballotbox", orbitRadius: 275, orbitDuration: 14, tiltX: -10, tiltZ: -15, startAngle:  40, size: 38 },
-    { shape: "shield",    orbitRadius: 290, orbitDuration: 18, tiltX:  50, tiltZ:  45, startAngle: 160, size: 36 },
-    { shape: "chainlink", orbitRadius: 250, orbitDuration: 22, tiltX: -45, tiltZ: -40, startAngle: 280, size: 34 },
+    { shape: "ballotbox", orbitRadius: 200, orbitDuration: 14, tiltX: -10, tiltZ: -15, startAngle:  40, size: 38 },
+    { shape: "shield",    orbitRadius: 210, orbitDuration: 18, tiltX:  50, tiltZ:  45, startAngle: 160, size: 36 },
+    { shape: "chainlink", orbitRadius: 185, orbitDuration: 22, tiltX: -45, tiltZ: -40, startAngle: 280, size: 34 },
   ],
   /* Assistance — clock, calendar, clipboard */
   [
-    { shape: "clock",     orbitRadius: 260, orbitDuration: 15, tiltX:  15, tiltZ:  20, startAngle:  20, size: 38 },
-    { shape: "calendar",  orbitRadius: 280, orbitDuration: 21, tiltX: -50, tiltZ: -45, startAngle: 140, size: 36 },
-    { shape: "clipboard", orbitRadius: 250, orbitDuration: 17, tiltX:  50, tiltZ:  55, startAngle: 260, size: 34 },
+    { shape: "clock",     orbitRadius: 195, orbitDuration: 15, tiltX:  15, tiltZ:  20, startAngle:  20, size: 38 },
+    { shape: "calendar",  orbitRadius: 210, orbitDuration: 21, tiltX: -50, tiltZ: -45, startAngle: 140, size: 36 },
+    { shape: "clipboard", orbitRadius: 185, orbitDuration: 17, tiltX:  50, tiltZ:  55, startAngle: 260, size: 34 },
   ],
 ];
 
@@ -972,102 +972,116 @@ function OrbitSystem({
   const orbits = projectOrbits[projectIndex % projectOrbits.length];
   const accent = gemAccents[projectIndex % gemAccents.length];
 
-  // Rest angles when hovered — all in the front half (positive Z = toward viewer)
-  // 200deg = left-front, 270deg = center-front, 340deg = right-front
-  const restAngles = [200, 270, 340];
+  // Hover rest: evenly spaced in the XY plane at Z=0, close to polyhedron
+  const hoverR = 165 * scale;
+  const restXY = [
+    { x:  hoverR,            y: 0 },              // right
+    { x: -hoverR * 0.5,      y: -hoverR * 0.866 }, // upper-left
+    { x: -hoverR * 0.5,      y:  hoverR * 0.866 }, // lower-left
+  ];
 
   return (
     <div
       className="pointer-events-none absolute inset-0"
       style={{ transformStyle: "preserve-3d" }}
     >
-      {orbits.map((item, i) => (
-        <div
-          key={`orbit-${projectIndex}-${i}`}
-          className="absolute left-1/2 top-1/2"
-          style={{ transformStyle: "preserve-3d" }}
-        >
-          {/* Orbital plane tilt — animated to flat (0,0) on hover for visibility */}
-          <motion.div
+      {orbits.map((item, i) => {
+        const halfH = (item.size * scale) / 2;
+        return (
+          <div
+            key={`orbit-${projectIndex}-${i}`}
+            className="absolute left-1/2 top-1/2"
             style={{ transformStyle: "preserve-3d" }}
-            animate={
-              isActive
-                ? isHovered
-                  ? { rotateX: 0, rotateZ: 0, opacity: 1 }
-                  : { rotateX: item.tiltX, rotateZ: item.tiltZ, opacity: 1 }
-                : { rotateX: 0, rotateZ: 0, opacity: 0 }
-            }
-            transition={{
-              rotateX: { duration: 0.8, ease: "easeInOut" },
-              rotateZ: { duration: 0.8, ease: "easeInOut" },
-              opacity: { duration: 0.5 },
-            }}
           >
-            {/* Orbit rotation — continuous when active, parks on hover */}
+            {/* Orbital plane tilt — flattens to (0,0) on hover */}
             <motion.div
               style={{ transformStyle: "preserve-3d" }}
               animate={
                 isActive
                   ? isHovered
-                    ? { rotateY: restAngles[i], scale: 1 }
-                    : { rotateY: [item.startAngle, item.startAngle + 360], scale: 1 }
-                  : { rotateY: item.startAngle, scale: 0.5 }
+                    ? { rotateX: 0, rotateZ: 0, opacity: 1 }
+                    : { rotateX: item.tiltX, rotateZ: item.tiltZ, opacity: 1 }
+                  : { rotateX: 0, rotateZ: 0, opacity: 0 }
               }
-              transition={
-                isActive
-                  ? isHovered
-                    ? {
-                        rotateY: { duration: 0.8, ease: "easeInOut" },
-                        scale: { duration: 0.4 },
-                      }
-                    : {
-                        rotateY: {
-                          duration: item.orbitDuration,
-                          repeat: Infinity,
-                          ease: "linear",
-                        },
-                        scale: { duration: 0.6 },
-                      }
-                  : { duration: 0.5 }
-              }
+              transition={{
+                rotateX: { duration: 0.8, ease: "easeInOut" },
+                rotateZ: { duration: 0.8, ease: "easeInOut" },
+                opacity: { duration: 0.5 },
+              }}
             >
-              {/* Radius offset from center — static */}
-              <div
-                style={{
-                  position: "absolute",
-                  transformStyle: "preserve-3d",
-                  transform: `translateX(${item.orbitRadius * scale}px) translateY(-${(item.size * scale) / 2}px)`,
-                }}
-              >
-                {/* Self-rotation — stops and faces viewer on hover */}
-                <motion.div
-                  animate={
-                    isActive && !isHovered
-                      ? { rotateY: [360, 0], rotateX: [0, 180, 360] }
-                      : { rotateY: 0, rotateX: 0 }
-                  }
-                  transition={
-                    isActive && !isHovered
+              {/* Orbit rotation — continuous loop, resets to 0 on hover */}
+              <motion.div
+                style={{ transformStyle: "preserve-3d" }}
+                animate={
+                  isActive
+                    ? isHovered
+                      ? { rotateY: 0, scale: 1 }
+                      : { rotateY: [item.startAngle, item.startAngle + 360], scale: 1 }
+                    : { rotateY: item.startAngle, scale: 0.5 }
+                }
+                transition={
+                  isActive
+                    ? isHovered
                       ? {
-                          duration: item.orbitDuration * 0.6,
-                          repeat: Infinity,
-                          ease: "linear",
+                          rotateY: { duration: 0.8, ease: "easeInOut" },
+                          scale: { duration: 0.4 },
                         }
-                      : { duration: 0.6, ease: "easeOut" }
+                      : {
+                          rotateY: {
+                            duration: item.orbitDuration,
+                            repeat: Infinity,
+                            ease: "linear",
+                          },
+                          scale: { duration: 0.6 },
+                        }
+                    : { duration: 0.5 }
+                }
+              >
+                {/* Radius offset — animated between orbit radius and hover XY position */}
+                <motion.div
+                  style={{
+                    position: "absolute",
+                    transformStyle: "preserve-3d",
+                  }}
+                  animate={
+                    isActive
+                      ? isHovered
+                        ? { x: restXY[i].x, y: restXY[i].y - halfH }
+                        : { x: item.orbitRadius * scale, y: -halfH }
+                      : { x: item.orbitRadius * scale, y: -halfH }
                   }
-                  style={{ transformStyle: "preserve-3d" }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
                 >
-                  <Shape3D
-                    shape={item.shape}
-                    size={Math.round(item.size * scale)}
-                    accent={accent}
-                  />
+                  {/* Self-rotation — stops and faces viewer on hover */}
+                  <motion.div
+                    animate={
+                      isActive && !isHovered
+                        ? { rotateY: [360, 0], rotateX: [0, 180, 360] }
+                        : { rotateY: 0, rotateX: 0 }
+                    }
+                    transition={
+                      isActive && !isHovered
+                        ? {
+                            duration: item.orbitDuration * 0.6,
+                            repeat: Infinity,
+                            ease: "linear",
+                          }
+                        : { duration: 0.6, ease: "easeOut" }
+                    }
+                    style={{ transformStyle: "preserve-3d" }}
+                  >
+                    <Shape3D
+                      shape={item.shape}
+                      size={Math.round(item.size * scale)}
+                      accent={accent}
+                    />
+                  </motion.div>
                 </motion.div>
-              </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        </div>
-      ))}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -1095,12 +1109,7 @@ function useGemSize() {
   return scale;
 }
 
-/** Total number of front-facing image faces — for panoramic strip math */
-const IMAGE_FACE_COUNT = ROCK_FACES.filter((_, fi) => {
-  // Pre-compute: matches the logic in generatePolyhedronFaces for normalZ > 0.2
-  // We count them here so the constant is available before rendering
-  return true; // Will be filtered at render time by face.showImage
-}).length;
+/* (panoramic strip mapping removed — each face now shows full image with cover) */
 
 function Polyhedron({
   project,
@@ -1153,11 +1162,7 @@ function Polyhedron({
   // Generate faces once
   const faces = useMemo(() => generatePolyhedronFaces(), []);
 
-  // Count how many faces show images (for panoramic slicing)
-  const imageFaceCount = useMemo(
-    () => faces.filter((f) => f.showImage).length,
-    [faces]
-  );
+
 
   // Polyhedron bounding box for container sizing
   const polyW = 280;
@@ -1215,14 +1220,6 @@ function Polyhedron({
             const g = Math.round(face.grayTone * 255);
             const grayColor = `rgb(${g}, ${g}, ${g})`;
 
-            // Image faces get a sequential index for panoramic slicing
-            let imageSliceIndex = 0;
-            if (face.showImage) {
-              imageSliceIndex = faces
-                .slice(0, fi)
-                .filter((f) => f.showImage).length;
-            }
-
             return (
               <div
                 key={face.key}
@@ -1257,8 +1254,8 @@ function Polyhedron({
                     className="absolute inset-0"
                     style={{
                       backgroundImage: `url(${project.image})`,
-                      backgroundSize: `${face.width * imageFaceCount}px auto`,
-                      backgroundPosition: `${-imageSliceIndex * face.width}px center`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
                       transition: "opacity 0.5s ease",
                       opacity: isHovered ? 0.9 : 0,
                     }}
