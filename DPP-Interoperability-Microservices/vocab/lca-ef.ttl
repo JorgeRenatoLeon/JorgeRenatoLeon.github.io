@@ -1,5 +1,5 @@
 @prefix lcaef:   <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef#> .
-@prefix dpp:     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#> .
+@prefix dpp:     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp#> .
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
@@ -11,7 +11,7 @@
   a owl:Ontology ;
   owl:versionIRI   <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef/0.2> ;
   owl:versionInfo  "0.2" ;
-  owl:imports      <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  owl:imports      <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label       "DPP LCA/Environmental Footprint Extension Vocabulary"@en ;
   dcterms:description
     "Lifecycle Assessment and Environmental Footprint extension vocabulary for the DPP Interoperability Platform. Covers carbon footprint, GHG scopes, lifecycle stages, impact categories, circularity metrics, and water footprint per GHG Protocol, ISO 14040, PEF, and CIRPASS frameworks."@en ;

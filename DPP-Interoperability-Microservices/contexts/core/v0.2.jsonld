@@ -2,7 +2,7 @@
   "@context": {
     "@version": 1.1,
     "@vocab": "https://schema.org/",
-    "dpp": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#",
+    "dpp": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp#",
     "prov": "http://www.w3.org/ns/prov#",
     "qudt": "http://qudt.org/schema/qudt/",
     "xsd": "http://www.w3.org/2001/XMLSchema#",

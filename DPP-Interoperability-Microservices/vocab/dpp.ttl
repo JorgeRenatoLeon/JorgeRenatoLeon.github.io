@@ -1,4 +1,4 @@
-@prefix dpp:     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#> .
+@prefix dpp:     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp#> .
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
@@ -19,9 +19,9 @@
 #   dpp:extensions → food:FoodExtension        (https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food)
 # =============================================================================
 
-<https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core>
+<https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp>
   a owl:Ontology ;
-  owl:versionIRI     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core/0.2> ;
+  owl:versionIRI     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp/0.2> ;
   owl:versionInfo    "0.2" ;
   rdfs:label         "DPP Interoperability Core Vocabulary"@en ;
   dcterms:description
@@ -41,82 +41,82 @@
 
 dpp:DigitalProductPassport
   a owl:Class ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Digital Product Passport"@en ;
   rdfs:comment "Root entity describing a product across its lifecycle, conforming to EU ESPR."@en ;
   rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1781> .
 
 dpp:Product
   a owl:Class ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Product"@en ;
   rdfs:comment "The physical or digital product described by a DPP."@en ;
   rdfs:seeAlso schema:Product .
 
 dpp:Manufacturer
   a owl:Class ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Manufacturer"@en ;
   rdfs:comment "The organization responsible for manufacturing the product."@en ;
   rdfs:seeAlso schema:Organization .
 
 dpp:Identifier
   a owl:Class ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Identifier"@en ;
   rdfs:comment "A product or passport identifier (GTIN, UUID, VIN, DID, LGTIN, serial, manufacturer part number)."@en ;
   rdfs:seeAlso gs1:GTIN .
 
 dpp:Evidence
   a owl:Class ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Evidence"@en ;
   rdfs:comment "Evidence supporting an identifier resolution result."@en ;
   rdfs:seeAlso prov:Entity .
 
 dpp:FieldProvenance
   a owl:Class ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Field Provenance"@en ;
   rdfs:comment "Per-field provenance metadata aligned with W3C PROV-O."@en ;
   rdfs:seeAlso prov:Entity .
 
 dpp:Address
   a owl:Class ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Address"@en ;
   rdfs:comment "Postal address of a manufacturer or facility."@en ;
   rdfs:seeAlso schema:PostalAddress .
 
 dpp:Facility
   a owl:Class ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Facility"@en ;
   rdfs:comment "Manufacturing facility where the product was produced."@en ;
   rdfs:seeAlso schema:Place .
 
 dpp:Materials
   a owl:Class ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Materials"@en ;
   rdfs:comment "Material composition information. Domain extensions add specific material properties."@en .
 
 dpp:MaterialEntry
   a owl:Class ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Material Entry"@en ;
   rdfs:comment "A single material in a product's composition."@en .
 
 dpp:CarbonFootprint
   a owl:Class ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Carbon Footprint"@en ;
   rdfs:comment "Summary carbon footprint. For detailed LCA data use the lca-ef extension."@en ;
   rdfs:seeAlso <https://ghgprotocol.org/> .
 
 dpp:Compliance
   a owl:Class ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Compliance"@en ;
   rdfs:comment "Regulatory compliance declarations associated with the product."@en .
 
@@ -134,7 +134,7 @@ dpp:Materials    owl:disjointWith dpp:CarbonFootprint, dpp:Compliance .
 
 dpp:product
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "product"@en ;
   rdfs:comment "Links a DPP to the product it describes."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -143,7 +143,7 @@ dpp:product
 
 dpp:manufacturer
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "manufacturer"@en ;
   rdfs:comment "Links a DPP to the manufacturer."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -152,7 +152,7 @@ dpp:manufacturer
 
 dpp:identifiers
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "identifiers"@en ;
   rdfs:comment "Set of identifiers associated with the passport."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -160,7 +160,7 @@ dpp:identifiers
 
 dpp:evidence
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "evidence"@en ;
   rdfs:comment "Evidence entries supporting an identifier resolution result."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -168,14 +168,14 @@ dpp:evidence
 
 dpp:extensions
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "extensions"@en ;
   rdfs:comment "Modular domain-specific extension data. Range is open to support any registered extension root class."@en ;
   rdfs:domain  dpp:DigitalProductPassport .
 
 dpp:provenanceFields
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "provenanceFields"@en ;
   rdfs:comment "Per-field provenance tracking. Aligned with W3C PROV-O."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -184,7 +184,7 @@ dpp:provenanceFields
 
 dpp:address
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "address"@en ;
   rdfs:comment "Postal address of a manufacturer or facility."@en ;
   rdfs:domain  dpp:Manufacturer ;
@@ -193,7 +193,7 @@ dpp:address
 
 dpp:facility
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "facility"@en ;
   rdfs:comment "Manufacturing facility where the product was produced."@en ;
   rdfs:domain  dpp:Manufacturer ;
@@ -202,7 +202,7 @@ dpp:facility
 
 dpp:materials
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "materials"@en ;
   rdfs:comment "Material composition. Battery-specific details belong in the battery extension."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -210,7 +210,7 @@ dpp:materials
 
 dpp:composition
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "composition"@en ;
   rdfs:comment "List of material entries in the product's composition."@en ;
   rdfs:domain  dpp:Materials ;
@@ -218,7 +218,7 @@ dpp:composition
 
 dpp:carbonFootprint
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "carbonFootprint"@en ;
   rdfs:comment "Summary carbon footprint. For detailed LCA data, use the lca-ef extension."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -226,7 +226,7 @@ dpp:carbonFootprint
 
 dpp:compliance
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "compliance"@en ;
   rdfs:comment "Regulatory compliance information for the product."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -236,7 +236,7 @@ dpp:compliance
 # (qudt:QuantityValue is a class, not an XSD datatype)
 dpp:materialMass
   a owl:ObjectProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "materialMass"@en ;
   rdfs:comment "Mass of the material expressed as a qudt:QuantityValue."@en ;
   rdfs:domain  dpp:MaterialEntry ;
@@ -250,7 +250,7 @@ dpp:materialMass
 # to DatatypeProperty/xsd:anyURI
 dpp:image
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "image"@en ;
   rdfs:comment "URL of the product image. Required by EU Battery Regulation Article 77."@en ;
   rdfs:domain  dpp:Product ;
@@ -259,7 +259,7 @@ dpp:image
 
 dpp:dataCarrier
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "dataCarrier"@en ;
   rdfs:comment "URL of the data carrier (QR code, Data Matrix, GS1 Digital Link). Required by EU Battery Regulation Article 77."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -267,7 +267,7 @@ dpp:dataCarrier
 
 dpp:passportId
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "passportId"@en ;
   rdfs:comment "Unique identifier for the DPP, typically a URN."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -276,7 +276,7 @@ dpp:passportId
 
 dpp:version
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "version"@en ;
   rdfs:comment "Schema version of the passport."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -284,7 +284,7 @@ dpp:version
 
 dpp:lastUpdated
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "lastUpdated"@en ;
   rdfs:comment "ISO 8601 timestamp of the last update."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -292,7 +292,7 @@ dpp:lastUpdated
 
 dpp:productType
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "productType"@en ;
   rdfs:comment "High-level product type (e.g. 'battery', 'electronics', 'food')."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
@@ -300,7 +300,7 @@ dpp:productType
 
 dpp:productCategory
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "productCategory"@en ;
   rdfs:comment "Category classification (e.g. 'Industrial Cell', 'ESS Module')."@en ;
   rdfs:domain  dpp:Product ;
@@ -309,7 +309,7 @@ dpp:productCategory
 
 dpp:productModel
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "productModel"@en ;
   rdfs:comment "Model name or number."@en ;
   rdfs:domain  dpp:Product ;
@@ -318,7 +318,7 @@ dpp:productModel
 
 dpp:brand
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "brand"@en ;
   rdfs:comment "Brand name."@en ;
   rdfs:domain  dpp:Product ;
@@ -327,7 +327,7 @@ dpp:brand
 
 dpp:serialNumber
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "serialNumber"@en ;
   rdfs:comment "Manufacturer-assigned serial number."@en ;
   rdfs:domain  dpp:Product ;
@@ -336,7 +336,7 @@ dpp:serialNumber
 
 dpp:productId
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "productId"@en ;
   rdfs:comment "Primary product identifier."@en ;
   rdfs:domain  dpp:Product ;
@@ -345,7 +345,7 @@ dpp:productId
 
 dpp:manufacturingDate
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "manufacturingDate"@en ;
   rdfs:comment "Date the product was manufactured."@en ;
   rdfs:domain  dpp:Product ;
@@ -354,7 +354,7 @@ dpp:manufacturingDate
 
 dpp:manufacturingCountry
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "manufacturingCountry"@en ;
   rdfs:comment "ISO 3166-1 alpha-2 country code."@en ;
   rdfs:domain  dpp:Product ;
@@ -362,7 +362,7 @@ dpp:manufacturingCountry
 
 dpp:placingOnMarket
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "placingOnMarket"@en ;
   rdfs:comment "Date first placed on the EU market."@en ;
   rdfs:domain  dpp:Product ;
@@ -370,7 +370,7 @@ dpp:placingOnMarket
 
 dpp:dateIntoService
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "dateIntoService"@en ;
   rdfs:comment "Date the product was placed into service."@en ;
   rdfs:domain  dpp:Product ;
@@ -378,7 +378,7 @@ dpp:dateIntoService
 
 dpp:firstUseDate
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "firstUseDate"@en ;
   rdfs:comment "Date of first use."@en ;
   rdfs:domain  dpp:Product ;
@@ -386,7 +386,7 @@ dpp:firstUseDate
 
 dpp:expiryDate
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "expiryDate"@en ;
   rdfs:comment "Expiry or end-of-life date."@en ;
   rdfs:domain  dpp:Product ;
@@ -394,7 +394,7 @@ dpp:expiryDate
 
 dpp:identifierType
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "identifierType"@en ;
   rdfs:comment "Type: UUID, GTIN, VIN, SERIAL, MANUFACTURER_PART, DID, or LGTIN."@en ;
   rdfs:domain  dpp:Identifier ;
@@ -402,7 +402,7 @@ dpp:identifierType
 
 dpp:identifierValue
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "identifierValue"@en ;
   rdfs:comment "The string value of the identifier."@en ;
   rdfs:domain  dpp:Identifier ;
@@ -410,7 +410,7 @@ dpp:identifierValue
 
 dpp:identifierGranularity
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "identifierGranularity"@en ;
   rdfs:comment "Granularity: item, batch, or model."@en ;
   rdfs:domain  dpp:Identifier ;
@@ -418,7 +418,7 @@ dpp:identifierGranularity
 
 dpp:identifierIssuedBy
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "identifierIssuedBy"@en ;
   rdfs:comment "Organization that issued the identifier."@en ;
   rdfs:domain  dpp:Identifier ;
@@ -426,7 +426,7 @@ dpp:identifierIssuedBy
 
 dpp:evidenceSource
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "evidenceSource"@en ;
   rdfs:comment "Source system or registry."@en ;
   rdfs:domain  dpp:Evidence ;
@@ -434,7 +434,7 @@ dpp:evidenceSource
 
 dpp:evidenceMatchType
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "evidenceMatchType"@en ;
   rdfs:comment "Type of match (exact, pattern, prefix, etc.)."@en ;
   rdfs:domain  dpp:Evidence ;
@@ -442,7 +442,7 @@ dpp:evidenceMatchType
 
 dpp:evidenceConfidence
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "evidenceConfidence"@en ;
   rdfs:comment "Confidence score (0.0 to 1.0)."@en ;
   rdfs:domain  dpp:Evidence ;
@@ -450,7 +450,7 @@ dpp:evidenceConfidence
 
 dpp:evidenceMatchedValue
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "evidenceMatchedValue"@en ;
   rdfs:comment "The identifier value matched by the evidence source."@en ;
   rdfs:domain  dpp:Evidence ;
@@ -458,7 +458,7 @@ dpp:evidenceMatchedValue
 
 dpp:evidenceTimestamp
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "evidenceTimestamp"@en ;
   rdfs:comment "Timestamp when evidence was collected."@en ;
   rdfs:domain  dpp:Evidence ;
@@ -466,7 +466,7 @@ dpp:evidenceTimestamp
 
 dpp:manufacturerName
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "manufacturerName"@en ;
   rdfs:comment "Legal or trading name of the manufacturer."@en ;
   rdfs:domain  dpp:Manufacturer ;
@@ -475,7 +475,7 @@ dpp:manufacturerName
 
 dpp:manufacturerId
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "manufacturerId"@en ;
   rdfs:comment "Unique identifier (e.g. VAT, DUNS)."@en ;
   rdfs:domain  dpp:Manufacturer ;
@@ -484,7 +484,7 @@ dpp:manufacturerId
 
 dpp:street
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "street"@en ;
   rdfs:comment "Street address line."@en ;
   rdfs:domain  dpp:Address ;
@@ -493,7 +493,7 @@ dpp:street
 
 dpp:city
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "city"@en ;
   rdfs:comment "City or locality."@en ;
   rdfs:domain  dpp:Address ;
@@ -502,7 +502,7 @@ dpp:city
 
 dpp:postalCode
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "postalCode"@en ;
   rdfs:comment "Postal or ZIP code."@en ;
   rdfs:domain  dpp:Address ;
@@ -511,7 +511,7 @@ dpp:postalCode
 
 dpp:country
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "country"@en ;
   rdfs:comment "ISO 3166-1 alpha-2 country code."@en ;
   rdfs:domain  dpp:Address ;
@@ -520,7 +520,7 @@ dpp:country
 
 dpp:sourceField
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "sourceField"@en ;
   rdfs:comment "Path of the source field in the original initiative payload."@en ;
   rdfs:domain  dpp:FieldProvenance ;
@@ -528,7 +528,7 @@ dpp:sourceField
 
 dpp:provenanceSource
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "provenanceSource"@en ;
   rdfs:comment "Initiative or system that provided the source data."@en ;
   rdfs:domain  dpp:FieldProvenance ;
@@ -537,7 +537,7 @@ dpp:provenanceSource
 
 dpp:provenanceMethod
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "provenanceMethod"@en ;
   rdfs:comment "Mapping method: direct_mapping, transformation, computation, or default."@en ;
   rdfs:domain  dpp:FieldProvenance ;
@@ -545,7 +545,7 @@ dpp:provenanceMethod
 
 dpp:provenanceConfidence
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "provenanceConfidence"@en ;
   rdfs:comment "Confidence score (0.0 to 1.0)."@en ;
   rdfs:domain  dpp:FieldProvenance ;
@@ -553,7 +553,7 @@ dpp:provenanceConfidence
 
 dpp:provenanceTimestamp
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "provenanceTimestamp"@en ;
   rdfs:comment "Timestamp when the field was mapped."@en ;
   rdfs:domain  dpp:FieldProvenance ;
@@ -562,7 +562,7 @@ dpp:provenanceTimestamp
 
 dpp:provenanceTransformation
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "provenanceTransformation"@en ;
   rdfs:comment "Description of the transformation applied (e.g. unit conversion)."@en ;
   rdfs:domain  dpp:FieldProvenance ;
@@ -570,7 +570,7 @@ dpp:provenanceTransformation
 
 dpp:materialName
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "materialName"@en ;
   rdfs:comment "Name of the material."@en ;
   rdfs:domain  dpp:MaterialEntry ;
@@ -578,7 +578,7 @@ dpp:materialName
 
 dpp:materialRecycledContent
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "materialRecycledContent"@en ;
   rdfs:comment "Percentage of recycled content (0.0 to 100.0)."@en ;
   rdfs:domain  dpp:MaterialEntry ;
@@ -586,7 +586,7 @@ dpp:materialRecycledContent
 
 dpp:criticalRawMaterials
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "criticalRawMaterials"@en ;
   rdfs:comment "Critical raw materials per EU CRM Act."@en ;
   rdfs:domain  dpp:Materials ;
@@ -595,7 +595,7 @@ dpp:criticalRawMaterials
 
 dpp:cfTotal
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "cfTotal"@en ;
   rdfs:comment "Total carbon footprint value."@en ;
   rdfs:domain  dpp:CarbonFootprint ;
@@ -603,7 +603,7 @@ dpp:cfTotal
 
 dpp:cfUnit
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "cfUnit"@en ;
   rdfs:comment "Unit (e.g. 'kg CO2e/kWh')."@en ;
   rdfs:domain  dpp:CarbonFootprint ;
@@ -611,7 +611,7 @@ dpp:cfUnit
 
 dpp:cfMethodology
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "cfMethodology"@en ;
   rdfs:comment "Methodology (e.g. PEF, GHG Protocol)."@en ;
   rdfs:domain  dpp:CarbonFootprint ;
@@ -619,7 +619,7 @@ dpp:cfMethodology
 
 dpp:declarations
   a owl:DatatypeProperty ;
-  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "declarations"@en ;
   rdfs:comment "Regulatory compliance declarations."@en ;
   rdfs:domain  dpp:Compliance ;

@@ -1,5 +1,5 @@
 @prefix food:    <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food#> .
-@prefix dpp:     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core#> .
+@prefix dpp:     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp#> .
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
@@ -11,7 +11,7 @@
   a owl:Ontology ;
   owl:versionIRI   <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food/0.2> ;
   owl:versionInfo  "0.2" ;
-  owl:imports      <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/core> ;
+  owl:imports      <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label       "DPP Food Product Extension Vocabulary"@en ;
   dcterms:description
     "Food product extension vocabulary for the DPP Interoperability Platform. Covers nutrition, allergens, ingredients, storage, dietary labels, and food safety per EU FIC Regulation 1169/2011 and Codex Alimentarius."@en ;
