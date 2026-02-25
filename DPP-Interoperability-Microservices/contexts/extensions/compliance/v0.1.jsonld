@@ -1,0 +1,97 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dpp": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp#",
+    "compliance": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "standards": {
+      "@id": "compliance:standards",
+      "@container": "@set"
+    },
+    "name": {
+      "@id": "compliance:standardName",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "compliance:complianceStatus",
+      "@type": "xsd:string"
+    },
+    "version": {
+      "@id": "compliance:standardVersion",
+      "@type": "xsd:string"
+    },
+    "assessmentDate": {
+      "@id": "compliance:assessmentDate",
+      "@type": "xsd:date"
+    },
+    "expiryDate": {
+      "@id": "compliance:expiryDate",
+      "@type": "xsd:date"
+    },
+    "notes": {
+      "@id": "compliance:notes",
+      "@type": "xsd:string"
+    },
+    "certifications": {
+      "@id": "compliance:certifications",
+      "@container": "@set"
+    },
+    "declarations": {
+      "@id": "compliance:declarations",
+      "@container": "@set"
+    },
+    "type": {
+      "@id": "compliance:declarationType",
+      "@type": "xsd:string"
+    },
+    "documentUrl": {
+      "@id": "compliance:documentUrl",
+      "@type": "@id"
+    },
+    "issuer": {
+      "@id": "compliance:issuer",
+      "@type": "xsd:string"
+    },
+    "date": {
+      "@id": "dcterms:date",
+      "@type": "xsd:date"
+    },
+    "regulatoryReferences": {
+      "@id": "compliance:regulatoryReferences",
+      "@container": "@set"
+    },
+    "regulation": {
+      "@id": "compliance:regulationName",
+      "@type": "xsd:string"
+    },
+    "articles": {
+      "@id": "compliance:applicableArticles",
+      "@container": "@set"
+    },
+    "url": {
+      "@id": "compliance:regulationUrl",
+      "@type": "@id"
+    },
+    "auditHistory": {
+      "@id": "compliance:auditHistory",
+      "@container": "@set"
+    },
+    "auditor": {
+      "@id": "compliance:auditor",
+      "@type": "xsd:string"
+    },
+    "scope": {
+      "@id": "compliance:auditScope",
+      "@type": "xsd:string"
+    },
+    "result": {
+      "@id": "compliance:auditResult",
+      "@type": "xsd:string"
+    },
+    "reportUrl": {
+      "@id": "compliance:reportUrl",
+      "@type": "@id"
+    }
+  }
+}

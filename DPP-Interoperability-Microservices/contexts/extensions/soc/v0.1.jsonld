@@ -5,7 +5,7 @@
     "soc": "https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
-    "substances": {
+    "substancesOfConcern": {
       "@id": "soc:hasSubstanceOfConcern",
       "@container": "@set"
     },
@@ -105,24 +105,21 @@
       "@id": "soc:svhcDeclarationLink",
       "@type": "@id"
     },
-    "restrictedSubstanceListCompliance": {
-      "@id": "soc:restrictedSubstanceListCompliance"
-    },
-    "batteryRegAnnexVI": {
-      "@id": "soc:batteryRegAnnexVICompliant",
-      "@type": "xsd:boolean"
-    },
-    "otherLists": {
-      "@id": "soc:otherListCompliance",
+    "hazards": {
+      "@id": "soc:hazards",
       "@container": "@set"
     },
-    "listName": {
-      "@id": "soc:listName",
+    "hazardClass": {
+      "@id": "soc:hazardClass",
       "@type": "xsd:string"
     },
-    "compliant": {
-      "@id": "soc:compliant",
-      "@type": "xsd:boolean"
+    "statement": {
+      "@id": "soc:hazardStatement",
+      "@type": "xsd:string"
+    },
+    "precaution": {
+      "@id": "soc:precautionaryStatement",
+      "@type": "xsd:string"
     },
     "dueDiligenceStatement": {
       "@id": "soc:dueDiligenceStatement"

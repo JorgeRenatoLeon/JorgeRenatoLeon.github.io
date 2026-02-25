@@ -49,7 +49,7 @@ battery:Performance
   rdfs:label   "Battery Performance"@en ;
   rdfs:comment "Electrical performance characteristics (capacity, voltage, power, efficiency)."@en .
 
-battery:BatteryMaterials
+battery:BatteryRawMaterials
   a owl:Class ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
   rdfs:label   "Battery Materials"@en ;
@@ -125,12 +125,12 @@ battery:OverchargeEvent
   rdfs:comment "Record of a deep overcharge or critical event."@en .
 
 # Disjointness between top-level sub-classes of BatteryExtension
-battery:Chemistry      owl:disjointWith battery:Performance, battery:BatteryMaterials,
+battery:Chemistry      owl:disjointWith battery:Performance, battery:BatteryRawMaterials,
                                          battery:Durability, battery:BatteryStatus,
                                          battery:Circularity, battery:SupplyChain .
-battery:Performance    owl:disjointWith battery:BatteryMaterials, battery:Durability,
+battery:Performance    owl:disjointWith battery:BatteryRawMaterials, battery:Durability,
                                          battery:BatteryStatus, battery:Circularity .
-battery:BatteryMaterials owl:disjointWith battery:Durability, battery:BatteryStatus .
+battery:BatteryRawMaterials owl:disjointWith battery:Durability, battery:BatteryStatus .
 
 # =============================================================================
 # Object Properties
@@ -170,13 +170,13 @@ battery:isPerformanceOf
   rdfs:domain  battery:Performance ;
   rdfs:range   battery:BatteryExtension .
 
-battery:materials
+battery:rawMaterials
   a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
   rdfs:label   "materials"@en ;
   rdfs:comment "Links a BatteryExtension to its materials data."@en ;
   rdfs:domain  battery:BatteryExtension ;
-  rdfs:range   battery:BatteryMaterials .
+  rdfs:range   battery:BatteryRawMaterials .
 
 battery:durability
   a owl:ObjectProperty ;
@@ -233,7 +233,7 @@ battery:criticalRawMaterials
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
   rdfs:label   "criticalRawMaterials"@en ;
   rdfs:comment "Set of critical raw material entries per EU CRM Act."@en ;
-  rdfs:domain  battery:BatteryMaterials ;
+  rdfs:domain  battery:BatteryRawMaterials ;
   rdfs:range   battery:MaterialCompositionEntry ;
   rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R0903> .
 
@@ -242,7 +242,7 @@ battery:recycledContent
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
   rdfs:label   "recycledContent"@en ;
   rdfs:comment "Container for recycled content data."@en ;
-  rdfs:domain  battery:BatteryMaterials ;
+  rdfs:domain  battery:BatteryRawMaterials ;
   rdfs:range   battery:RecycledContentEntry .
 
 battery:recycledContentByElement
@@ -250,7 +250,7 @@ battery:recycledContentByElement
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
   rdfs:label   "recycledContentByElement"@en ;
   rdfs:comment "Per-element recycled content entries."@en ;
-  rdfs:domain  battery:BatteryMaterials ;
+  rdfs:domain  battery:BatteryRawMaterials ;
   rdfs:range   battery:RecycledContentEntry .
 
 # FIX: missing rdfs:range added (new class battery:ExpectedLifetime)
@@ -447,7 +447,7 @@ battery:materialName
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
   rdfs:label   "materialName"@en ;
   rdfs:comment "Name of a critical raw material."@en ;
-  rdfs:domain  battery:BatteryMaterials ;
+  rdfs:domain  battery:BatteryRawMaterials ;
   rdfs:range   xsd:string .
 
 battery:sourceCountry
@@ -455,7 +455,7 @@ battery:sourceCountry
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/battery> ;
   rdfs:label   "sourceCountry"@en ;
   rdfs:comment "Country of origin for a material (ISO 3166-1 alpha-2)."@en ;
-  rdfs:domain  battery:BatteryMaterials ;
+  rdfs:domain  battery:BatteryRawMaterials ;
   rdfs:range   xsd:string .
 
 battery:recycledPercentage

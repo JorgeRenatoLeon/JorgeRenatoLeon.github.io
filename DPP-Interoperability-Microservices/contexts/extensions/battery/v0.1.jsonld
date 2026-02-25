@@ -107,8 +107,8 @@
       "@id": "battery:currentInternalResistance",
       "@type": "qudt:QuantityValue"
     },
-    "materials": {
-      "@id": "battery:materials"
+    "rawMaterials": {
+      "@id": "battery:rawMaterials"
     },
     "criticalRawMaterials": {
       "@id": "battery:criticalRawMaterials",

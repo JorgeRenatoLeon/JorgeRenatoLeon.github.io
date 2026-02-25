@@ -17,6 +17,7 @@
 #   dpp:extensions → lcaef:LcaEfExtension      (https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/lca-ef)
 #   dpp:extensions → soc:SocExtension          (https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc)
 #   dpp:extensions → food:FoodExtension        (https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/food)
+#   dpp:extensions → compliance:ComplianceExtension (https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance)
 # =============================================================================
 
 <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp>
@@ -99,7 +100,14 @@ dpp:Materials
   a owl:Class ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Materials"@en ;
-  rdfs:comment "Material composition information. Domain extensions add specific material properties."@en .
+  owl:deprecated true ;
+  rdfs:comment "DEPRECATED: Use dpp:Composition instead. Material composition information."@en .
+
+dpp:Composition
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "Composition"@en ;
+  rdfs:comment "Product composition containing component materials and recycled content."@en .
 
 dpp:MaterialEntry
   a owl:Class ;
@@ -111,22 +119,33 @@ dpp:CarbonFootprint
   a owl:Class ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Carbon Footprint"@en ;
-  rdfs:comment "Summary carbon footprint. For detailed LCA data use the lca-ef extension."@en ;
+  owl:deprecated true ;
+  rdfs:comment "DEPRECATED: Use lca-ef extension instead. Summary carbon footprint."@en ;
   rdfs:seeAlso <https://ghgprotocol.org/> .
 
 dpp:Compliance
   a owl:Class ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "Compliance"@en ;
-  rdfs:comment "Regulatory compliance declarations associated with the product."@en .
+  owl:deprecated true ;
+  rdfs:comment "DEPRECATED: Use compliance extension instead. Regulatory compliance declarations."@en .
+
+dpp:EconomicOperator
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "Economic Operator"@en ;
+  rdfs:comment "Economic operator responsible for placing the product on the market."@en .
+
+dpp:DataCarrier
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "Data Carrier"@en ;
+  rdfs:comment "Data carrier (QR code, RFID, etc.) linking to the physical product."@en .
 
 # Disjointness
 dpp:Product      owl:disjointWith dpp:Manufacturer, dpp:Identifier, dpp:Evidence,
-                                  dpp:FieldProvenance, dpp:Materials,
-                                  dpp:CarbonFootprint, dpp:Compliance .
-dpp:Manufacturer owl:disjointWith dpp:Identifier, dpp:Evidence,
-                                  dpp:Materials, dpp:CarbonFootprint, dpp:Compliance .
-dpp:Materials    owl:disjointWith dpp:CarbonFootprint, dpp:Compliance .
+                                  dpp:FieldProvenance, dpp:Composition .
+dpp:Manufacturer owl:disjointWith dpp:Identifier, dpp:Evidence, dpp:Composition .
 
 # =============================================================================
 # Object Properties
@@ -204,7 +223,8 @@ dpp:materials
   a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "materials"@en ;
-  rdfs:comment "Material composition. Battery-specific details belong in the battery extension."@en ;
+  owl:deprecated true ;
+  rdfs:comment "DEPRECATED: Use dpp:composition instead."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
   rdfs:range   dpp:Materials .
 
@@ -212,15 +232,47 @@ dpp:composition
   a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "composition"@en ;
-  rdfs:comment "List of material entries in the product's composition."@en ;
-  rdfs:domain  dpp:Materials ;
+  rdfs:comment "Product composition with component materials and recycled content."@en ;
+  rdfs:domain  dpp:DigitalProductPassport ;
+  rdfs:range   dpp:Composition .
+
+dpp:componentMaterials
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "componentMaterials"@en ;
+  rdfs:comment "List of materials comprising the product."@en ;
+  rdfs:domain  dpp:Composition ;
   rdfs:range   dpp:MaterialEntry .
+
+dpp:recycledContent
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "recycledContent"@en ;
+  rdfs:comment "Recycled content declarations by material."@en ;
+  rdfs:domain  dpp:Composition .
+
+dpp:economicOperator
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "economicOperator"@en ;
+  rdfs:comment "Economic operator responsible for placing product on market."@en ;
+  rdfs:domain  dpp:DigitalProductPassport ;
+  rdfs:range   dpp:EconomicOperator .
+
+dpp:dataCarrierObj
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "dataCarrierObj"@en ;
+  rdfs:comment "Data carrier linking to the physical product."@en ;
+  rdfs:domain  dpp:DigitalProductPassport ;
+  rdfs:range   dpp:DataCarrier .
 
 dpp:carbonFootprint
   a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "carbonFootprint"@en ;
-  rdfs:comment "Summary carbon footprint. For detailed LCA data, use the lca-ef extension."@en ;
+  owl:deprecated true ;
+  rdfs:comment "DEPRECATED: Use lca-ef extension instead."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
   rdfs:range   dpp:CarbonFootprint .
 
@@ -228,7 +280,8 @@ dpp:compliance
   a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "compliance"@en ;
-  rdfs:comment "Regulatory compliance information for the product."@en ;
+  owl:deprecated true ;
+  rdfs:comment "DEPRECATED: Use compliance extension instead."@en ;
   rdfs:domain  dpp:DigitalProductPassport ;
   rdfs:range   dpp:Compliance .
 
@@ -294,8 +347,8 @@ dpp:productType
   a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "productType"@en ;
-  rdfs:comment "High-level product type (e.g. 'battery', 'electronics', 'food')."@en ;
-  rdfs:domain  dpp:DigitalProductPassport ;
+  rdfs:comment "High-level product type (e.g. 'Battery', 'Electronics', 'Food'). Now nested under product."@en ;
+  rdfs:domain  dpp:Product ;
   rdfs:range   xsd:string .
 
 dpp:productCategory
@@ -320,7 +373,8 @@ dpp:brand
   a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "brand"@en ;
-  rdfs:comment "Brand name."@en ;
+  owl:deprecated true ;
+  rdfs:comment "DEPRECATED: Use product description instead."@en ;
   rdfs:domain  dpp:Product ;
   rdfs:range   xsd:string ;
   owl:equivalentProperty schema:brand .
@@ -338,17 +392,17 @@ dpp:productId
   a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "productId"@en ;
-  rdfs:comment "Primary product identifier."@en ;
+  owl:deprecated true ;
+  rdfs:comment "DEPRECATED: Use identifiers[] instead."@en ;
   rdfs:domain  dpp:Product ;
-  rdfs:range   xsd:string ;
-  rdfs:seeAlso schema:productID .
+  rdfs:range   xsd:string .
 
 dpp:manufacturingDate
   a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "manufacturingDate"@en ;
   rdfs:comment "Date the product was manufactured."@en ;
-  rdfs:domain  dpp:Product ;
+  rdfs:domain  dpp:DigitalProductPassport ;
   rdfs:range   xsd:date ;
   owl:equivalentProperty schema:dateProduced .
 
@@ -356,8 +410,9 @@ dpp:manufacturingCountry
   a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "manufacturingCountry"@en ;
-  rdfs:comment "ISO 3166-1 alpha-2 country code."@en ;
-  rdfs:domain  dpp:Product ;
+  owl:deprecated true ;
+  rdfs:comment "DEPRECATED: Use manufacturer.facility.country instead."@en ;
+  rdfs:domain  dpp:Facility ;
   rdfs:range   xsd:string .
 
 dpp:placingOnMarket
@@ -365,8 +420,63 @@ dpp:placingOnMarket
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
   rdfs:label   "placingOnMarket"@en ;
   rdfs:comment "Date first placed on the EU market."@en ;
-  rdfs:domain  dpp:Product ;
+  rdfs:domain  dpp:DigitalProductPassport ;
   rdfs:range   xsd:date .
+
+dpp:passportStatus
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "passportStatus"@en ;
+  rdfs:comment "Passport lifecycle status: draft, active, revoked, expired."@en ;
+  rdfs:domain  dpp:DigitalProductPassport ;
+  rdfs:range   xsd:string .
+
+dpp:economicOperatorName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "economicOperatorName"@en ;
+  rdfs:comment "Name of the economic operator."@en ;
+  rdfs:domain  dpp:EconomicOperator ;
+  rdfs:range   xsd:string .
+
+dpp:economicOperatorId
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "economicOperatorId"@en ;
+  rdfs:comment "Identifier of the economic operator."@en ;
+  rdfs:domain  dpp:EconomicOperator ;
+  rdfs:range   xsd:string .
+
+dpp:dataCarrierUrl
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "dataCarrierUrl"@en ;
+  rdfs:comment "URL encoded in the data carrier."@en ;
+  rdfs:domain  dpp:DataCarrier ;
+  rdfs:range   xsd:anyURI .
+
+dpp:dataCarrierType
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "dataCarrierType"@en ;
+  rdfs:comment "Type of data carrier (QR, DataMatrix, RFID, NFC)."@en ;
+  rdfs:domain  dpp:DataCarrier ;
+  rdfs:range   xsd:string .
+
+dpp:percentage
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "percentage"@en ;
+  rdfs:comment "Percentage by weight."@en ;
+  rdfs:range   xsd:double .
+
+dpp:materialName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "materialName"@en ;
+  rdfs:comment "Name of a material in composition."@en ;
+  rdfs:domain  dpp:MaterialEntry ;
+  rdfs:range   xsd:string .
 
 dpp:dateIntoService
   a owl:DatatypeProperty ;

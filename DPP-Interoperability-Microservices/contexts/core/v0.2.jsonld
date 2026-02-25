@@ -19,46 +19,50 @@
       "@id": "dpp:lastUpdated",
       "@type": "xsd:dateTime"
     },
-    "productType": {
-      "@id": "dpp:productType",
+    "product": {
+      "@id": "dpp:product"
+    },
+    "category": {
+      "@id": "dpp:productCategory",
       "@type": "xsd:string"
     },
-    "brand": {
-      "@id": "dpp:brand",
+    "model": {
+      "@id": "dpp:productModel",
       "@type": "xsd:string"
     },
-    "productId": {
-      "@id": "dpp:productId",
+    "description": {
+      "@id": "description",
+      "@type": "xsd:string"
+    },
+    "manufacturer": {
+      "@id": "manufacturer",
+      "@type": "Organization"
+    },
+    "legalName": {
+      "@id": "legalName",
+      "@type": "xsd:string"
+    },
+    "facility": {
+      "@id": "dpp:facility"
+    },
+    "country": {
+      "@id": "addressCountry",
       "@type": "xsd:string"
     },
     "manufacturingDate": {
       "@id": "dpp:manufacturingDate",
       "@type": "xsd:date"
     },
-    "manufacturingCountry": {
-      "@id": "dpp:manufacturingCountry",
-      "@type": "xsd:string"
-    },
     "placingOnMarket": {
       "@id": "dpp:placingOnMarket",
       "@type": "xsd:date"
     },
-    "materials": {
-      "@id": "dpp:materials"
+    "economicOperator": {
+      "@id": "dpp:economicOperator"
     },
-    "composition": {
-      "@id": "dpp:composition",
-      "@container": "@set"
-    },
-    "carbonFootprint": {
-      "@id": "dpp:carbonFootprint"
-    },
-    "compliance": {
-      "@id": "dpp:compliance"
-    },
-    "dataCarrier": {
-      "@id": "dpp:dataCarrier",
-      "@type": "@id"
+    "status": {
+      "@id": "dpp:passportStatus",
+      "@type": "xsd:string"
     },
     "identifiers": {
       "@id": "dpp:identifiers",
@@ -76,97 +80,42 @@
       "@id": "dpp:identifierGranularity",
       "@type": "xsd:string"
     },
-    "issuedBy": {
-      "@id": "dpp:identifierIssuedBy",
-      "@type": "xsd:string"
+    "dataCarrier": {
+      "@id": "dpp:dataCarrier"
     },
-    "product": {
-      "@id": "dpp:product",
-      "@type": "Product"
+    "url": {
+      "@id": "url",
+      "@type": "@id"
     },
-    "category": {
-      "@id": "dpp:productCategory",
-      "@type": "xsd:string"
+    "composition": {
+      "@id": "dpp:composition"
     },
-    "model": {
-      "@id": "dpp:productModel",
-      "@type": "xsd:string"
+    "componentMaterials": {
+      "@id": "dpp:componentMaterials",
+      "@container": "@set"
+    },
+    "recycledContent": {
+      "@id": "dpp:recycledContent",
+      "@container": "@set"
     },
     "name": {
       "@id": "name",
       "@type": "xsd:string"
     },
-    "description": {
-      "@id": "description",
+    "mass": {
+      "@id": "dpp:mass"
+    },
+    "percentage": {
+      "@id": "dpp:percentage",
+      "@type": "xsd:double"
+    },
+    "material": {
+      "@id": "dpp:materialName",
       "@type": "xsd:string"
     },
-    "manufacturedDate": {
-      "@id": "dateProduced",
-      "@type": "xsd:date"
-    },
-    "firstUseDate": {
-      "@id": "dpp:firstUseDate",
-      "@type": "xsd:date"
-    },
-    "expiryDate": {
-      "@id": "dpp:expiryDate",
-      "@type": "xsd:date"
-    },
-    "image": {
-      "@id": "image",
-      "@type": "@id"
-    },
-    "manufacturer": {
-      "@id": "manufacturer",
-      "@type": "Organization"
-    },
-    "legalName": {
-      "@id": "legalName",
-      "@type": "xsd:string"
-    },
-    "taxId": {
-      "@id": "taxID",
-      "@type": "xsd:string"
-    },
-    "address": {
-      "@id": "address",
-      "@type": "PostalAddress"
-    },
-    "streetAddress": {
-      "@id": "streetAddress",
-      "@type": "xsd:string"
-    },
-    "addressLocality": {
-      "@id": "addressLocality",
-      "@type": "xsd:string"
-    },
-    "addressRegion": {
-      "@id": "addressRegion",
-      "@type": "xsd:string"
-    },
-    "postalCode": {
-      "@id": "postalCode",
-      "@type": "xsd:string"
-    },
-    "addressCountry": {
-      "@id": "addressCountry",
-      "@type": "xsd:string"
-    },
-    "contactPoint": {
-      "@id": "contactPoint",
-      "@type": "ContactPoint"
-    },
-    "email": {
-      "@id": "email",
-      "@type": "xsd:string"
-    },
-    "telephone": {
-      "@id": "telephone",
-      "@type": "xsd:string"
-    },
-    "url": {
-      "@id": "url",
-      "@type": "@id"
+    "extensions": {
+      "@id": "dpp:extensions",
+      "@container": "@index"
     },
     "provenance": {
       "@id": "prov:entity"
@@ -181,10 +130,6 @@
     },
     "fields": {
       "@id": "dpp:provenanceFields",
-      "@container": "@index"
-    },
-    "extensions": {
-      "@id": "dpp:extensions",
       "@container": "@index"
     }
   }

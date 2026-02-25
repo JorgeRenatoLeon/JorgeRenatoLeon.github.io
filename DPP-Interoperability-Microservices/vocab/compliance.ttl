@@ -1,0 +1,241 @@
+@prefix compliance: <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dpp:     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp#> .
+
+# =============================================================================
+# DPP Compliance Extension Vocabulary v0.1
+# =============================================================================
+# Consolidates regulatory compliance data previously spread across
+# core (compliance) and SoC (REACH/RoHS) into a single extension.
+# =============================================================================
+
+<https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance>
+  a owl:Ontology ;
+  owl:imports <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  owl:versionIRI     <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/contexts/extensions/compliance/v0.1.jsonld> ;
+  owl:versionInfo    "0.1" ;
+  rdfs:label         "DPP Compliance Extension Vocabulary"@en ;
+  dcterms:description
+    "Vocabulary for the Compliance Extension of the DPP Interoperability Platform. Covers regulatory standards, certifications, declarations, and audit history."@en ;
+  dcterms:creator    "Jorge Renato Leon Chumpitaz" ;
+  dcterms:created    "2026-03-01"^^xsd:date ;
+  dcterms:license    <https://creativecommons.org/licenses/by/4.0/> ;
+  dcterms:rights     "CC BY 4.0 — Jorge Renato Leon Chumpitaz" .
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+compliance:ComplianceExtension
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "Compliance Extension"@en ;
+  rdfs:comment "Root container for regulatory compliance data in a DPP."@en .
+
+compliance:Standard
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "Standard"@en ;
+  rdfs:comment "A regulatory standard and its compliance status (REACH, RoHS, Battery Regulation, etc.)."@en .
+
+compliance:Declaration
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "Declaration"@en ;
+  rdfs:comment "A formal declaration (EU Declaration of Conformity, SVHC Declaration, etc.)."@en .
+
+compliance:RegulatoryReference
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "Regulatory Reference"@en ;
+  rdfs:comment "Reference to an applicable regulation with specific articles."@en .
+
+compliance:AuditRecord
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "Audit Record"@en ;
+  rdfs:comment "A compliance audit trail entry."@en .
+
+# =============================================================================
+# Object Properties
+# =============================================================================
+
+compliance:standards
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "standards"@en ;
+  rdfs:comment "Links to regulatory standard compliance entries."@en ;
+  rdfs:domain  compliance:ComplianceExtension ;
+  rdfs:range   compliance:Standard .
+
+compliance:declarations
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "declarations"@en ;
+  rdfs:comment "Links to formal declarations."@en ;
+  rdfs:domain  compliance:ComplianceExtension ;
+  rdfs:range   compliance:Declaration .
+
+compliance:regulatoryReferences
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "regulatoryReferences"@en ;
+  rdfs:comment "Links to applicable regulatory references."@en ;
+  rdfs:domain  compliance:ComplianceExtension ;
+  rdfs:range   compliance:RegulatoryReference .
+
+compliance:auditHistory
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "auditHistory"@en ;
+  rdfs:comment "Links to compliance audit records."@en ;
+  rdfs:domain  compliance:ComplianceExtension ;
+  rdfs:range   compliance:AuditRecord .
+
+# =============================================================================
+# Datatype Properties
+# =============================================================================
+
+# --- Standard ---
+compliance:standardName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "standardName"@en ;
+  rdfs:comment "Name of the regulatory standard (REACH, RoHS, Battery Regulation, IEC 62619, etc.)."@en ;
+  rdfs:domain  compliance:Standard ;
+  rdfs:range   xsd:string .
+
+compliance:complianceStatus
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "complianceStatus"@en ;
+  rdfs:comment "Status: compliant, non-compliant, pending, exempt, not-applicable."@en ;
+  rdfs:domain  compliance:Standard ;
+  rdfs:range   xsd:string .
+
+compliance:standardVersion
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "standardVersion"@en ;
+  rdfs:comment "Standard version or amendment."@en ;
+  rdfs:domain  compliance:Standard ;
+  rdfs:range   xsd:string .
+
+compliance:assessmentDate
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "assessmentDate"@en ;
+  rdfs:comment "Date of compliance assessment."@en ;
+  rdfs:domain  compliance:Standard ;
+  rdfs:range   xsd:date .
+
+compliance:expiryDate
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "expiryDate"@en ;
+  rdfs:comment "Compliance validity expiry date."@en ;
+  rdfs:domain  compliance:Standard ;
+  rdfs:range   xsd:date .
+
+compliance:notes
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "notes"@en ;
+  rdfs:comment "Additional compliance notes."@en ;
+  rdfs:range   xsd:string .
+
+# --- Certifications ---
+compliance:certifications
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "certifications"@en ;
+  rdfs:comment "Product certifications (CE, UL, IEC 62619, UN 38.3, etc.)."@en ;
+  rdfs:domain  compliance:ComplianceExtension ;
+  rdfs:range   xsd:string .
+
+# --- Declaration ---
+compliance:declarationType
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "declarationType"@en ;
+  rdfs:comment "Type of declaration (EU Declaration of Conformity, REACH SVHC Declaration, etc.)."@en ;
+  rdfs:domain  compliance:Declaration ;
+  rdfs:range   xsd:string .
+
+compliance:documentUrl
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "documentUrl"@en ;
+  rdfs:comment "URL to the declaration document."@en ;
+  rdfs:domain  compliance:Declaration ;
+  rdfs:range   xsd:anyURI .
+
+compliance:issuer
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "issuer"@en ;
+  rdfs:comment "Organization that issued the declaration."@en ;
+  rdfs:domain  compliance:Declaration ;
+  rdfs:range   xsd:string .
+
+# --- Regulatory Reference ---
+compliance:regulationName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "regulationName"@en ;
+  rdfs:comment "Regulation name and number."@en ;
+  rdfs:domain  compliance:RegulatoryReference ;
+  rdfs:range   xsd:string .
+
+compliance:applicableArticles
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "applicableArticles"@en ;
+  rdfs:comment "Specific articles that apply."@en ;
+  rdfs:domain  compliance:RegulatoryReference ;
+  rdfs:range   xsd:string .
+
+compliance:regulationUrl
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "regulationUrl"@en ;
+  rdfs:comment "URL to regulation text."@en ;
+  rdfs:domain  compliance:RegulatoryReference ;
+  rdfs:range   xsd:anyURI .
+
+# --- Audit Record ---
+compliance:auditor
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "auditor"@en ;
+  rdfs:comment "Auditing organization or person."@en ;
+  rdfs:domain  compliance:AuditRecord ;
+  rdfs:range   xsd:string .
+
+compliance:auditScope
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "auditScope"@en ;
+  rdfs:comment "Scope of the audit."@en ;
+  rdfs:domain  compliance:AuditRecord ;
+  rdfs:range   xsd:string .
+
+compliance:auditResult
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "auditResult"@en ;
+  rdfs:comment "Audit result: pass, fail, conditional, pending."@en ;
+  rdfs:domain  compliance:AuditRecord ;
+  rdfs:range   xsd:string .
+
+compliance:reportUrl
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/compliance> ;
+  rdfs:label   "reportUrl"@en ;
+  rdfs:comment "URL to audit report."@en ;
+  rdfs:domain  compliance:AuditRecord ;
+  rdfs:range   xsd:anyURI .

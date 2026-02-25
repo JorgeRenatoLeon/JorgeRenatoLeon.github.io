@@ -64,7 +64,14 @@ soc:RestrictedSubstanceListCompliance
   a owl:Class ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
   rdfs:label   "Restricted Substance List Compliance"@en ;
-  rdfs:comment "Compliance status with restricted substance lists (RoHS, Battery Regulation Annex VI, etc.)."@en .
+  owl:deprecated true ;
+  rdfs:comment "DEPRECATED: Use compliance extension instead. Compliance status with restricted substance lists."@en .
+
+soc:Hazard
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "Hazard"@en ;
+  rdfs:comment "Hazard information associated with substances (GHS classification)."@en .
 
 soc:OtherListCompliance
   a owl:Class ;
@@ -159,9 +166,18 @@ soc:restrictedSubstanceListCompliance
   a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
   rdfs:label   "restrictedSubstanceListCompliance"@en ;
-  rdfs:comment "Links SoC extension to restricted substance compliance data."@en ;
+  owl:deprecated true ;
+  rdfs:comment "DEPRECATED: Use compliance extension instead."@en ;
   rdfs:domain  soc:SocExtension ;
   rdfs:range   soc:RestrictedSubstanceListCompliance .
+
+soc:hazards
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
+  rdfs:label   "hazards"@en ;
+  rdfs:comment "Hazard information associated with substances."@en ;
+  rdfs:domain  soc:SocExtension ;
+  rdfs:range   soc:Hazard .
 
 soc:otherListCompliance
   a owl:ObjectProperty ;
@@ -447,10 +463,10 @@ soc:rohsCompliant
   a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/soc> ;
   rdfs:label   "rohsCompliant"@en ;
-  rdfs:comment "Whether the product complies with EU RoHS Directive 2011/65/EU."@en ;
+  owl:deprecated true ;
+  rdfs:comment "DEPRECATED: Use compliance extension with standards[{name:'RoHS'}] instead."@en ;
   rdfs:domain  soc:SocExtension ;
-  rdfs:range   xsd:boolean ;
-  rdfs:seeAlso <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32011L0065> .
+  rdfs:range   xsd:boolean .
 
 soc:lastAssessmentDate
   a owl:DatatypeProperty ;
