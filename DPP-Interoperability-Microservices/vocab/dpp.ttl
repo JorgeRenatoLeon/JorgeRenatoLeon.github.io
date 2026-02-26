@@ -142,6 +142,25 @@ dpp:DataCarrier
   rdfs:label   "Data Carrier"@en ;
   rdfs:comment "Data carrier (QR code, RFID, etc.) linking to the physical product."@en .
 
+dpp:MappingGap
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "Mapping Gap"@en ;
+  rdfs:comment "A gap identified during normalization where a target field could not be populated from the source payload."@en .
+
+dpp:Adapter
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "Adapter"@en ;
+  rdfs:comment "Software adapter that transforms initiative-specific payloads into the Shared Core Schema."@en ;
+  rdfs:seeAlso prov:SoftwareAgent .
+
+dpp:DataCoverage
+  a owl:Class ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "Data Coverage"@en ;
+  rdfs:comment "Metrics describing how many target fields were populated by a normalization run."@en .
+
 # Disjointness
 dpp:Product      owl:disjointWith dpp:Manufacturer, dpp:Identifier, dpp:Evidence,
                                   dpp:FieldProvenance, dpp:Composition .
@@ -294,6 +313,50 @@ dpp:materialMass
   rdfs:comment "Mass of the material expressed as a qudt:QuantityValue."@en ;
   rdfs:domain  dpp:MaterialEntry ;
   rdfs:range   qudt:QuantityValue .
+
+dpp:coreData
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "coreData"@en ;
+  rdfs:comment "Groups all product-agnostic core fields of a Digital Product Passport."@en ;
+  rdfs:domain  dpp:DigitalProductPassport .
+
+dpp:gaps
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "gaps"@en ;
+  rdfs:comment "Set of mapping gaps identified during normalization."@en ;
+  rdfs:domain  dpp:DigitalProductPassport ;
+  rdfs:range   dpp:MappingGap .
+
+dpp:provenanceLinkedData
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "provenanceLinkedData"@en ;
+  rdfs:comment "PROV-O aligned provenance representation for linked-data consumers."@en ;
+  rdfs:domain  dpp:DigitalProductPassport ;
+  rdfs:seeAlso prov:Activity .
+
+dpp:provenance
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "provenance"@en ;
+  rdfs:comment "Provenance metadata including adapter info and per-field tracking."@en ;
+  rdfs:domain  dpp:DigitalProductPassport .
+
+dpp:adapter
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "adapter"@en ;
+  rdfs:comment "Adapter that performed the normalization."@en ;
+  rdfs:range   dpp:Adapter .
+
+dpp:dataCoverage
+  a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "dataCoverage"@en ;
+  rdfs:comment "Data coverage metrics for a normalization run."@en ;
+  rdfs:range   dpp:DataCoverage .
 
 # =============================================================================
 # Datatype Properties
@@ -734,6 +797,92 @@ dpp:declarations
   rdfs:comment "Regulatory compliance declarations."@en ;
   rdfs:domain  dpp:Compliance ;
   rdfs:range   xsd:string .
+
+# -- Gap sub-properties -------------------------------------------------------
+
+dpp:gapField
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "gapField"@en ;
+  rdfs:comment "Target field that could not be populated during normalization."@en ;
+  rdfs:domain  dpp:MappingGap ;
+  rdfs:range   xsd:string .
+
+dpp:gapReason
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "gapReason"@en ;
+  rdfs:comment "Reason why the field is missing (e.g. not_in_source, unmappable)."@en ;
+  rdfs:domain  dpp:MappingGap ;
+  rdfs:range   xsd:string .
+
+dpp:gapSeverity
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "gapSeverity"@en ;
+  rdfs:comment "Severity level of the gap (error, warning, info)."@en ;
+  rdfs:domain  dpp:MappingGap ;
+  rdfs:range   xsd:string .
+
+dpp:gapExplanation
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "gapExplanation"@en ;
+  rdfs:comment "Human-readable explanation of the gap."@en ;
+  rdfs:domain  dpp:MappingGap ;
+  rdfs:range   xsd:string .
+
+dpp:gapCategory
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "gapCategory"@en ;
+  rdfs:comment "Category of the gap (e.g. core, extension)."@en ;
+  rdfs:domain  dpp:MappingGap ;
+  rdfs:range   xsd:string .
+
+# -- Adapter sub-properties ---------------------------------------------------
+
+dpp:adapterVersion
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "adapterVersion"@en ;
+  rdfs:comment "Version of the adapter that performed the transformation."@en ;
+  rdfs:domain  dpp:Adapter ;
+  rdfs:range   xsd:string .
+
+dpp:targetSchema
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "targetSchema"@en ;
+  rdfs:comment "Target Shared Core Schema version (e.g. 0.2.0)."@en ;
+  rdfs:domain  dpp:Adapter ;
+  rdfs:range   xsd:string .
+
+# -- DataCoverage sub-properties -----------------------------------------------
+
+dpp:coverageScore
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "coverageScore"@en ;
+  rdfs:comment "Overall coverage score (0.0 to 1.0)."@en ;
+  rdfs:domain  dpp:DataCoverage ;
+  rdfs:range   xsd:double .
+
+dpp:populatedFields
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "populatedFields"@en ;
+  rdfs:comment "Number of fields successfully populated."@en ;
+  rdfs:domain  dpp:DataCoverage ;
+  rdfs:range   xsd:integer .
+
+dpp:expectedFields
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "expectedFields"@en ;
+  rdfs:comment "Total number of expected fields."@en ;
+  rdfs:domain  dpp:DataCoverage ;
+  rdfs:range   xsd:integer .
 
 # =============================================================================
 # Cardinality Constraints
