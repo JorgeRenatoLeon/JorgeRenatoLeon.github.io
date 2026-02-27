@@ -406,6 +406,14 @@ dpp:lastUpdated
   rdfs:domain  dpp:DigitalProductPassport ;
   rdfs:range   xsd:dateTime .
 
+dpp:productName
+  a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
+  rdfs:label   "productName"@en ;
+  rdfs:comment "Product Name."@en ;
+  rdfs:domain  dpp:Product ;
+  rdfs:range   xsd:string .
+
 dpp:productType
   a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://jorgerenatoleon.github.io/DPP-Interoperability-Microservices/vocab/dpp> ;
